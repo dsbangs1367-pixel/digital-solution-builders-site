@@ -34,16 +34,16 @@ const projects: Project[] = [
     category: 'Youth Brand · Website Design',
     tagline: 'Create. Develop. Explore.',
     description:
-      'A vibrant digital home for three real brothers on a mission to combine sports, creativity, and adventure for kids ages 7–15. The platform features daily videos on football, music, quizzes, a merch store, and real-world adventure events — all unified under one energetic brand.',
+      'A vibrant digital home for three real brothers on a mission to combine sports, creativity, and adventure for kids ages 7–15. The site introduces the brand, the brothers, the upcoming training app, and a path to register interest in adventure events.',
     services: ['Brand Identity', 'Website Design', 'Content Strategy'],
     url: 'https://bangura-brothers-site.lovable.app',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNXVNTZCHWANSXBKEY1XW2.png?imageMogr2/format/webp',
     imageAlt: 'The Bangura Brothers website design — youth brand homepage with sports, music and adventure sections for kids ages 7–15',
     accent: '#e8622a',
     stats: [
-      { label: 'Mobile Apps', value: '2' },
-      { label: 'Brand Pillars', value: '4' },
-      { label: 'Age Range', value: '7–15' },
+      { label: 'Audience', value: 'Ages 7–15' },
+      { label: 'Site', value: 'Live' },
+      { label: 'Surfaces', value: 'Web' },
     ],
   },
   {
@@ -53,16 +53,16 @@ const projects: Project[] = [
     category: 'Youth Sports · App Design',
     tagline: "Let's Train!",
     description:
-      'A gamified football training app for young players, guided by Daniel Bangura. Features 50+ drills, daily challenges, badge rewards, and progress tracking — with a streak system that keeps kids motivated and coming back every day.',
+      'A gamified football training-app concept for young players. Daily drill prompts, progress streaks, and badge rewards designed to make practice habit-forming. Currently a design + interactive prototype.',
     services: ['App Design', 'Gamification UX', 'Mobile UI'],
     url: 'https://bangura-brothers-site.lovable.app',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNXVNTFKK6813CAKRZG7QZ.png?imageMogr2/format/webp',
-    imageAlt: 'Bangura Brothers Training App UI — gamified football drill tracker with badge rewards and daily streak system for young players',
+    imageAlt: 'Bangura Brothers Training App UI — gamified football drill tracker for young players',
     accent: '#3ecf6e',
     stats: [
-      { label: 'Drills', value: '50+' },
-      { label: 'Badges', value: '20' },
-      { label: 'Daily Streak', value: '🔥' },
+      { label: 'Stage', value: 'Prototype' },
+      { label: 'Audience', value: 'Youth Football' },
+      { label: 'Surfaces', value: 'Mobile' },
     ],
   },
   {
@@ -72,39 +72,20 @@ const projects: Project[] = [
     category: 'Food & Beverage · Website Design',
     tagline: 'Fresh, Healthy Meals Delivered to You.',
     description:
-      "From our kitchen to your table — natural drinks, traditional African dishes, and wholesome meals crafted with love in Freetown. The site translates Michaella's personal wellness journey into a warm, compelling brand story backed by 19K+ meals delivered.",
+      "A warm, story-led brand site for a Freetown-based kitchen serving natural drinks, traditional African dishes, and event catering. Translates Michaella's personal wellness journey into a clear menu, ordering flow, and contact path.",
     services: ['Website Design', 'UX Strategy', 'Brand Storytelling'],
     url: 'https://kellas-kitchen.lovable.app',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNYGTHP9DPQ8CK2AVMN8TT.png?imageMogr2/format/webp',
     imageAlt: "Kella's Kitchen & Events website design — food brand homepage featuring traditional African meals, natural drinks and event catering in Freetown Sierra Leone",
     accent: '#c9960c',
     stats: [
-      { label: 'Location', value: 'SL' },
-      { label: 'Services', value: '3' },
-      { label: 'Focus', value: 'Brand' },
+      { label: 'Region', value: 'Freetown, SL' },
+      { label: 'Site', value: 'Live' },
+      { label: 'Type', value: 'Brand + Menu' },
     ],
   },
   {
     id: 4,
-    slug: 'kingdom-builders',
-    title: 'Kingdom Builders',
-    category: 'EdTech · App Design',
-    tagline: 'Raising Godly Leaders & Wealth Builders.',
-    description:
-      'A faith-based educational app for children ages 5–18. Imagine your child growing in faith, building real-world skills, and discovering their purpose — all while having fun with three brothers who feel like family. Spiritual formation meets gamified wealth-building.',
-    services: ['App Design', 'UX Design', 'Gamification'],
-    url: 'https://kingdom-builders.lovable.app',
-    image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNYGTHNGJCR3G2VMYEWNR7.png?imageMogr2/format/webp',
-    imageAlt: 'Kingdom Builders faith-based EdTech app design — gamified spiritual and wealth-building education platform for children ages 5–18',
-    accent: '#d4850a',
-    stats: [
-      { label: 'Age Bands', value: '7' },
-      { label: 'Skill Tracks', value: '3' },
-      { label: 'Journey Length', value: '10yr' },
-    ],
-  },
-  {
-    id: 5,
     slug: 'sprout',
     title: 'Sprout',
     category: 'Family · Native Mobile App',
@@ -114,7 +95,7 @@ const projects: Project[] = [
     services: ['Native App Development', 'Product Strategy', 'Brand & Marketing Site'],
     url: 'https://sprout.dsbdigital.biz',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNYGTHNGJCR3G2VMYEWNR7.png?imageMogr2/format/webp',
-    imageAlt: 'Sprout family growth app — native iOS and Android app for children ages 0–18 covering Education, Faith, Wealth and Health with daily challenges and gamified streaks',
+    imageAlt: 'Sprout family growth app — native iOS and Android app for children ages 0–18 covering Education, Faith, Wealth and Health',
     accent: '#3a8f5e',
     stats: [
       { label: 'Pillars', value: '4' },
@@ -123,13 +104,13 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 6,
+    id: 5,
     slug: 'nexa-ideation',
     title: 'Nexa-Ideation',
     category: 'SaaS · Application Design',
     tagline: 'AI Business Idea Analyzer.',
     description:
-      'An AI-powered business idea evaluation platform delivering instant A–F grades across six key dimensions. Users share their age, location, industry, and startup capital — then receive deeply personalized insights to assess and compare startup ideas.',
+      'An AI-powered business idea evaluation tool delivering instant A–F grades across six dimensions. Users share their age, location, industry, and startup capital — then receive personalised insights to assess and compare startup ideas.',
     services: ['App Design', 'Dashboard UI', 'UX Research'],
     url: 'https://nexa-ideation.lovable.app',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNYGTH5W7ZBY8H17TNXTEG.png?imageMogr2/format/webp',
@@ -137,39 +118,77 @@ const projects: Project[] = [
     accent: '#3ab26e',
     stats: [
       { label: 'Dimensions', value: '6' },
-      { label: 'Industries', value: '15+' },
       { label: 'Grade Scale', value: 'A–F' },
+      { label: 'Stage', value: 'Live MVP' },
+    ],
+  },
+  {
+    id: 6,
+    slug: 'nexa-logistix',
+    title: 'Nexa-Logistix LMIS',
+    category: 'Health Logistics · Web Application',
+    tagline: 'A pharmaceutical supply-chain operating system.',
+    description:
+      'A full-stack logistics management information system for pharmaceutical supply chains — built end-to-end across inventory, stock counts, cold-chain monitoring, requisitions, purchase orders, distribution, dispensing, point-of-sale, AI demand forecasting, and serialised track-and-trace. FastAPI + PostgreSQL on the backend, React + TypeScript on the frontend, multilingual (English / Krio / French), with an open public demo.',
+    services: ['Full-stack Development', 'Database & API Design', 'Multilingual UX'],
+    url: 'https://lmis.dsbdigital.biz',
+    image: '/projects/nexa-lmis.png',
+    imageAlt: 'Nexa-Logistix LMIS dashboard — supply-chain overview with stock-at-risk table, alert severity counters, and full sidebar navigation across inventory, supply chain, patients & pharmacy, alerts, and administration modules',
+    accent: '#0e7a8a',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Languages', value: 'EN · KRI · FR' },
+      { label: 'Demo', value: 'Open' },
     ],
   },
   {
     id: 7,
-    slug: 'intelligent-connectivity',
-    title: 'Intelligent Connectivity Platform',
-    category: 'Enterprise Tech · Website Design',
-    tagline: 'Integrated Solutions for a Smarter Tomorrow.',
+    slug: 'nexa-welbodi',
+    title: 'Nexa-Health Welbodi EMR',
+    category: 'Healthcare · Electronic Medical Records',
+    tagline: 'Lifelong health records. Starting today.',
     description:
-      'The foundational connective layer making essential sectors — logistics, healthcare, education, and finance — more intelligent, efficient, and human-centric. A premium enterprise platform website designed to communicate scale, trust, and technological leadership.',
-    services: ['Website Design', 'Enterprise UX', 'Visual Strategy'],
-    url: '#',
-    image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/16/01KKVNYR9H0PWHBKM684FNKVR1.png?imageMogr2/format/webp',
-    imageAlt: 'Intelligent Connectivity Platform enterprise website design — premium UI showcasing integrated solutions for logistics, healthcare, education and finance',
+      'An offline-first electronic medical records platform for Sierra Leonean hospitals, clinics, and peripheral health units. FHIR R4–aligned, OpenMRS-inspired, with role-based clinical workflows for facility staff. FastAPI + async SQLAlchemy on the backend; React 18 + Vite + Workbox PWA on the frontend; deployed via Docker on a managed droplet.',
+    services: ['Full-stack EMR', 'Offline-first PWA', 'Clinical UX'],
+    url: 'https://welbodi.dsbdigital.biz',
+    image: '/projects/nexa-welbodi.svg',
+    imageAlt: 'Nexa-Health Welbodi EMR — placeholder card with the Welbodi brand mark and current UAT status',
     accent: '#3a8fb5',
     stats: [
-      { label: 'Sectors', value: '4' },
-      { label: 'Platform Type', value: 'Enterprise' },
-      { label: 'Design Focus', value: 'Scale' },
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Pilot', value: 'Connaught Hospital' },
+      { label: 'Standard', value: 'FHIR R4' },
     ],
   },
   {
     id: 8,
+    slug: 'nexa-synapse',
+    title: 'Nexa-Analytics Synapse',
+    category: 'Analytics · Intelligence Layer',
+    tagline: 'The intelligence layer connecting every product.',
+    description:
+      'The cross-product analytics and AI layer that ingests data from the LMIS, Welbodi EMR, and other verticals, then surfaces forecasts, anomalies, and operational insights through dashboards and API endpoints. Admin-provisioned access via the backend CLI; in active development.',
+    services: ['Data Pipeline Design', 'Dashboard UI', 'AI / Forecasting'],
+    url: 'https://synapse.dsbdigital.biz',
+    image: '/projects/nexa-synapse.png',
+    imageAlt: 'Nexa-Analytics Synapse login screen — clean branded sign-in panel with email and password fields',
+    accent: '#5b6cdf',
+    stats: [
+      { label: 'Stage', value: 'In Development' },
+      { label: 'Role', value: 'Analytics Layer' },
+      { label: 'Access', value: 'Admin-provisioned' },
+    ],
+  },
+  {
+    id: 9,
     slug: 'dsb-digital-portfolio',
     title: 'Digital Solution Builders Portfolio',
     category: 'Portfolio · Website Design',
     tagline: 'From Concept to MVP. In 72 Hours.',
     description:
-      'The portfolio you\'re looking at — built with Digital Solution Builders\'s own stack. A dark-mode, typographically-driven single-page site showcasing eight shipped products across web, mobile and enterprise, featuring scroll-spy navigation, Framer Motion animations, SEO-optimised meta/OG tags, WhatsApp CTAs, social share modal, and a live FormSubmit contact form. Concept to MVP in 72 hours, naturally.',
+      'The portfolio you\'re looking at — built with the same stack we ship to clients. A dark-mode, typographically-driven single-page site featuring scroll-spy navigation, Framer Motion animations, SEO-optimised meta/OG tags, WhatsApp CTAs, social share modal, and a hardened security-header layer at the edge.',
     services: ['Website Design', 'UX Strategy', 'SEO Optimisation'],
-    url: 'https://dsb-digital.wegic.net',
+    url: 'https://dsbdigital.biz',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
@@ -178,41 +197,6 @@ const projects: Project[] = [
       { label: 'Projects', value: '8' },
       { label: 'Delivery', value: '72hrs' },
     ],
-  },
-];
-
-const testimonials = [
-  {
-    quote: "Digital Solution Builders completely transformed how we present ourselves online. The site captures the energy of our brand perfectly — our audience felt it immediately. Delivered faster than we thought possible.",
-    author: 'Daniel Bangura',
-    role: 'Founder, The Bangura Brothers',
-    project: 'Youth Brand · Website Design',
-    accent: '#e8622a',
-    initial: 'DB',
-  },
-  {
-    quote: "The training app UI is exactly what young players need — clean, motivating, and super easy to navigate. DSB understood our vision from the very first message and brought it to life in days.",
-    author: 'Sullay Bangura',
-    role: 'Co-Founder, Bangura Brothers Training App',
-    project: 'Youth Sports · App Design',
-    accent: '#3ecf6e',
-    initial: 'SB',
-  },
-  {
-    quote: "I had a vision for my brand but no idea how to turn it into a website. Digital Solution Builders made the whole process effortless. The result is warm, professional, and truly tells my story.",
-    author: 'Michaella Kella',
-    role: 'Owner, Kella\'s Kitchen & Events',
-    project: 'Food & Beverage · Website Design',
-    accent: '#c9960c',
-    initial: 'MK',
-  },
-  {
-    quote: "What impressed me most was the speed without sacrificing quality. Our dashboard was scoped, designed, and delivered within 72 hours. It looks like something a top agency would charge 10x more for.",
-    author: 'Marcus Conteh',
-    role: 'Product Lead, Nexa-Ideation',
-    project: 'SaaS · Dashboard Design',
-    accent: '#6ea8fe',
-    initial: 'MC',
   },
 ];
 
@@ -488,7 +472,7 @@ function HeroSection() {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                <span className="text-xs text-muted/50">7 products shipped</span>
+                <span className="text-xs text-muted/50">8 products shipped</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
@@ -496,7 +480,7 @@ function HeroSection() {
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                <span className="text-xs text-muted/50">MVP in 72 hrs or less</span>
+                <span className="text-xs text-muted/50">From 72-hour MVPs to multi-month platforms</span>
               </div>
             </div>
           </motion.div>
@@ -695,16 +679,16 @@ function AboutSection() {
 
         <RevealText delay={0.2} className="flex flex-col gap-6">
           <p className="text-sm text-muted/70 leading-relaxed">
-            Digital Solution Builders is a one-studio digital product development practice — websites, web applications, native iOS and Android apps, dashboards and brand portfolios — built using a curated stack of AI platforms (Lovable, Wegic, Figma, Claude) wired into real authentication, payments, databases and analytics. Every project ships as a working MVP, not a Figma file.
+            Digital Solution Builders is a one-studio digital product development practice — websites, web applications, native iOS and Android apps, electronic medical records, pharmaceutical supply-chain platforms, and analytics layers — built using a curated stack of AI platforms (Lovable, Wegic, Figma, Claude) wired into real authentication, payments, databases, telephony and forecasting models. Every project ships as a working product, not a Figma file.
           </p>
           <p className="text-sm text-muted/70 leading-relaxed">
-            From youth brands and faith-based apps to family-growth mobile apps, AI-powered SaaS dashboards and enterprise connectivity platforms — Digital Solution Builders brings speed, precision and creative excellence to every build. We scope the MVP, design the experience, write the code, integrate the services, and ship to production. No meetings. No months. Just results.
+            From youth brands and family-growth mobile apps to AI-powered SaaS, hospital EMR systems, and pharmaceutical supply-chain platforms — we scope the MVP, design the experience, write the code, integrate the services, and ship to production. Small builds in 72 hours. Enterprise platforms in weeks.
           </p>
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border/40">
             {[
-              { value: '72hrs', label: 'Avg. MVP Turnaround' },
-              { value: '7+', label: 'Products Launched' },
-              { value: '3', label: 'Surfaces — Web, Mobile, Enterprise' },
+              { value: '8', label: 'Products in Portfolio' },
+              { value: '3', label: 'Surfaces — Web · Mobile · Enterprise' },
+              { value: '72hrs', label: 'For Small Builds' },
             ].map((item) => (
               <div key={item.label}>
                 <p className="font-serif text-3xl tracking-tight">{item.value}</p>
@@ -714,84 +698,6 @@ function AboutSection() {
           </div>
         </RevealText>
       </div>
-    </section>
-  );
-}
-
-function TestimonialsSection() {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref as React.RefObject<Element>, { once: true, margin: '-5% 0px' });
-
-  return (
-    <section
-      id="testimonials"
-      ref={ref}
-      className="border-t border-border/50 px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto w-full"
-    >
-      <RevealText className="mb-16">
-        <p className="text-xs tracking-[0.3em] uppercase text-muted mb-4">Client Words</p>
-        <h2 className="font-serif text-4xl md:text-6xl tracking-tight">
-          What clients <span className="italic text-muted/70">say</span>
-        </h2>
-      </RevealText>
-
-      <div className="grid md:grid-cols-2 gap-px bg-border/30">
-        {testimonials.map((t, i) => (
-          <motion.div
-            key={t.author}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.7, delay: i * 0.12, ease: 'easeOut' }}
-            className="bg-background p-8 md:p-10 flex flex-col gap-6 group hover:bg-foreground/[0.02] transition-colors duration-300"
-          >
-            {/* Quote mark */}
-            <div
-              className="font-serif text-5xl leading-none select-none opacity-20 group-hover:opacity-40 transition-opacity duration-300"
-              style={{ color: t.accent }}
-              aria-hidden="true"
-            >
-              &ldquo;
-            </div>
-
-            {/* Quote text */}
-            <blockquote className="font-serif text-lg md:text-xl leading-relaxed text-foreground/80 italic flex-1">
-              {t.quote}
-            </blockquote>
-
-            {/* Divider */}
-            <div className="h-px opacity-20" style={{ backgroundColor: t.accent }} />
-
-            {/* Author */}
-            <div className="flex items-center gap-4">
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium tracking-wider flex-shrink-0"
-                style={{ backgroundColor: `${t.accent}20`, color: t.accent, border: `1px solid ${t.accent}40` }}
-              >
-                {t.initial}
-              </div>
-              <div className="flex flex-col gap-0.5 min-w-0">
-                <p className="text-sm font-medium text-foreground/90 truncate">{t.author}</p>
-                <p className="text-xs text-muted/50 truncate">{t.role}</p>
-              </div>
-              <span
-                className="ml-auto text-[10px] tracking-wider uppercase hidden sm:block flex-shrink-0 opacity-40"
-                style={{ color: t.accent }}
-              >
-                {t.project}
-              </span>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Bottom trust bar */}
-      <RevealText delay={0.3} className="mt-12 flex flex-wrap items-center justify-center gap-8 text-xs text-muted/40 tracking-wide">
-        <span>7 products shipped — web, mobile &amp; enterprise</span>
-        <span className="w-px h-4 bg-border/50" aria-hidden="true" />
-        <span>100% client satisfaction</span>
-        <span className="w-px h-4 bg-border/50" aria-hidden="true" />
-        <span>72-hour delivery, every time</span>
-      </RevealText>
     </section>
   );
 }
@@ -996,8 +902,6 @@ export default function HomePage() {
       <ServicesSection />
 
       <TechStackSection />
-
-      <TestimonialsSection />
 
       <ContactSection />
 
