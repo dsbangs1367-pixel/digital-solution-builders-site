@@ -1,0 +1,64 @@
+{
+  "tasks": [
+    {
+      "title": "Fix: ContactSection grid broken after form removal — rebuilt with proper 2-col layout + CTA card",
+      "status": "completed",
+      "priority": "critical"
+    },
+    {
+      "title": "Audit analysis complete — identifying all findings",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Fix: WhatsApp button — added overflow-hidden and pointer-events-none to contain ping rings",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Fix: Removed stale onMouseEnter/Leave handlers from ProjectCard article",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Fix: hovered state fully removed — converted both scale + overlay to whileHover",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Fix: ExternalLink unused import removed",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Improve: Contact section rebuilt — How It Works steps + WhatsApp + Email CTAs in right column",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Typecheck & lint verification — zero errors",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "title": "Fix: md:odd:border-r replaced with index-based conditional className",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "title": "Improve: Hero apostrophe typo fixed — `to MVP'.` → `to MVP.`",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "title": "Improve: Instagram note opacity fixed from /12 to /30",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "title": "Improve: Project image overlay uses whileHover (cleaner, no stale state)",
+      "status": "completed",
+      "priority": "medium"
+    }
+  ]
+}

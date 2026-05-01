@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.webp
+Allow: *.svg
+
+Sitemap: https://dsb-digital.wegic.net/sitemap.xml
