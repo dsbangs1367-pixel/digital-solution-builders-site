@@ -906,8 +906,20 @@ function TechStackSection() {
       items: ['React', 'Vite', 'Next.js', 'React Native', 'Expo', 'Tailwind'],
     },
     {
-      label: 'Integrations & Backend',
-      items: ['Supabase', 'Firebase', 'Clerk', 'Stripe', 'PayPal', 'Resend'],
+      label: 'Backend & Hosting',
+      items: ['DigitalOcean', 'Railway', 'Vercel', 'Docker', 'GitHub Actions'],
+    },
+    {
+      label: 'Databases & Auth',
+      items: ['PostgreSQL', 'Supabase', 'Firebase', 'Clerk', 'Auth.js'],
+    },
+    {
+      label: 'USSD · Shortcodes · SMS',
+      items: ["Africa's Talking", 'USSD Menus', 'SMS Gateway', 'Shortcodes', 'Voice / IVR'],
+    },
+    {
+      label: 'AI Agents & Chatbots',
+      items: ['Claude Agent SDK', 'Anthropic API', 'MCP Servers', 'AI Chatbots', 'Voice Agents'],
     },
   ];
 
@@ -920,24 +932,33 @@ function TechStackSection() {
         </h2>
       </RevealText>
       <div className="grid md:grid-cols-3 gap-0 border border-border/40">
-        {techGroups.map((group, i) => (
-          <div
-            key={group.label}
-            className={`p-8 md:p-10 ${i < techGroups.length - 1 ? 'border-b md:border-b-0 md:border-r border-border/40' : ''}`}
-          >
-            <p className="text-xs tracking-[0.3em] uppercase text-muted/50 mb-6">{group.label}</p>
-            <div className="flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <span
-                  key={item}
-                  className="px-3 py-1.5 border border-border/50 text-xs text-muted/70 hover:text-foreground hover:border-foreground/30 transition-colors duration-200"
-                >
-                  {item}
-                </span>
-              ))}
+        {techGroups.map((group, i) => {
+          const isLastOverall = i === techGroups.length - 1;
+          const isLastCol = i % 3 === 2;
+          const isLastRow = i >= techGroups.length - 3;
+          const cls = [
+            'p-8 md:p-10 border-border/40',
+            !isLastOverall ? 'border-b' : '',
+            'md:border-b-0',
+            !isLastRow ? 'md:border-b' : '',
+            !isLastCol ? 'md:border-r' : '',
+          ].filter(Boolean).join(' ');
+          return (
+            <div key={group.label} className={cls}>
+              <p className="text-xs tracking-[0.3em] uppercase text-muted/50 mb-6">{group.label}</p>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-1.5 border border-border/50 text-xs text-muted/70 hover:text-foreground hover:border-foreground/30 transition-colors duration-200"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
