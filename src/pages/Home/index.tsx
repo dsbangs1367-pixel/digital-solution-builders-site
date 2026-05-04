@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion as _motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Mail, ArrowDown, Menu, X, MessageCircle, Share2 } from 'lucide-react';
 import ShareModal from '../../components/ShareModal';
+import ContactForm from '../../components/ContactForm';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const motion = _motion as any;
@@ -757,43 +758,9 @@ function ContactSection() {
           </a>
         </RevealText>
 
-        {/* Right — primary CTA card */}
+        {/* Right — interactive contact form (relays via /api/contact → n8n) */}
         <RevealText delay={0.2}>
-          <div className="border border-border/50 bg-foreground/[0.02] p-8 md:p-10 flex flex-col gap-6">
-            <div>
-              <p className="text-xs tracking-[0.3em] uppercase text-muted/40 mb-3">How it works</p>
-              <ul className="flex flex-col gap-3">
-                {[
-                  'Share your idea — one message is enough',
-                  'We scope & quote within hours',
-                  'You approve, we build — MVP in 72 hrs',
-                ].map((step, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-muted/70">
-                    <span className="font-mono text-xs text-muted/30 mt-0.5 flex-shrink-0">0{i + 1}</span>
-                    {step}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="border-t border-border/30 pt-6 flex flex-col sm:flex-row gap-3">
-              <a
-                href="https://wa.me/23278687787?text=Hi%20DSB%20Digital%2C%20I%27d%20like%20to%20start%20a%20project!"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#25D366] text-white text-xs font-medium tracking-wide hover:bg-[#20bd5a] transition-colors duration-200"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                Start on WhatsApp
-              </a>
-              <a
-                href="mailto:danielbangs@dsbdigital.biz"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-border/60 text-xs font-medium tracking-wide text-muted hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
-              >
-                <Mail className="w-3.5 h-3.5" />
-                Send an Email
-              </a>
-            </div>
-          </div>
+          <ContactForm />
         </RevealText>
 
       </div>
