@@ -535,6 +535,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             src={project.image}
             alt={project.imageAlt}
             loading="lazy"
+            decoding="async"
             whileHover={{ scale: 1.04 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="w-full h-full object-cover"
