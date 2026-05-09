@@ -2,7 +2,6 @@ import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 import clientErrorLogger from 'vite-plugin-client-error-logger';
-import { createHtmlPlugin } from 'vite-plugin-html';
 import { reactFiberSource } from 'vite-plugin-react-fiber-source';
 
 // https://vite.dev/config/
@@ -17,19 +16,6 @@ export default defineConfig(({ command, mode }) => {
       reactFiberSource(), // Must be used before react() to inject source into _debugInfo.
       react(),
       clientErrorLogger(),
-      createHtmlPlugin({
-        inject: {
-          tags: [
-            {
-              tag: 'script',
-              attrs: {
-                src: `https://cdn.wegic.ai/assets/onepage/overwrite/sandbox-scripts/sandbox-script-manager.js?_ts=${Date.now()}`,
-              },
-              injectTo: 'body',
-            },
-          ],
-        },
-      }),
     ],
     resolve: {
       alias: {
@@ -40,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
       host: '0.0.0.0',
       port: 3000,
       strictPort: true,
-      allowedHosts: true, // 允许所有主机访问（E2B 动态域名）
+      allowedHosts: true,
     },
   };
 });

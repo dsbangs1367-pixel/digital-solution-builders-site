@@ -680,7 +680,7 @@ function AboutSection() {
 
         <RevealText delay={0.2} className="flex flex-col gap-6">
           <p className="text-sm text-muted/70 leading-relaxed">
-            Digital Solution Builders is a one-studio digital product development practice — websites, web applications, native iOS and Android apps, electronic medical records, pharmaceutical supply-chain platforms, and analytics layers — built using a curated stack of AI platforms (Lovable, Wegic, Figma, Claude) wired into real authentication, payments, databases, telephony and forecasting models. Every project ships as a working product, not a Figma file.
+            Digital Solution Builders is a one-studio digital product development practice — websites, web applications, native iOS and Android apps, electronic medical records, pharmaceutical supply-chain platforms, and analytics layers — built using a curated stack of AI platforms (Lovable, Cursor, Figma, Claude) wired into real authentication, payments, databases, telephony and forecasting models. Every project ships as a working product, not a Figma file.
           </p>
           <p className="text-sm text-muted/70 leading-relaxed">
             From youth brands and family-growth mobile apps to AI-powered SaaS, hospital EMR systems, and pharmaceutical supply-chain platforms — we scope the MVP, design the experience, write the code, integrate the services, and ship to production. Small builds in 72 hours. Enterprise platforms in weeks.
@@ -772,7 +772,7 @@ function TechStackSection() {
   const techGroups = [
     {
       label: 'AI & Design Platforms',
-      items: ['Lovable', 'Wegic', 'Figma', 'Claude', 'Canva'],
+      items: ['Lovable', 'Cursor', 'Figma', 'Claude', 'Canva'],
     },
     {
       label: 'Web & Mobile Stacks',
