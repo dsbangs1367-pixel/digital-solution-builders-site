@@ -647,7 +647,7 @@ function ServicesSection() {
           >
             <div>
               <p className="font-serif text-xs text-muted/40 mb-6">{service.number}</p>
-              <h3 className="font-serif text-2xl md:text-3xl tracking-tight mb-4">{service.title}</h3>
+              <h3 className="font-serif font-medium text-2xl md:text-3xl tracking-tight mb-4">{service.title}</h3>
               <p className="text-sm text-muted/70 leading-relaxed">{service.desc}</p>
             </div>
             <a
