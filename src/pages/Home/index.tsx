@@ -664,6 +664,140 @@ function ServicesSection() {
   );
 }
 
+const pricingBands = [
+  {
+    number: '01',
+    title: 'Quick MVP',
+    duration: '72 hours',
+    body: 'A live, working web product with auth, database, payments where needed, and a real domain. Best for landing pages, internal tools, idea-validation MVPs, and side projects that need to ship before the weekend.',
+    fit: 'Best for: a single workflow you can describe in two sentences.',
+  },
+  {
+    number: '02',
+    title: 'Standard Build',
+    duration: '1–2 weeks',
+    body: 'Multi-screen apps with role-based access, third-party integrations, payments, and a small custom backend. Includes design, copy, deployment, and a handover doc your team can actually follow.',
+    fit: 'Best for: most product launches — SaaS MVPs, marketplaces, internal portals.',
+  },
+  {
+    number: '03',
+    title: 'Platform Build',
+    duration: '3+ weeks',
+    body: 'Multi-tenant systems, EMRs, supply-chain platforms, analytics layers, and anything that has to run reliably for real users on real money. Architecture review, staging environment, observability wired in.',
+    fit: 'Best for: production systems with regulatory or scale constraints.',
+  },
+];
+
+function PricingSection() {
+  return (
+    <section
+      id="pricing"
+      className="border-t border-border/50 px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto w-full"
+    >
+      <RevealText className="mb-16">
+        <p className="text-xs tracking-[0.3em] uppercase text-muted mb-4">How We Price</p>
+        <h2 className="font-serif text-4xl md:text-6xl tracking-tight">
+          Three bands, <span className="italic text-muted/80">one fixed quote.</span>
+        </h2>
+        <p className="text-sm text-muted/70 leading-relaxed mt-6 max-w-2xl">
+          Pricing scales with scope, not hours. Tell us what you're building. We'll send a fixed
+          quote within 24 hours — no calls required to get a number.
+        </p>
+      </RevealText>
+
+      <div className="grid md:grid-cols-3 gap-0 border-t border-border/50">
+        {pricingBands.map((band, idx) => (
+          <div
+            key={band.number}
+            className={`group border-b border-border/50 p-8 md:p-10 hover:bg-foreground/[0.03] transition-colors duration-500 flex flex-col justify-between gap-6${idx < 2 ? ' md:border-r' : ''}`}
+          >
+            <div>
+              <p className="font-serif text-xs text-muted/40 mb-6">{band.number}</p>
+              <h3 className="font-serif font-medium text-2xl md:text-3xl tracking-tight mb-1">
+                {band.title}
+              </h3>
+              <p className="text-xs tracking-widest uppercase text-muted/60 mb-4">
+                {band.duration}
+              </p>
+              <p className="text-sm text-muted/70 leading-relaxed mb-4">{band.body}</p>
+              <p className="text-xs text-muted/50 italic">{band.fit}</p>
+            </div>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted/30 hover:text-foreground group-hover:text-muted/60 transition-colors duration-300 w-fit"
+            >
+              Get a fixed quote
+              <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const faqItems = [
+  {
+    q: "What does a 72-hour MVP actually mean?",
+    a: "A live, working web product on your domain. Auth if you need it, database if you need it, payments if you need it. Real screens, real data, real deploy. It is not a Figma file, not a redesign of an existing site, and not a clickable prototype. The 72 hours is from kickoff to a URL you can hand to a real user.",
+  },
+  {
+    q: "What if my project needs more than 72 hours?",
+    a: "Then it's a Standard or Platform build. Tell us what you're building. We'll send a fixed quote and a delivery date within 24 hours. No padding, no hourly creep.",
+  },
+  {
+    q: "Do you handle post-launch support?",
+    a: "Yes — on a separate engagement. Once a build is live, you can keep us on a monthly retainer for changes, fixes, and small new features, or move to your own team. Either way, we hand over clean code, deploy access, and a runbook.",
+  },
+  {
+    q: "How does payment work?",
+    a: "Deposit upfront, balance on delivery. Wire transfer or mobile money for clients in West Africa; bank transfer or card for international clients. We send invoices in NLE, USD, GBP, or EUR — whatever your accounting needs.",
+  },
+  {
+    q: "What if I don't have a fully-formed idea yet?",
+    a: "That's what the Product Strategy & MVP Scoping service is for. Tell us the problem, the user, and the constraint. We'll come back with a one-page brief and three build options at three price points. You pick one, or you don't — the scoping deliverable is yours either way.",
+  },
+  {
+    q: "Can you work with my existing brand or team?",
+    a: "Yes. If you have a brand system, designers, or a CTO already in place, we slot in. We can ship to your GitHub org, your Vercel account, your Supabase project. We also do white-label work — the case studies on this page are clients who chose to be public, but most of our work is invisible.",
+  },
+];
+
+function FAQSection() {
+  return (
+    <section
+      id="faq"
+      className="border-t border-border/50 px-6 md:px-12 py-24 md:py-36 max-w-7xl mx-auto w-full"
+    >
+      <RevealText className="mb-16">
+        <p className="text-xs tracking-[0.3em] uppercase text-muted mb-4">Things People Ask</p>
+        <h2 className="font-serif text-4xl md:text-6xl tracking-tight">
+          Questions, <span className="italic text-muted/80">answered.</span>
+        </h2>
+      </RevealText>
+
+      <div className="border-t border-border/50">
+        {faqItems.map((item, idx) => (
+          <details
+            key={idx}
+            className="group border-b border-border/50 py-6 md:py-8 cursor-pointer"
+          >
+            <summary className="flex items-start justify-between gap-6 list-none [&::-webkit-details-marker]:hidden">
+              <h3 className="font-serif font-medium text-xl md:text-2xl tracking-tight pr-6 group-hover:text-foreground transition-colors">
+                {item.q}
+              </h3>
+              <span className="font-serif text-2xl text-muted/40 group-open:rotate-45 transition-transform duration-300 select-none">
+                +
+              </span>
+            </summary>
+            <p className="text-sm text-muted/70 leading-relaxed mt-4 max-w-3xl">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function AboutSection() {
   return (
     <section
@@ -868,7 +1002,11 @@ export default function HomePage() {
 
       <ServicesSection />
 
+      <PricingSection />
+
       <TechStackSection />
+
+      <FAQSection />
 
       <ContactSection />
 
