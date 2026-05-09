@@ -32,6 +32,13 @@
     outline-offset: 2px;
     border-radius: 2px;
   }
+
+  /* Visited links should be visually distinct from unvisited so a returning
+     visitor knows what they've seen. Subtle (~70% opacity of foreground)
+     so the case-study list still reads as one cohesive section. */
+  a:visited {
+    color: hsl(var(--foreground) / 0.7);
+  }
 }
 
 .text-balance {
