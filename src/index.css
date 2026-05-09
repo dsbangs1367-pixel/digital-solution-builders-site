@@ -9,6 +9,7 @@
     --primary: 0 0% 100%;
     --muted: 0 0% 60%;
     --border: 0 0% 15%;
+    --accent-green: 142 71% 53%; /* matches the hero CTA / WhatsApp green */
   }
 
   body {
@@ -19,6 +20,17 @@
 
   ::selection {
     @apply bg-foreground text-background;
+  }
+
+  /* Replace the Chrome-default blue focus outline with a custom
+     focus-visible ring that matches the dark / green / serif aesthetic.
+     Keyboard users get a clear visual; mouse users see no ring.
+     Never `outline: none` without a replacement — that breaks a11y. */
+  *:focus { outline: none; }
+  *:focus-visible {
+    outline: 2px solid hsl(var(--accent-green));
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
