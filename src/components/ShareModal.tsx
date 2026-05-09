@@ -21,7 +21,7 @@ interface ShareModalProps {
 }
 
 function generateCopies(p: ShareProject): string[] {
-  const link = p.url === '#' ? 'https://dsbdigital.wegic.app' : p.url;
+  const link = p.url === '#' ? 'https://dsbdigital.biz' : p.url;
   return [
     `🚀 Just shipped: ${p.title} — "${p.tagline}"\n\nBuilt from concept to MVP in 72 hours. This is what fast looks like.\n\n${link}\n\n#DSBDigital #WebDesign #MVP #DigitalProduct`,
     `✨ New project live: ${p.title}\n\n${p.tagline}\n\nNo meetings. No months. Just results.\n\n${link}\n\n#ProductDesign #UIDesign #TechAfrica`,
@@ -35,7 +35,7 @@ function generateCopies(p: ShareProject): string[] {
     `💡 The idea was simple. The execution? Premium.\n\n${p.title} — "${p.tagline}"\n\n${link}\n\n#DesignExecution #UIDesign #DSBDigital`,
     `📱 New digital product: ${p.title}\n\nBuilt end-to-end on AI platforms. Shipped in record time.\n\n${link}\n\n#AIDesign #WebApp #DigitalProduct #DSBDigital`,
     `🎨 Design that works. ${p.title}.\n\n${p.tagline}\n\nFunctional, fast, and ready for the real world.\n\n${link}\n\n#UXDesign #DSBDigital #ProductLaunch`,
-    `🌟 Another one for the portfolio — ${p.title}\n\n${p.tagline}\n\nBuilt with Lovable, Wegic & Claude. Shipped in 72 hrs.\n\n${link}\n\n#AIPlatforms #WebDesign #BuildInPublic`,
+    `🌟 Another one for the portfolio — ${p.title}\n\n${p.tagline}\n\nBuilt with Lovable, Cursor & Claude. Shipped in 72 hrs.\n\n${link}\n\n#AIPlatforms #WebDesign #BuildInPublic`,
     `🤝 Proof that speed and quality can co-exist.\n\n${p.title}: "${p.tagline}"\n\n72 hours from concept to MVP.\n\n${link}\n\n#FreelanceDesign #MVPBuilder #DSBDigital`,
     `🔑 Build with the right tools, move with intention.\n\n${p.title} — now live.\n\n${link}\n\n#DSBDigital #DigitalTransformation #AITools`,
     `📣 Digital Solution Builders portfolio update!\n\nAdding ${p.title} — "${p.tagline}"\n\n${link}\n\n#PortfolioUpdate #DSBDigital #NewProject`,
@@ -53,7 +53,7 @@ export default function ShareModal({ isOpen, onClose, project }: ShareModalProps
   const [shuffling, setShuffling] = useState(false);
 
   const currentCopy = copies[currentIndex];
-  const shareUrl = project.url === '#' ? 'https://dsbdigital.wegic.app' : project.url;
+  const shareUrl = project.url === '#' ? 'https://dsbdigital.biz' : project.url;
 
   const shuffle = useCallback(() => {
     setShuffling(true);
