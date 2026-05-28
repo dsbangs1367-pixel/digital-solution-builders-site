@@ -75,14 +75,15 @@ const projects: Project[] = [
     category: 'Portfolio · Website Design',
     tagline: 'From Concept to MVP. In 72 Hours.',
     description:
-      'The portfolio you\'re looking at — built with the same stack we ship to clients. A dark-mode, typographically-driven single-page site featuring scroll-spy navigation, Framer Motion animations, SEO-optimised meta/OG tags, WhatsApp CTAs, social share modal, and a hardened security-header layer at the edge.',
+      'The portfolio you\'re looking at — built with the same stack we ship to clients. A dark-mode, typographically-driven React site spanning a one-page showcase and deep case-study pages, with scroll-spy navigation, Framer Motion animations, per-route SEO meta and structured data, WhatsApp CTAs, a social share modal, and a hardened security-header layer at the edge.',
     services: ['Website Design', 'UX Strategy', 'SEO Optimisation'],
     url: 'https://dsbdigital.biz',
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
     stats: [
-      { label: 'Pages', value: '1' },
+      // home + 3 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
+      { label: 'Pages', value: '4' },
       // keep 'Projects' in sync with the total number of entries in the `projects` array above
       { label: 'Projects', value: '10' },
       { label: 'Delivery', value: '72hrs' },
