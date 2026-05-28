@@ -65,3 +65,30 @@ Out of scope (separate follow-up): font self-hosting, route-level code-splitting
 - **vite-react-ssg entry migration** — SSR-unsafe code crashes the prerender. WebGL is unused and the one `document` call is event-scoped, so risk is low; guard `src/lib/supabase.ts` if module-load does anything network/`window`-bound.
 - **`base:'/'` switch** — re-verify Home assets still resolve after the change.
 - **Vercel build** — vite-react-ssg renders via Node at build time (no headless browser needed); confirm the build command runs cleanly in CI.
+
+---
+
+## REVISION 2026-05-28 — prerender approach changed; this section supersedes the prerender parts above
+
+Two verified findings forced a change from the originally-approved vite-react-ssg plan:
+
+1. **vite-react-ssg is incompatible with this stack.** v0.9.0 hard-caps its peer dependency at `react-router-dom ^6`; this site is on `react-router-dom ^7.9`. Its own README now points React Router 7 users to RR7's native SSG. Forcing it would put two router versions in the bundle.
+2. **Headless Chrome can't run reliably in Vercel's build** (Amazon Linux 2023 ships no Chromium), and Vite stamps a fresh content-hash into asset filenames every build, so a snapshot is only valid for the exact build that produced it. True snapshot prerendering would therefore require moving prod deploys to a prebuilt flow (GitHub Actions or local `vercel --prebuilt`) — a deploy-pipeline change.
+
+**Decision (user-approved): Approach C — ship the SEO content on the existing SPA now; defer prerendering.** Google executes JS and indexes client-rendered pages, so the deep pages will rank; the home-page social card is already served statically from `index.html`. A prerender layer (RR7 Framework Mode, or snapshot via GitHub Actions) is a separate later decision, gated on Search Console coverage.
+
+### Final architecture (approach C)
+- **No prerender, no pipeline change.** Keep the SPA, `createBrowserRouter`/`RouterProvider`, and Vercel git-push auto-deploy exactly as they are.
+- **`vite.config.ts`: build-mode `base` `'./'` → `'/'`.** Still required — without it, a direct visit / refresh / crawl of a deep route (`/work/<slug>`) gets `index.html` via the SPA rewrite, whose relative `./assets/...` paths resolve against `/work/` and 404. Dev base stays `'./'`.
+- **Per-route meta via `react-helmet-async`** (already installed): wrap the router in `HelmetProvider`; a reusable `<Seo>` component manages **only** `<title>`, `<meta name="description">`, `<link rel="canonical">`, and JSON-LD on every route.
+- **`index.html` change:** remove the static `<meta name="description">` and `<link rel="canonical">` (now Helmet-managed on every route, so no duplicate/conflicting canonical on sub-pages). **Keep** the static `<title>`, OG, Twitter, and `ProfessionalService` JSON-LD as the no-JS fallback (these become the shared social card for all routes — acceptable and on-brand under approach C).
+- **Case-study pages do NOT set their own OG** — they share the home OG card for social previews (consistent with the deferred-prerender tradeoff and avoids duplicate OG tags). They DO set unique `<title>`/description/canonical + `CreativeWork` + `BreadcrumbList` JSON-LD (read by Google, which renders JS).
+- **Bonus:** add `FAQPage` JSON-LD on Home from the existing FAQ content; add `Organization` to the home structured data.
+- **Shared chrome:** move the nav/header, footer, and floating-WhatsApp out of `Home/index.tsx` into `Layout.tsx` (rendered around every route via `<Outlet/>`), with the header detecting home-vs-subpage via `useLocation` (hash anchors + scroll-spy on home; `/#section` links on sub-pages).
+- Sitemap → 4 URLs; remove unused `three`/`@react-three/*` deps. (Unchanged from above.)
+
+### Acceptance (approach C)
+- `pnpm typecheck` + `pnpm build` pass; `dist/` builds with `base:'/'`.
+- All four routes work in a browser: Home unchanged; `/work/<slug>` render on direct visit (asset paths resolve), nav/footer links work, each case study has a unique `document.title` + canonical.
+- Single `<link rel="canonical">` per route (no duplicate from index.html).
+- `code-reviewer` → PASS, `qa` → PASS, then `verification-before-completion`.
