@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { motion as _motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Mail, ArrowDown, Menu, X, MessageCircle, Share2 } from 'lucide-react';
+import { motion as _motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { ArrowUpRight, Mail, ArrowDown, MessageCircle, Share2 } from 'lucide-react';
 import ShareModal from '../../components/ShareModal';
 import ContactForm from '../../components/ContactForm';
+import Seo from '../../components/Seo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const motion = _motion as any;
@@ -221,6 +223,9 @@ const projects: Project[] = [
   },
 ];
 
+// Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
+const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker']);
+
 const services = [
   {
     number: '01',
@@ -296,119 +301,6 @@ function RevealText({
     </motion.div>
   );
 }
-
-function NavBar() {
-  const [open, setOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
-  const links = ['Work', 'Services', 'About', 'Contact'];
-
-  useEffect(() => {
-    const sections = ['work', 'services', 'about', 'contact'];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { rootMargin: '-40% 0px -55% 0px' }
-    );
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 bg-foreground rounded flex items-center justify-center flex-shrink-0">
-            <span className="font-serif text-background text-xs tracking-wider">DSB</span>
-          </div>
-          <span className="font-serif text-lg tracking-wide hidden sm:inline">Digital Solution Builders.</span>
-        </a>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {links.map((link) => {
-            const isActive = activeSection === link.toLowerCase();
-            return (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                className={`text-xs tracking-widest uppercase transition-colors duration-200 relative group ${
-                  isActive ? 'text-foreground' : 'text-muted hover:text-foreground'
-                }`}
-              >
-                {link}
-                <span
-                  className={`absolute -bottom-0.5 left-0 h-px bg-foreground transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}
-                />
-              </a>
-            );
-          })}
-          <a
-            href={`https://wa.me/23278687787`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 border border-[#25D366]/40 text-[#25D366] text-xs tracking-widest uppercase hover:bg-[#25D366]/10 transition-colors duration-200"
-          >
-            <MessageCircle className="w-3.5 h-3.5" />
-            WhatsApp
-          </a>
-        </nav>
-
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground transition-colors"
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-md overflow-hidden"
-          >
-            <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-5">
-              {links.map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
-                  onClick={() => setOpen(false)}
-                  className="text-sm tracking-widest uppercase text-muted hover:text-foreground transition-colors min-h-[44px] flex items-center"
-                >
-                  {link}
-                </a>
-              ))}
-              <a
-                href="https://wa.me/23278687787"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-2 text-sm tracking-widest uppercase text-[#25D366] min-h-[44px]"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
-  );
-}
-
 
 function HeroSection() {
   const ref = useRef<HTMLElement>(null);
@@ -617,6 +509,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
           {/* CTA row */}
           <div className="flex items-center gap-6">
+            {CASE_STUDY_SLUGS.has(project.slug) && (
+              <Link
+                to={`/work/${project.slug}`}
+                className="text-xs tracking-wider uppercase border-b pb-px min-h-[44px] inline-flex items-center transition-colors duration-200 hover:opacity-80"
+                style={{ color: project.accent, borderColor: `${project.accent}66` }}
+              >
+                View case study
+              </Link>
+            )}
             <a
               href="#contact"
               className="text-xs tracking-wider uppercase text-muted/40 hover:text-muted/80 transition-colors duration-200 border-b border-muted/20 hover:border-muted/50 pb-px min-h-[44px] inline-flex items-center"
@@ -783,6 +684,29 @@ const faqItems = [
     a: "Yes. If you have a brand system, designers, or a CTO already in place, we slot in. We can ship to your GitHub org, your Vercel account, your Supabase project. We also do white-label work — the case studies on this page are clients who chose to be public, but most of our work is invisible.",
   },
 ];
+
+const faqPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Digital Solution Builders',
+  url: 'https://dsbdigital.biz/',
+  logo: 'https://dsbdigital.biz/og-cover.png',
+  founder: {
+    '@type': 'Person',
+    name: 'Daniel Bangura',
+    sameAs: 'https://www.linkedin.com/in/daniel-bangura-9ba047bb/',
+  },
+};
 
 function FAQSection() {
   return (
@@ -996,8 +920,13 @@ function TechStackSection() {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <NavBar />
+    <>
+      <Seo
+        title="Digital Solution Builders | Digital Product Development — Web, Mobile & Enterprise in 72 Hours"
+        description="Digital Solution Builders is a digital product development studio shipping websites, web apps, native iOS & Android apps, hospital EMR systems, pharmaceutical supply-chain platforms, mortality-surveillance tools and analytics layers. From concept to MVP in 72 hours."
+        canonicalPath="/"
+        jsonLd={[organizationLd, faqPageLd]}
+      />
 
       <main id="main-content">
 
@@ -1032,40 +961,6 @@ export default function HomePage() {
       <ContactSection />
 
       </main>
-
-      <footer className="border-t border-border/50 px-6 md:px-12 py-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-muted/40">
-          <p className="font-serif">Digital Solution Builders. — Digital Product Development</p>
-          <div className="flex items-center gap-6">
-            <a href="mailto:danielbangs@dsbdigital.biz" className="hover:text-muted/70 transition-colors duration-200">
-              Email
-            </a>
-            <a href="https://www.linkedin.com/in/daniel-bangura-9ba047bb/" target="_blank" rel="noopener noreferrer" className="hover:text-muted/70 transition-colors duration-200">
-              LinkedIn
-            </a>
-            <a href="https://wa.me/23278687787" target="_blank" rel="noopener noreferrer" className="text-[#25D366]/60 hover:text-[#25D366] transition-colors duration-200">
-              WhatsApp
-            </a>
-          </div>
-          <p>© {new Date().getFullYear()} All rights reserved.</p>
-        </div>
-      </footer>
-
-      {/* WhatsApp floating button */}
-      <a
-        href="https://wa.me/23278687787?text=Hi%20DSB%20Digital%2C%20I%27d%20like%20to%20start%20a%20project!"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 relative flex items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3 shadow-lg hover:bg-[#20bd5a] hover:scale-105 active:scale-95 transition-all duration-200 group overflow-hidden"
-        style={{ borderRadius: '999px' }}
-      >
-        {/* Pulse rings */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20 pointer-events-none" />
-        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-10 pointer-events-none" style={{ animationDelay: '0.4s' }} />
-        <MessageCircle className="w-5 h-5 flex-shrink-0 relative z-10" />
-        <span className="text-xs font-medium tracking-wide hidden sm:block relative z-10">Quick question? Chat now</span>
-      </a>
-    </div>
+    </>
   );
 }

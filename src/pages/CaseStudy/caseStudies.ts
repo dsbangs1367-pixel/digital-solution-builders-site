@@ -1,0 +1,163 @@
+// Factual case-study content for the three flagship builds.
+// Framed as Digital Solution Builders portfolio work — no institutional
+// framing, no invented metrics or testimonials. Keep slugs in sync with
+// CASE_STUDY_SLUGS in Home and the routes in routes/index.tsx.
+
+export interface CaseStudyStat {
+  label: string;
+  value: string;
+}
+
+export interface CaseStudySection {
+  heading: string;
+  body: string;
+}
+
+export interface CaseStudy {
+  slug: string;
+  title: string;
+  category: string;
+  tagline: string;
+  accent: string;
+  heroImage: string;
+  heroImageAlt: string;
+  liveUrl: string;
+  liveLabel: string;
+  metaTitle: string;
+  metaDescription: string;
+  intro: string;
+  stats: CaseStudyStat[];
+  services: string[];
+  sections: CaseStudySection[];
+}
+
+export const caseStudies: Record<string, CaseStudy> = {
+  'nexa-welbodi': {
+    slug: 'nexa-welbodi',
+    title: 'Nexa-Health Welbodi EMR',
+    category: 'Healthcare · Electronic Medical Records',
+    tagline: 'Lifelong health records. Starting today.',
+    accent: '#3a8fb5',
+    heroImage: '/projects/nexa-welbodi.png',
+    heroImageAlt:
+      'Nexa-Health Welbodi EMR dashboard — clinical workspace with patients-today, OPD queue, bed-occupancy and critical-alert tiles, quick actions, live priority-breakdown queue, and recent-activity feed',
+    liveUrl: 'https://welbodi.dsbdigital.biz',
+    liveLabel: 'welbodi.dsbdigital.biz',
+    metaTitle:
+      'Welbodi EMR — Offline-First Electronic Medical Records | Digital Solution Builders',
+    metaDescription:
+      'A FHIR R4–aligned, offline-first electronic medical records platform for hospitals and clinics — OPD, pharmacy, MCH/ANC, HIV, TB and laboratory workflows with role-based access. A full-stack build by Digital Solution Builders.',
+    intro:
+      'An offline-first electronic medical records platform for hospitals, clinics, and peripheral health units in low-connectivity settings — built end-to-end, from the data model to the clinical interface.',
+    stats: [
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Pilot', value: 'Connaught Hospital' },
+      { label: 'Standard', value: 'FHIR R4' },
+    ],
+    services: ['Full-stack EMR', 'Offline-first PWA', 'Clinical UX'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Hospitals and clinics in low-connectivity settings need a records system that keeps working when the internet does not, and that mirrors how clinicians actually work rather than imposing a foreign template. The goal was a general-purpose EMR — usable from a large hospital down to a peripheral health unit — that captures a patient’s record once and keeps it for life.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A role-based EMR spanning patient registration, OPD queues, pharmacy and dispensing, maternal and child health (MCH/ANC), HIV and TB programmes, and laboratory ordering and results. The data model is FHIR R4–aligned and OpenMRS-inspired, so records stay interoperable. Clinical and administrative staff each see workflows scoped to their role.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy and PostgreSQL on the backend, Celery and Redis for background processing, packaged with Docker. The frontend is React 18 + Vite + TypeScript + Tailwind, wrapped in a Workbox service worker so the app stays usable offline and syncs when a connection returns.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'The platform is in user-acceptance testing with clinical testers at Connaught Hospital, deployed via Docker on a managed server with an automated CI/CD pipeline. (“Welbodi” is Krio for “good health” — a project codename, not a reference to any specific facility.)',
+      },
+    ],
+  },
+
+  'nexa-logistix': {
+    slug: 'nexa-logistix',
+    title: 'Nexa-Logistix LMIS',
+    category: 'Health Logistics · Web Application',
+    tagline: 'A pharmaceutical supply-chain operating system.',
+    accent: '#0e7a8a',
+    heroImage: '/projects/nexa-lmis.png',
+    heroImageAlt:
+      'Nexa-Logistix LMIS dashboard — supply-chain overview with stock-at-risk table, alert severity counters, and full sidebar navigation across inventory, supply chain, patients & pharmacy, alerts, and administration modules',
+    liveUrl: 'https://lmis.dsbdigital.biz',
+    liveLabel: 'lmis.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Logistix LMIS — Pharmaceutical Supply-Chain Platform | Digital Solution Builders',
+    metaDescription:
+      'A full-stack logistics management information system for pharmaceutical supply chains — inventory, cold-chain, requisitions, distribution, dispensing, POS, demand forecasting and serialised track-and-trace. Multilingual, with an open public demo.',
+    intro:
+      'A full-stack logistics management information system that runs a pharmaceutical supply chain end to end — from central store to the point of dispensing — with an open public demo anyone can explore.',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Languages', value: 'EN · KRI · FR' },
+      { label: 'Demo', value: 'Open' },
+    ],
+    services: ['Full-stack Development', 'Database & API Design', 'Multilingual UX'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Pharmaceutical supply chains lose value to stockouts, expiry, and poor visibility. Managers needed a single system covering the whole chain — not a spreadsheet per facility — with access scoped so national, regional, and facility users each see the right slice of the data.',
+      },
+      {
+        heading: 'What we built',
+        body: 'Modules for inventory and stock counts, cold-chain monitoring, requisitions and purchase orders, distribution, dispensing, point-of-sale, AI demand forecasting, and serialised track-and-trace. The interface is multilingual — English, Krio, and French — so it works for the people who actually run the stores.',
+      },
+      {
+        heading: 'The stack',
+        body: 'A FastAPI + PostgreSQL backend with a React + TypeScript + Vite frontend, designed to tolerate intermittent connectivity. Role-based access control runs throughout, so data scope follows the user.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live in production, with an open public demo (no login required) so anyone can walk the full workflow — from receiving stock to dispensing — without an account.',
+      },
+    ],
+  },
+
+  'rms-death-tracker': {
+    slug: 'rms-death-tracker',
+    title: 'RMS Death Tracker',
+    category: 'Public Health · Surveillance Platform',
+    tagline: 'One death, counted once. Excess mortality, in real time.',
+    accent: '#c0443a',
+    heroImage: '/projects/nexa-rms.png',
+    heroImageAlt:
+      'RMS Death Tracker — excess-mortality dashboard showing total excess over baseline and over threshold, with observed-versus-95% confidence-interval charts broken down by sex and age group',
+    liveUrl: 'https://rms.dsbdigital.biz',
+    liveLabel: 'rms.dsbdigital.biz',
+    metaTitle:
+      'RMS Death Tracker — Rapid Mortality Surveillance & Excess-Mortality Calculator | Digital Solution Builders',
+    metaDescription:
+      'A rapid mortality surveillance platform: a single-source, de-duplicated death register feeding a code-exact reimplementation of the Vital Strategies Excess Mortality Calculator, with offline-first PWA dashboards. Built by Digital Solution Builders.',
+    intro:
+      'A rapid mortality surveillance platform built around one idea: count each death once. A single-source, de-duplicated death register feeds a code-exact excess-mortality engine and offline-first dashboards.',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Method', value: 'Excess Mortality' },
+      { label: 'Surfaces', value: 'Offline PWA' },
+    ],
+    services: ['Full-stack Development', 'Epidemiological Modelling', 'Offline-first PWA'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'When deaths are recorded across several registers, the same death gets counted more than once — and surveillance teams still need to know whether mortality is running above its historical baseline. The brief was a single intake that de-duplicates first, then computes excess mortality reliably.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A single-source death register that de-duplicates records so a death captured in two systems counts only once, feeding a code-exact reimplementation of the Vital Strategies Excess Mortality Calculator (historical-average and negative-binomial GLM models). It carries the national facility registry, role-based access (data entry, analyst, admin), and offline-first dashboards with observed-versus-95%-confidence-interval bands, sex-by-age breakdowns, and chart export. The methodology follows the Vital Strategies / Resolve to Save Lives Excess Mortality Calculator.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy and PostgreSQL on the backend; a React 18 + Vite + React Query progressive web app on the frontend, built offline-first for field use.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live in production on a dedicated server, hardened with self-service password rotation, idle screen-lock, and multi-user administration.',
+      },
+    ],
+  },
+};

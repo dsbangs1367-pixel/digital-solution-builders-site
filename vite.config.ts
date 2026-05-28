@@ -11,7 +11,9 @@ export default defineConfig(({ command, mode }) => {
   const normalizedBaseCdnUrl = baseCdnUrl && !baseCdnUrl.endsWith('/') ? `${baseCdnUrl}/` : baseCdnUrl;
 
   return {
-    base: command === 'build' ? (normalizedBaseCdnUrl ?? './') : './',
+    // Absolute base so deep routes (/work/:slug) resolve /assets/... correctly
+    // on direct visit/refresh. './' resolves relative to the route path and 404s.
+    base: command === 'build' ? (normalizedBaseCdnUrl ?? '/') : './',
     plugins: [
       reactFiberSource(), // Must be used before react() to inject source into _debugInfo.
       react(),
