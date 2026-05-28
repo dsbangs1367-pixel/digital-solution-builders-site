@@ -7,4 +7,4 @@ Allow: *.jpg
 Allow: *.webp
 Allow: *.svg
 
-Sitemap: https://dsb-digital.wegic.net/sitemap.xml
+Sitemap: https://dsbdigital.biz/sitemap.xml
