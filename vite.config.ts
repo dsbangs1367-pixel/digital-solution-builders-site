@@ -1,8 +1,103 @@
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, type Plugin } from 'vite';
 import clientErrorLogger from 'vite-plugin-client-error-logger';
 import { reactFiberSource } from 'vite-plugin-react-fiber-source';
+import { caseStudies } from './src/pages/CaseStudy/caseStudies';
+
+const SITE = 'https://dsbdigital.biz';
+
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeRe(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// `attr` is only ever the literals 'property' | 'name' (no regex metachars),
+// so it is interpolated directly; `key` is escaped defensively. Both setMeta
+// and setTitle THROW on a non-match so a changed OG template fails the build
+// loudly instead of silently shipping a home-page card on every case study.
+function setMeta(html: string, attr: 'property' | 'name', key: string, value: string): string {
+  const re = new RegExp(`(<meta\\s+${attr}="${escapeRe(key)}"\\s+content=")[^"]*(")`);
+  if (!re.test(html)) {
+    throw new Error(
+      `prerender-case-study-og: <meta ${attr}="${key}"> not found in built index.html — the OG template may have changed`,
+    );
+  }
+  return html.replace(re, `$1${escapeAttr(value)}$2`);
+}
+
+function removeMeta(html: string, attr: 'property' | 'name', key: string): string {
+  const re = new RegExp(`\\s*<meta\\s+${attr}="${escapeRe(key)}"[^>]*>`, 'g');
+  return html.replace(re, '');
+}
+
+function setTitle(html: string, value: string): string {
+  const re = /<title>[\s\S]*?<\/title>/;
+  if (!re.test(html)) {
+    throw new Error('prerender-case-study-og: <title> not found in built index.html');
+  }
+  return html.replace(re, `<title>${escapeAttr(value)}</title>`);
+}
+
+/**
+ * Social crawlers (LinkedIn, Facebook, X) do not execute JS, so per-route OG
+ * tags set by react-helmet-async never reach them. After the SPA build, clone
+ * dist/index.html into dist/work/<slug>/index.html with that case study's
+ * title/description/image baked into the static <head>, so a shared link
+ * renders the right preview card. Vercel serves these files before the SPA
+ * fallback rewrite; the client still hydrates and renders the route as usual.
+ */
+function prerenderCaseStudyOg(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'prerender-case-study-og',
+    apply: 'build',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const indexPath = path.resolve(outDir, 'index.html');
+      let template: string;
+      try {
+        template = readFileSync(indexPath, 'utf8');
+      } catch {
+        this.warn(`prerender-case-study-og: ${indexPath} not found; skipping`);
+        return;
+      }
+
+      for (const cs of Object.values(caseStudies)) {
+        const url = `${SITE}/work/${cs.slug}`;
+        const image = `${SITE}${cs.heroImage}`;
+        let html = template;
+        html = setTitle(html, cs.metaTitle);
+        html = setMeta(html, 'property', 'og:url', url);
+        html = setMeta(html, 'property', 'og:title', cs.metaTitle);
+        html = setMeta(html, 'property', 'og:description', cs.metaDescription);
+        html = setMeta(html, 'property', 'og:image', image);
+        // Screenshots are not 1200×630; drop the false dimension hints so
+        // platforms read the image's real size.
+        html = removeMeta(html, 'property', 'og:image:width');
+        html = removeMeta(html, 'property', 'og:image:height');
+        html = setMeta(html, 'name', 'twitter:url', url);
+        html = setMeta(html, 'name', 'twitter:title', cs.metaTitle);
+        html = setMeta(html, 'name', 'twitter:description', cs.metaDescription);
+        html = setMeta(html, 'name', 'twitter:image', image);
+
+        const dir = path.resolve(outDir, 'work', cs.slug);
+        mkdirSync(dir, { recursive: true });
+        writeFileSync(path.resolve(dir, 'index.html'), html);
+      }
+    },
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -18,6 +113,7 @@ export default defineConfig(({ command, mode }) => {
       reactFiberSource(), // Must be used before react() to inject source into _debugInfo.
       react(),
       clientErrorLogger(),
+      prerenderCaseStudyOg(),
     ],
     resolve: {
       alias: {

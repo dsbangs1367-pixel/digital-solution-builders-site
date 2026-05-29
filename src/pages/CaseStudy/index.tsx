@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowUpRight, ArrowLeft } from 'lucide-react';
 import Seo, { SITE } from '../../components/Seo';
+import ShareButtons from '../../components/ShareButtons';
 import { caseStudies } from './caseStudies';
 
 export default function CaseStudyPage() {
@@ -99,6 +100,11 @@ export default function CaseStudyPage() {
                 {s}
               </span>
             ))}
+          </div>
+
+          {/* Share */}
+          <div className="mt-8">
+            <ShareButtons url={url} title={cs.title} summary={cs.intro} />
           </div>
         </header>
 
