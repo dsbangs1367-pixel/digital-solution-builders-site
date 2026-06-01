@@ -47,6 +47,17 @@ function setTitle(html: string, value: string): string {
   return html.replace(re, `<title>${escapeAttr(value)}</title>`);
 }
 
+// Assumes attribute order `rel="canonical" href="..."` in index.html. If
+// reordered, the build throws (above) rather than silently shipping the home
+// canonical on every case study — keep the source order to match.
+function setCanonical(html: string, url: string): string {
+  const re = /(<link\s+rel="canonical"\s+href=")[^"]*(")/;
+  if (!re.test(html)) {
+    throw new Error('prerender-case-study-og: <link rel="canonical"> not found in built index.html');
+  }
+  return html.replace(re, `$1${escapeAttr(url)}$2`);
+}
+
 /**
  * Social crawlers (LinkedIn, Facebook, X) do not execute JS, so per-route OG
  * tags set by react-helmet-async never reach them. After the SPA build, clone
@@ -78,6 +89,7 @@ function prerenderCaseStudyOg(): Plugin {
         const image = `${SITE}${cs.heroImage}`;
         let html = template;
         html = setTitle(html, cs.metaTitle);
+        html = setCanonical(html, url);
         html = setMeta(html, 'property', 'og:url', url);
         html = setMeta(html, 'property', 'og:title', cs.metaTitle);
         html = setMeta(html, 'property', 'og:description', cs.metaDescription);

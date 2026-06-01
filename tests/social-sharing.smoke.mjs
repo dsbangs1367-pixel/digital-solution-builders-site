@@ -217,8 +217,92 @@ test('[rms-death-tracker] ampersand in title is &amp; in og:title', () => {
     `og:title must contain &amp; but got: ${m[1]}`);
 });
 
-// 1c. Home dist/index.html is UNCHANGED
-console.log('\n--- Part 1c: Home index.html is unchanged ---\n');
+// 1c. Canonical tag assertions
+console.log('\n--- Part 1c: Canonical tag correctness ---\n');
+
+// Home canonical: exactly one <link rel="canonical"> whose href is https://dsbdigital.biz/
+test('dist/index.html contains exactly one <link rel="canonical">', () => {
+  const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');
+  const matches = html.match(/<link\s+rel="canonical"[^>]*>/g);
+  assert.ok(matches, '<link rel="canonical"> not found in dist/index.html');
+  assert.strictEqual(matches.length, 1,
+    `Expected exactly 1 <link rel="canonical">, found ${matches.length}`);
+});
+
+test('dist/index.html canonical href equals https://dsbdigital.biz/', () => {
+  const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');
+  const m = html.match(/<link\s+rel="canonical"\s+href="([^"]*)"/);
+  assert.ok(m, '<link rel="canonical" href="..."> not found in dist/index.html');
+  assert.strictEqual(m[1], 'https://dsbdigital.biz/',
+    `Home canonical href mismatch.\n  Expected: https://dsbdigital.biz/\n  Got:      ${m[1]}`);
+});
+
+// Per case-study canonical: exactly one tag, href equals https://dsbdigital.biz/work/<slug> (no trailing slash)
+for (const slug of SLUGS) {
+  const htmlPath = resolve(DIST, 'work', slug, 'index.html');
+  if (!existsSync(htmlPath)) continue;  // already failed in 1a
+  const html = readFileSync(htmlPath, 'utf8');
+  const expectedCanonical = `${SITE}/work/${slug}`;
+
+  test(`[${slug}] contains exactly one <link rel="canonical">`, () => {
+    const matches = html.match(/<link\s+rel="canonical"[^>]*>/g);
+    assert.ok(matches, `<link rel="canonical"> not found in dist/work/${slug}/index.html`);
+    assert.strictEqual(matches.length, 1,
+      `Expected exactly 1 <link rel="canonical">, found ${matches.length}`);
+  });
+
+  test(`[${slug}] canonical href equals ${expectedCanonical}`, () => {
+    const m = html.match(/<link\s+rel="canonical"\s+href="([^"]*)"/);
+    assert.ok(m, `<link rel="canonical" href="..."> not found in dist/work/${slug}/index.html`);
+    assert.strictEqual(m[1], expectedCanonical,
+      `Canonical href mismatch for ${slug}.\n  Expected: ${expectedCanonical}\n  Got:      ${m[1]}`);
+  });
+
+  // Sanity guard: case-study canonical must differ from home canonical
+  test(`[${slug}] canonical is NOT equal to home canonical (prerender did not no-op)`, () => {
+    const m = html.match(/<link\s+rel="canonical"\s+href="([^"]*)"/);
+    assert.ok(m, `<link rel="canonical" href="..."> not found in dist/work/${slug}/index.html`);
+    assert.notStrictEqual(m[1], 'https://dsbdigital.biz/',
+      `[${slug}] canonical still equals the home canonical — prerender setCanonical may have no-op'd`);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Part 2 guard — setCanonical throws when <link rel="canonical"> is absent
+// ---------------------------------------------------------------------------
+
+console.log('\n--- Part 1d: setCanonical guard ---\n');
+
+function setCanonicalGuard(html, url) {
+  const re = /(<link\s+rel="canonical"\s+href=")[^"]*(")/;
+  if (!re.test(html)) {
+    throw new Error('prerender-case-study-og: <link rel="canonical"> not found in built index.html');
+  }
+  return html.replace(re, `$1${escapeAttr(url)}$2`);
+}
+
+test('setCanonical: replaces href on a valid template', () => {
+  const template = readFileSync(resolve(DIST, 'index.html'), 'utf8');
+  const result = setCanonicalGuard(template, 'https://dsbdigital.biz/work/nexa-welbodi');
+  assert.ok(result.includes('href="https://dsbdigital.biz/work/nexa-welbodi"'),
+    'setCanonical did not write the new href');
+});
+
+test('setCanonical: throws when <link rel="canonical"> is absent', () => {
+  const template = readFileSync(resolve(DIST, 'index.html'), 'utf8');
+  const stripped = template.replace(/<link\s+rel="canonical"[^>]*>/g, '');
+  assert.throws(
+    () => setCanonicalGuard(stripped, 'https://dsbdigital.biz/work/nexa-welbodi'),
+    /prerender-case-study-og: <link rel="canonical"> not found/,
+    'Expected setCanonical to throw when the tag is absent'
+  );
+});
+
+// ---------------------------------------------------------------------------
+// Part 1c (original): Home dist/index.html OG tags are UNCHANGED
+// ---------------------------------------------------------------------------
+
+console.log('\n--- Part 1e: Home index.html OG tags are unchanged ---\n');
 
 test('dist/index.html og:url is still https://dsbdigital.biz/', () => {
   const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');
