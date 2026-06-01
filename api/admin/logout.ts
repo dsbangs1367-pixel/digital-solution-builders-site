@@ -3,9 +3,9 @@
 // by /api/admin/stats on its next request. Single-user model: one logout
 // invalidates every prior session, anywhere.
 
-import { clearAdminCookieHeader } from '../_lib/auth';
-import { getKv } from '../_lib/kv';
-import { K } from '../_lib/keys';
+import { clearAdminCookieHeader } from '../_lib/auth.js';
+import { getKv } from '../_lib/kv.js';
+import { K } from '../_lib/keys.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function handler(req: any, res: any) {

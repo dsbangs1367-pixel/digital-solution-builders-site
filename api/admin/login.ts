@@ -1,7 +1,7 @@
 // Admin login. Constant-time password compare against ADMIN_PASSWORD env var;
 // on success, sets a 30-day HMAC-signed cookie signed with AUTH_SECRET.
 
-import { adminCookieHeader, issueCookie, safeEqual } from '../_lib/auth';
+import { adminCookieHeader, issueCookie, safeEqual } from '../_lib/auth.js';
 
 // Fixed delay on failures to take rate per-IP brute-forcing off the table.
 // (Combined with a long random ADMIN_PASSWORD, this is enough for a personal

@@ -6,10 +6,14 @@
 //   { type: 'pageview', path: '/work/nexa-welbodi', referrer?: 'https://...' }
 //   { type: 'event', name: 'share' | 'contact_submit' | ..., props?: { network?, slug?, method? } }
 
-import { getKv } from './_lib/kv';
-import { isBotRequest } from './_lib/bot';
-import { parseUserAgent } from './_lib/ua';
-import { K, FIELD, dateKey } from './_lib/keys';
+// NOTE on .js extensions for .ts files: Vercel's API build uses TypeScript with
+// `moduleResolution: nodenext`, which requires explicit extensions on relative
+// imports. TS resolves `./foo.js` to `./foo.ts` at compile time; the emitted
+// JS gets the extension Node ESM needs at runtime. Don't drop them.
+import { getKv } from './_lib/kv.js';
+import { isBotRequest } from './_lib/bot.js';
+import { parseUserAgent } from './_lib/ua.js';
+import { K, FIELD, dateKey } from './_lib/keys.js';
 import {
   MAX_NAME,
   ALLOWED_EVENTS,
@@ -18,7 +22,7 @@ import {
   normalizePath,
   normalizeReferrerHost,
   normalizeProp,
-} from './_lib/validators';
+} from './_lib/validators.js';
 
 interface TrackBody {
   type?: string;

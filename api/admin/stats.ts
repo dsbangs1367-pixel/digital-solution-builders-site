@@ -10,9 +10,9 @@
 //     generatedAt: ISO string
 //   }
 
-import { getKv } from '../_lib/kv';
-import { parseCookies, verifyCookie, COOKIE_NAME } from '../_lib/auth';
-import { K, FIELD, dateKey, lastNDates } from '../_lib/keys';
+import { getKv } from '../_lib/kv.js';
+import { parseCookies, verifyCookie, COOKIE_NAME } from '../_lib/auth.js';
+import { K, FIELD, dateKey, lastNDates } from '../_lib/keys.js';
 
 async function loadRevokeBeforeIat(kv: ReturnType<typeof getKv>): Promise<number> {
   if (!kv) return 0;
