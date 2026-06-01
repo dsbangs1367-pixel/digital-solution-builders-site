@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, type ReactElement } from 'react';
 import { Check, Link as LinkIcon } from 'lucide-react';
+import { trackEvent } from '@/lib/track';
+
+type ShareNetwork = 'linkedin' | 'x' | 'facebook' | 'instagram' | 'copy_link';
 
 interface ShareButtonsProps {
   /** Absolute URL of the page being shared. */
@@ -56,6 +59,21 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
   const canNativeShare =
     typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
+  // Derive a case-study slug from a /work/<slug> URL so the admin dashboard can
+  // see which case study gets shared most. Returns undefined for the home URL.
+  const slug = (() => {
+    try {
+      const segs = new URL(url).pathname.split('/').filter(Boolean);
+      return segs[0] === 'work' && segs[1] ? segs[1] : undefined;
+    } catch {
+      return undefined;
+    }
+  })();
+
+  const fireShare = (network: ShareNetwork) => {
+    trackEvent('share', slug ? { network, slug } : { network });
+  };
+
   const flash = (msg: string) => {
     setNotice(msg);
     setTimeout(() => setNotice(null), 2500);
@@ -95,6 +113,7 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
   // Instagram has no web share-intent URL. On mobile, hand off to the native
   // share sheet (which lists Instagram); on desktop, copy the link to paste.
   const handleInstagram = async () => {
+    fireShare('instagram');
     if (canNativeShare) {
       try {
         await navigator.share({ title, text: summary, url });
@@ -106,19 +125,27 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
     await copy('Link copied — paste it into Instagram');
   };
 
-  const networks = [
+  const networks: Array<{
+    name: string;
+    track: ShareNetwork;
+    href: string;
+    Icon: (p: IconProps) => ReactElement;
+  }> = [
     {
       name: 'LinkedIn',
+      track: 'linkedin',
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
       Icon: LinkedInIcon,
     },
     {
       name: 'X',
+      track: 'x',
       href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
       Icon: XIcon,
     },
     {
       name: 'Facebook',
+      track: 'facebook',
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       Icon: FacebookIcon,
     },
@@ -128,7 +155,7 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
     <div className="flex flex-wrap items-center gap-2.5">
       <span className="text-xs tracking-widest uppercase text-muted/50 mr-1">Share</span>
 
-      {networks.map(({ name, href, Icon }) => (
+      {networks.map(({ name, track, href, Icon }) => (
         <a
           key={name}
           href={href}
@@ -137,6 +164,7 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
           aria-label={`Share on ${name}`}
           title={`Share on ${name}`}
           className={BTN}
+          onClick={() => fireShare(track)}
         >
           <Icon className="w-[18px] h-[18px]" />
         </a>
@@ -154,7 +182,10 @@ export default function ShareButtons({ url, title, summary }: ShareButtonsProps)
 
       <button
         type="button"
-        onClick={() => copy('Link copied')}
+        onClick={() => {
+          fireShare('copy_link');
+          copy('Link copied');
+        }}
         aria-label="Copy link"
         title="Copy link"
         className={BTN}

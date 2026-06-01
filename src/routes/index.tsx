@@ -1,8 +1,21 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import HomePage from '@/pages/Home/index';
 import CaseStudyPage from '@/pages/CaseStudy/index';
 import NotFoundPage from '@/pages/NotFound/index';
 import Layout from '@/components/Layout';
+
+// Admin bundle (analytics dashboard + recharts) is lazy-loaded so it never
+// ships to public visitors.
+const AdminAnalyticsPage = lazy(() => import('@/pages/Admin/index'));
+
+function AdminFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background text-muted/40 text-xs tracking-widest uppercase">
+      Loading…
+    </div>
+  );
+}
 
 /**
  * Router Configuration
@@ -28,6 +41,14 @@ export const router = createBrowserRouter([
         element: <CaseStudyPage />,
       },
     ],
+  },
+  {
+    path: '/admin/analytics',
+    element: (
+      <Suspense fallback={<AdminFallback />}>
+        <AdminAnalyticsPage />
+      </Suspense>
+    ),
   },
   {
     path: '*',

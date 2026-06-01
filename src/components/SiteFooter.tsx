@@ -1,4 +1,5 @@
 import { MessageCircle } from 'lucide-react';
+import { trackEvent } from '@/lib/track';
 
 /** Global footer + floating WhatsApp CTA, shared across every route. */
 export default function SiteFooter() {
@@ -8,16 +9,33 @@ export default function SiteFooter() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-muted/40">
           <p className="font-serif">Digital Solution Builders. — Digital Product Development</p>
           <div className="flex items-center gap-6">
-            <a href="mailto:danielbangs@dsbdigital.biz" className="hover:text-muted/70 transition-colors duration-200">
+            <a
+              href="mailto:danielbangs@dsbdigital.biz"
+              onClick={() => trackEvent('contact_email')}
+              className="hover:text-muted/70 transition-colors duration-200"
+            >
               Email
             </a>
-            <a href="https://www.linkedin.com/in/daniel-bangura-9ba047bb/" target="_blank" rel="noopener noreferrer" className="hover:text-muted/70 transition-colors duration-200">
+            <a
+              href="https://www.linkedin.com/in/daniel-bangura-9ba047bb/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('contact_linkedin')}
+              className="hover:text-muted/70 transition-colors duration-200"
+            >
               LinkedIn
             </a>
-            <a href="https://wa.me/23278687787" target="_blank" rel="noopener noreferrer" className="text-[#25D366]/60 hover:text-[#25D366] transition-colors duration-200">
+            <a
+              href="https://wa.me/23278687787"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('contact_whatsapp')}
+              className="text-[#25D366]/60 hover:text-[#25D366] transition-colors duration-200"
+            >
               WhatsApp
             </a>
           </div>
+          <p className="text-muted/30">Anonymous, cookie-free visit analytics for the site owner.</p>
           <p>© {new Date().getFullYear()} All rights reserved.</p>
         </div>
       </footer>
@@ -28,6 +46,7 @@ export default function SiteFooter() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
+        onClick={() => trackEvent('contact_whatsapp')}
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3 shadow-lg hover:bg-[#20bd5a] hover:scale-105 active:scale-95 transition-all duration-200 group overflow-hidden"
         style={{ borderRadius: '999px' }}
       >

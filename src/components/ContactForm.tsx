@@ -2,6 +2,7 @@ import { useState } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { motion as _motion } from 'framer-motion';
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { trackEvent } from '@/lib/track';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const motion = _motion as any;
@@ -51,6 +52,7 @@ export default function ContactForm() {
         throw new Error(data.error || `Request failed (${r.status})`);
       }
       setStatus('success');
+      trackEvent('contact_submit');
       setForm({ name: '', email: '', company: '', projectType: '', message: '' });
     } catch (err) {
       setStatus('error');

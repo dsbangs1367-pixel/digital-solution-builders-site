@@ -6,5 +6,9 @@ Allow: *.png
 Allow: *.jpg
 Allow: *.webp
 Allow: *.svg
+# Owner-only admin surface — keep out of all indexes. The longer-prefix
+# Disallow takes precedence over the Allow: / above for /admin* paths.
+Disallow: /admin
+Disallow: /api/
 
 Sitemap: https://dsbdigital.biz/sitemap.xml
