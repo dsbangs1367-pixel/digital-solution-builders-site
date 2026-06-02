@@ -115,7 +115,7 @@ const projects: Project[] = [
     category: 'Reality TV · Entertainment Platform',
     tagline: 'One stage. Every voice.',
     description:
-      'A single platform for one of Sierra Leone’s longest-running reality-TV singing competitions — a bilingual public site (English and Krio), authenticated contestant and voter accounts, paid contestant registration, paid voting via Africell’s Afrimoney through Monime, and an admin CMS that lets producers update seasons, contestants and news without a developer. Vite + React + TypeScript on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, deployed on Vercel.',
+      'A single platform for one of Sierra Leone’s longest-running reality-TV singing competitions — a bilingual public site (English and Krio), authenticated contestant and voter accounts, paid contestant registration and paid voting flows wired through Monime mobile money (Africell Afrimoney and Orange Money), and an admin CMS that lets producers update seasons, contestants and news without a developer. Payments currently run on a mock provider while live Monime onboarding completes — flipping that switch is the next conscious build. Vite + React + TypeScript on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, deployed on Vercel.',
     services: ['Full-stack Development', 'Payments Integration', 'Admin CMS'],
     url: 'https://vdinspire.com',
     image: '/projects/vocal-drift-inspire.png',

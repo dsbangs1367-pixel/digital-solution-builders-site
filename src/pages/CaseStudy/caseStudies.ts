@@ -175,7 +175,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     metaTitle:
       'Vocal Drift Inspire — Reality-TV Singing Competition Platform | Digital Solution Builders',
     metaDescription:
-      'A single-platform website for Sierra Leone’s longest-running reality-TV singing competition — public site, contestant accounts, paid registration, paid voting and an admin CMS. Built as a personal contribution by Digital Solution Builders.',
+      'A single-platform website for Sierra Leone’s longest-running reality-TV singing competition — public site, contestant accounts, registration and voting flows wired for mobile money, and an admin CMS. Built as a personal contribution by Digital Solution Builders.',
     intro:
       'A single platform for one of Sierra Leone’s longest-running reality-TV singing competitions — bringing fans, contestants, sponsors and well-wishers into one source of truth. Built as a personal contribution to a show that had outgrown its scattered tools.',
     stats: [
@@ -191,15 +191,15 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
       {
         heading: 'What we built',
-        body: 'A full website and back-office: a bilingual public site (English and Krio) covering seasons, contestants, news and sponsors; authenticated accounts for contestants and voters; paid contestant registration; paid voting that turns each vote into a verifiable transaction; and an admin CMS so producers can update content, seasons, contestants and news without a developer.',
+        body: 'A full website and back-office: a bilingual public site (English and Krio) covering seasons, contestants, news and sponsors; authenticated accounts for contestants and voters; paid contestant registration and paid voting flows wired through Monime mobile money; and an admin CMS so producers can update content, seasons, contestants and news without a developer.',
       },
       {
         heading: 'The stack',
-        body: 'Vite + React + TypeScript + Tailwind on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, Monime for paid voting and registration, deployed on Vercel.',
+        body: 'Vite + React + TypeScript + Tailwind on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, Monime wired in for mobile-money voting and registration, deployed on Vercel. Payments currently run on a mock provider while Monime live onboarding completes, so the full flows can be walked end to end.',
       },
       {
         heading: 'Where it is now',
-        body: 'Live at vdinspire.com for Season 6 (2026) — a personal build to give the show a single platform for its growing national audience.',
+        body: 'Live at vdinspire.com for Season 6 (2026) — a personal build to give the show a single platform for its growing national audience. The next conscious build is flipping payments from the mock provider to live Monime, so contestants can pay to register and fans can pay to vote with real mobile money.',
       },
     ],
   },
