@@ -10,7 +10,7 @@ export const SELF_HOSTS = new Set(['dsbdigital.biz', 'www.dsbdigital.biz', 'dsb-
 // Bound the cardinality of analytics:z:share_by_slug to known case studies.
 // Mirrors the slugs in src/pages/CaseStudy/caseStudies.ts — update both when
 // adding a case study.
-export const SHARE_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker']);
+export const SHARE_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker', 'vocal-drift-inspire']);
 
 /** Returns null when the path is invalid; otherwise returns a normalised path. */
 export function normalizePath(raw: string): string | null {

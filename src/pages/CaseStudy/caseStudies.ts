@@ -160,4 +160,47 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  'vocal-drift-inspire': {
+    slug: 'vocal-drift-inspire',
+    title: 'Vocal Drift Inspire Platform',
+    category: 'Reality TV · Entertainment Platform',
+    tagline: 'One stage. Every voice.',
+    accent: '#e0a82f',
+    heroImage: '/projects/vocal-drift-inspire.png',
+    heroImageAlt:
+      'Vocal Drift Inspire homepage hero — dark theme with the headline "The biggest stage for Sierra Leone’s vocalists", Season 6 registration banner, and primary calls to action to enter the competition or vote',
+    liveUrl: 'https://vdinspire.com',
+    liveLabel: 'vdinspire.com',
+    metaTitle:
+      'Vocal Drift Inspire — Reality-TV Singing Competition Platform | Digital Solution Builders',
+    metaDescription:
+      'A single-platform website for Sierra Leone’s longest-running reality-TV singing competition — public site, contestant accounts, paid registration, paid voting and an admin CMS. Built as a personal contribution by Digital Solution Builders.',
+    intro:
+      'A single platform for one of Sierra Leone’s longest-running reality-TV singing competitions — bringing fans, contestants, sponsors and well-wishers into one source of truth. Built as a personal contribution to a show that had outgrown its scattered tools.',
+    stats: [
+      { label: 'Stage', value: 'Live' },
+      { label: 'Season', value: 'S6 · 2026' },
+      { label: 'Surfaces', value: 'Site + CMS' },
+    ],
+    services: ['Full-stack Development', 'Payments Integration', 'Admin CMS'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Six seasons in, the show was running on a patchwork — Facebook for fans, WhatsApp for voting, paper for registration, scattered posts for news — with no single home for any of it. The brief was one platform where fans, contestants, well-wishers and sponsors could meet, register, vote, and follow the season.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A full website and back-office: a bilingual public site (English and Krio) covering seasons, contestants, news and sponsors; authenticated accounts for contestants and voters; paid contestant registration; paid voting that turns each vote into a verifiable transaction; and an admin CMS so producers can update content, seasons, contestants and news without a developer.',
+      },
+      {
+        heading: 'The stack',
+        body: 'Vite + React + TypeScript + Tailwind on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, Monime for paid voting and registration, deployed on Vercel.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live at vdinspire.com for Season 6 (2026) — a personal build to give the show a single platform for its growing national audience.',
+      },
+    ],
+  },
 };

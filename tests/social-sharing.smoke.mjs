@@ -82,7 +82,7 @@ const SITE = 'https://dsbdigital.biz';
 
 console.log('\n--- Part 1: Prerender OG output ---\n');
 
-const SLUGS = ['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker'];
+const SLUGS = ['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker', 'vocal-drift-inspire'];
 
 // 1a. All three slug files exist
 for (const slug of SLUGS) {

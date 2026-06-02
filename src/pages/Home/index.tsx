@@ -82,10 +82,10 @@ const projects: Project[] = [
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
     stats: [
-      // home + 3 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '4' },
+      // home + 4 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
+      { label: 'Pages', value: '5' },
       // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '10' },
+      { label: 'Projects', value: '11' },
       { label: 'Delivery', value: '72hrs' },
     ],
   },
@@ -110,6 +110,26 @@ const projects: Project[] = [
   },
   {
     id: 5,
+    slug: 'vocal-drift-inspire',
+    title: 'Vocal Drift Inspire Platform',
+    category: 'Reality TV · Entertainment Platform',
+    tagline: 'One stage. Every voice.',
+    description:
+      'A single platform for one of Sierra Leone’s longest-running reality-TV singing competitions — a bilingual public site (English and Krio), authenticated contestant and voter accounts, paid contestant registration, paid voting via Africell’s Afrimoney through Monime, and an admin CMS that lets producers update seasons, contestants and news without a developer. Vite + React + TypeScript on the frontend, Supabase (Postgres, Auth, Storage, Edge Functions) on the backend, deployed on Vercel.',
+    services: ['Full-stack Development', 'Payments Integration', 'Admin CMS'],
+    url: 'https://vdinspire.com',
+    image: '/projects/vocal-drift-inspire.png',
+    imageAlt:
+      'Vocal Drift Inspire homepage hero — dark theme with the headline "The biggest stage for Sierra Leone’s vocalists", Season 6 registration banner, and primary calls to action to enter the competition or vote',
+    accent: '#e0a82f',
+    stats: [
+      { label: 'Stage', value: 'Live' },
+      { label: 'Season', value: 'S6 · 2026' },
+      { label: 'Surfaces', value: 'Site + CMS' },
+    ],
+  },
+  {
+    id: 6,
     slug: 'bangura-brothers',
     title: 'The Bangura Brothers',
     category: 'Youth Brand · Website Design',
@@ -128,7 +148,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     slug: 'bangura-training-app',
     title: 'Bangura Brothers Training App',
     category: 'Youth Sports · App Design',
@@ -147,7 +167,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     slug: 'kellas-kitchen',
     title: "Kella's Kitchen & Events",
     category: 'Food & Beverage · Website Design',
@@ -166,7 +186,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     slug: 'sprout',
     title: 'Sprout',
     category: 'Family · Native Mobile App',
@@ -185,7 +205,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 9,
+    id: 10,
     slug: 'nexa-ideation',
     title: 'Nexa-Ideation',
     category: 'SaaS · Application Design',
@@ -204,7 +224,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 10,
+    id: 11,
     slug: 'nexa-synapse',
     title: 'Nexa-Analytics Synapse',
     category: 'Analytics · Intelligence Layer',
@@ -225,7 +245,7 @@ const projects: Project[] = [
 ];
 
 // Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
-const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker']);
+const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker', 'vocal-drift-inspire']);
 
 const services = [
   {
