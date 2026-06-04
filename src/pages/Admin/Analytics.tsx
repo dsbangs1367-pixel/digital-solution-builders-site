@@ -1,18 +1,16 @@
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { LogOut, RefreshCw } from 'lucide-react';
+import { Download, FileText, LogOut, RefreshCw } from 'lucide-react';
 import type { Pair, StatsResponse } from './types';
+import { buildAnalyticsCsv, defaultCsvFilename, sumLast, triggerCsvDownload } from './exporters';
 
 interface Props {
   data: StatsResponse;
   onLogout: () => void;
   onRefresh: () => void;
   refreshing?: boolean;
-}
-
-function sumLast(daily: StatsResponse['daily'], days: number): number {
-  return daily.slice(-days).reduce((acc, d) => acc + d.pageviews, 0);
 }
 
 function todayPageviews(daily: StatsResponse['daily'], today: string | undefined): number {
@@ -92,7 +90,7 @@ export default function Analytics({ data, onLogout, onRefresh, refreshing }: Pro
               <p className="text-[10px] tracking-[0.3em] uppercase text-muted/40 mb-2">DSB · Owner view</p>
               <h1 className="font-serif text-3xl md:text-4xl">Site analytics</h1>
             </div>
-            <div className="flex items-center gap-3 text-xs text-muted/50">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted/50">
               <span title={data.generatedAt}>
                 Updated {new Date(data.generatedAt).toLocaleTimeString()}
               </span>
@@ -106,6 +104,25 @@ export default function Analytics({ data, onLogout, onRefresh, refreshing }: Pro
                 <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
                 Refresh
               </button>
+              <button
+                type="button"
+                onClick={() => triggerCsvDownload(defaultCsvFilename(data), buildAnalyticsCsv(data))}
+                className="inline-flex items-center gap-1.5 border border-border/50 px-3 py-1.5 hover:border-foreground/40 hover:text-foreground transition-colors"
+                title="Download all metrics as a CSV"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download CSV
+              </button>
+              <Link
+                to="/admin/report"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 border border-foreground/30 bg-foreground/[0.04] px-3 py-1.5 text-foreground/90 hover:border-foreground/60 transition-colors"
+                title="Open the investor / funder report (printable to PDF)"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                Investor report
+              </Link>
               <button
                 type="button"
                 onClick={onLogout}

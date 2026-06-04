@@ -8,6 +8,7 @@ import Layout from '@/components/Layout';
 // Admin bundle (analytics dashboard + recharts) is lazy-loaded so it never
 // ships to public visitors.
 const AdminAnalyticsPage = lazy(() => import('@/pages/Admin/index'));
+const AdminReportPage = lazy(() => import('@/pages/Admin/ReportPage'));
 
 function AdminFallback() {
   return (
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
     element: (
       <Suspense fallback={<AdminFallback />}>
         <AdminAnalyticsPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/admin/report',
+    element: (
+      <Suspense fallback={<AdminFallback />}>
+        <AdminReportPage />
       </Suspense>
     ),
   },

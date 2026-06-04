@@ -12,7 +12,7 @@
     "lint": "eslint . --ext ts,tsx --fix --quiet && postcss src/index.css -o /dev/null",
     "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "preview": "vite preview",
-    "test": "bun tests/social-sharing.smoke.mjs && bun tests/analytics.smoke.mjs"
+    "test": "bun tests/social-sharing.smoke.mjs && bun tests/analytics.smoke.mjs && bun tests/exporters.smoke.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.1",
