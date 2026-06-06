@@ -5,6 +5,7 @@ import { defineConfig, loadEnv, type Plugin } from 'vite';
 import clientErrorLogger from 'vite-plugin-client-error-logger';
 import { reactFiberSource } from 'vite-plugin-react-fiber-source';
 import { caseStudies } from './src/pages/CaseStudy/caseStudies';
+import { articles, ARTICLE_ORDER, INSIGHTS_META } from './src/pages/Article/articles';
 
 const SITE = 'https://dsbdigital.biz';
 
@@ -111,6 +112,59 @@ function prerenderCaseStudyOg(): Plugin {
   };
 }
 
+/**
+ * Same idea as prerenderCaseStudyOg, for the SEO content cluster. Bakes each
+ * article's title/description/canonical/OG into a static dist/<slug>/index.html
+ * (and dist/insights/index.html) so crawlers get correct per-page meta. The
+ * default home og-cover image is kept, so its dimension hints stay valid and we
+ * do not touch og:image here.
+ */
+function prerenderArticleOg(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'prerender-article-og',
+    apply: 'build',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const indexPath = path.resolve(outDir, 'index.html');
+      let template: string;
+      try {
+        template = readFileSync(indexPath, 'utf8');
+      } catch {
+        this.warn(`prerender-article-og: ${indexPath} not found; skipping`);
+        return;
+      }
+
+      const pages = [
+        ...ARTICLE_ORDER.map((slug) => {
+          const a = articles[slug];
+          return { slug: a.slug, title: a.metaTitle, description: a.metaDescription };
+        }),
+        { slug: 'insights', title: INSIGHTS_META.title, description: INSIGHTS_META.description },
+      ];
+
+      for (const page of pages) {
+        const url = `${SITE}/${page.slug}`;
+        let html = template;
+        html = setTitle(html, page.title);
+        html = setCanonical(html, url);
+        html = setMeta(html, 'property', 'og:url', url);
+        html = setMeta(html, 'property', 'og:title', page.title);
+        html = setMeta(html, 'property', 'og:description', page.description);
+        html = setMeta(html, 'name', 'twitter:url', url);
+        html = setMeta(html, 'name', 'twitter:title', page.title);
+        html = setMeta(html, 'name', 'twitter:description', page.description);
+
+        const dir = path.resolve(outDir, page.slug);
+        mkdirSync(dir, { recursive: true });
+        writeFileSync(path.resolve(dir, 'index.html'), html);
+      }
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -126,6 +180,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       clientErrorLogger(),
       prerenderCaseStudyOg(),
+      prerenderArticleOg(),
     ],
     resolve: {
       alias: {
