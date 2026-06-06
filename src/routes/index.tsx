@@ -2,6 +2,9 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import HomePage from '@/pages/Home/index';
 import CaseStudyPage from '@/pages/CaseStudy/index';
+import ArticlePage from '@/pages/Article/index';
+import InsightsPage from '@/pages/Insights/index';
+import { ARTICLE_ORDER } from '@/pages/Article/articles';
 import NotFoundPage from '@/pages/NotFound/index';
 import Layout from '@/components/Layout';
 
@@ -41,6 +44,16 @@ export const router = createBrowserRouter([
         path: '/work/:slug',
         element: <CaseStudyPage />,
       },
+      {
+        path: '/insights',
+        element: <InsightsPage />,
+      },
+      // Health-software SEO cluster: one root-level route per article, generated
+      // from ARTICLE_ORDER. Explicit static paths so unknown paths still 404.
+      ...ARTICLE_ORDER.map((slug) => ({
+        path: `/${slug}`,
+        element: <ArticlePage slug={slug} />,
+      })),
     ],
   },
   {

@@ -1,4 +1,5 @@
 import { MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { trackEvent } from '@/lib/track';
 
 /** Global footer + floating WhatsApp CTA, shared across every route. */
@@ -9,6 +10,9 @@ export default function SiteFooter() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-muted/40">
           <p className="font-serif">Digital Solution Builders. — Digital Product Development</p>
           <div className="flex items-center gap-6">
+            <Link to="/insights" className="hover:text-muted/70 transition-colors duration-200">
+              Insights
+            </Link>
             <a
               href="mailto:danielbangs@dsbdigital.biz"
               onClick={() => trackEvent('contact_email')}
