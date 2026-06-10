@@ -161,6 +161,49 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
   },
 
+  'nexa-synapse': {
+    slug: 'nexa-synapse',
+    title: 'Nexa-Analytics Synapse',
+    category: 'Analytics · Intelligence Layer',
+    tagline: 'The intelligence layer connecting every product.',
+    accent: '#5b6cdf',
+    heroImage: '/projects/nexa-synapse.png',
+    heroImageAlt:
+      'Nexa-Analytics Synapse login screen — clean branded sign-in panel with email and password fields',
+    liveUrl: 'https://synapse.dsbdigital.biz',
+    liveLabel: 'synapse.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Analytics Synapse — Cross-Product Analytics & Tamper-Evident Audit Log | Digital Solution Builders',
+    metaDescription:
+      'A cross-product analytics and intelligence layer that ingests from the Welbodi EMR, the LMIS, and surveillance tools — surfacing forecasts, anomalies, and operational insights through dashboards and an API, with an RFC 6962 Merkle log and a weekly OpenTimestamps anchor for tamper-evident audit. Built by Digital Solution Builders.',
+    intro:
+      'A cross-product analytics and intelligence layer that pulls from each operational product in the portfolio and turns the joint signal into forecasts, anomalies, and dashboards — with a tamper-evident audit log you can verify from first principles.',
+    stats: [
+      { label: 'Stage', value: 'In Development' },
+      { label: 'Role', value: 'Analytics Layer' },
+      { label: 'Access', value: 'Admin-provisioned' },
+    ],
+    services: ['Data Pipeline Design', 'Dashboard UI', 'AI / Forecasting'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Each operational product in the portfolio generates its own data — patient encounters in the EMR, dispensing and stock movements in the LMIS, mortality records in the surveillance tool. Looked at one at a time, the joint signal hides: a spike in dispensing in one district, a stock shortfall in another, a rise in encounters somewhere else. The brief was a shared analytics layer that ingests from all of them and produces forecasts, anomalies, and operational dashboards — with an audit trail that does not require trusting the platform itself.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A cross-product analytics and intelligence layer that ingests from the LMIS, the Welbodi EMR, and other connected systems, then surfaces forecasts, anomalies, and operational insights through dashboards and a JSON API. Access is admin-provisioned via the backend CLI, so no anonymous account can write into the layer. Every analytics record is appended to an RFC 6962–style Merkle log; a weekly OpenTimestamps anchor pins the log root to a public Bitcoin proof, so any historical record can be verified back to a specific point in time without trusting the operator.',
+      },
+      {
+        heading: 'The stack',
+        body: 'A Python service handling ingest and the Merkle log, PostgreSQL for the aggregated store, and a React + TypeScript dashboard on top. Deployed via Docker on a managed droplet, with the public surface at synapse.dsbdigital.biz.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'In active development with the tamper-evident log live and pulling from the first connected products. Next builds are richer cross-product forecasts and an expanded set of operational anomaly detectors.',
+      },
+    ],
+  },
+
   'vocal-drift-inspire': {
     slug: 'vocal-drift-inspire',
     title: 'Vocal Drift Inspire Platform',

@@ -70,27 +70,6 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    slug: 'dsb-digital-portfolio',
-    title: 'Digital Solution Builders Portfolio',
-    category: 'Portfolio · Website Design',
-    tagline: 'From Concept to MVP. In 72 Hours.',
-    description:
-      'The portfolio you\'re looking at — built with the same stack we ship to clients. A dark-mode, typographically-driven React site spanning a one-page showcase and deep case-study pages, with scroll-spy navigation, Framer Motion animations, per-route SEO meta and structured data, WhatsApp CTAs, a social share modal, and a hardened security-header layer at the edge.',
-    services: ['Website Design', 'UX Strategy', 'SEO Optimisation'],
-    url: 'https://dsbdigital.biz',
-    image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
-    imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
-    accent: '#a78bfa',
-    stats: [
-      // home + 4 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '5' },
-      // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '11' },
-      { label: 'Delivery', value: '72hrs' },
-    ],
-  },
-  {
-    id: 4,
     slug: 'rms-death-tracker',
     title: 'RMS Death Tracker',
     category: 'Public Health · Surveillance Platform',
@@ -106,6 +85,25 @@ const projects: Project[] = [
       { label: 'Stage', value: 'Production' },
       { label: 'Method', value: 'Excess Mortality' },
       { label: 'Surfaces', value: 'Offline PWA' },
+    ],
+  },
+  {
+    id: 4,
+    slug: 'nexa-synapse',
+    title: 'Nexa-Analytics Synapse',
+    category: 'Analytics · Intelligence Layer',
+    tagline: 'The intelligence layer connecting every product.',
+    description:
+      'The cross-product analytics and AI layer that ingests data from the LMIS, Welbodi EMR, and other verticals, then surfaces forecasts, anomalies, and operational insights through dashboards and API endpoints. Admin-provisioned access via the backend CLI; in active development.',
+    services: ['Data Pipeline Design', 'Dashboard UI', 'AI / Forecasting'],
+    url: 'https://synapse.dsbdigital.biz',
+    image: '/projects/nexa-synapse.png',
+    imageAlt: 'Nexa-Analytics Synapse login screen — clean branded sign-in panel with email and password fields',
+    accent: '#5b6cdf',
+    stats: [
+      { label: 'Stage', value: 'In Development' },
+      { label: 'Role', value: 'Analytics Layer' },
+      { label: 'Access', value: 'Admin-provisioned' },
     ],
   },
   {
@@ -130,6 +128,27 @@ const projects: Project[] = [
   },
   {
     id: 6,
+    slug: 'dsb-digital-portfolio',
+    title: 'Digital Solution Builders Portfolio',
+    category: 'Portfolio · Website Design',
+    tagline: 'From Concept to MVP. In 72 Hours.',
+    description:
+      'The portfolio you\'re looking at — built with the same stack we ship to clients. A dark-mode, typographically-driven React site spanning a one-page showcase and deep case-study pages, with scroll-spy navigation, Framer Motion animations, per-route SEO meta and structured data, WhatsApp CTAs, a social share modal, and a hardened security-header layer at the edge.',
+    services: ['Website Design', 'UX Strategy', 'SEO Optimisation'],
+    url: 'https://dsbdigital.biz',
+    image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
+    imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
+    accent: '#a78bfa',
+    stats: [
+      // home + 5 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
+      { label: 'Pages', value: '6' },
+      // keep 'Projects' in sync with the total number of entries in the `projects` array above
+      { label: 'Projects', value: '11' },
+      { label: 'Delivery', value: '72hrs' },
+    ],
+  },
+  {
+    id: 7,
     slug: 'bangura-brothers',
     title: 'The Bangura Brothers',
     category: 'Youth Brand · Website Design',
@@ -148,7 +167,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     slug: 'bangura-training-app',
     title: 'Bangura Brothers Training App',
     category: 'Youth Sports · App Design',
@@ -167,7 +186,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     slug: 'kellas-kitchen',
     title: "Kella's Kitchen & Events",
     category: 'Food & Beverage · Website Design',
@@ -186,7 +205,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 9,
+    id: 10,
     slug: 'sprout',
     title: 'Sprout',
     category: 'Family · Native Mobile App',
@@ -205,7 +224,7 @@ const projects: Project[] = [
     ],
   },
   {
-    id: 10,
+    id: 11,
     slug: 'nexa-ideation',
     title: 'Nexa-Ideation',
     category: 'SaaS · Application Design',
@@ -223,29 +242,10 @@ const projects: Project[] = [
       { label: 'Stage', value: 'Live MVP' },
     ],
   },
-  {
-    id: 11,
-    slug: 'nexa-synapse',
-    title: 'Nexa-Analytics Synapse',
-    category: 'Analytics · Intelligence Layer',
-    tagline: 'The intelligence layer connecting every product.',
-    description:
-      'The cross-product analytics and AI layer that ingests data from the LMIS, Welbodi EMR, and other verticals, then surfaces forecasts, anomalies, and operational insights through dashboards and API endpoints. Admin-provisioned access via the backend CLI; in active development.',
-    services: ['Data Pipeline Design', 'Dashboard UI', 'AI / Forecasting'],
-    url: 'https://synapse.dsbdigital.biz',
-    image: '/projects/nexa-synapse.png',
-    imageAlt: 'Nexa-Analytics Synapse login screen — clean branded sign-in panel with email and password fields',
-    accent: '#5b6cdf',
-    stats: [
-      { label: 'Stage', value: 'In Development' },
-      { label: 'Role', value: 'Analytics Layer' },
-      { label: 'Access', value: 'Admin-provisioned' },
-    ],
-  },
 ];
 
 // Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
-const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker', 'vocal-drift-inspire']);
+const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'nexa-synapse', 'rms-death-tracker', 'vocal-drift-inspire']);
 
 const services = [
   {
