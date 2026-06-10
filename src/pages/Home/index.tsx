@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { motion as _motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion as _motion, useInView, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Mail, ArrowDown, MessageCircle, Share2 } from 'lucide-react';
 import ShareModal from '../../components/ShareModal';
 import ContactForm from '../../components/ContactForm';
@@ -442,7 +442,12 @@ function HeroSection() {
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [shareOpen, setShareOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref as React.RefObject<Element>, { once: true, margin: '-5% 0px' });
+  // Expand the observation root so the reveal triggers before the card scrolls
+  // into view; the previous `-5%` shrunk it and delayed the fade, which left
+  // the section blank on first paint and broke headless/OG-image captures.
+  const inView = useInView(ref as React.RefObject<Element>, { once: true, margin: '0px 0px 25% 0px' });
+  const reduceMotion = useReducedMotion();
+  const reveal = reduceMotion || inView;
 
   const isEven = index % 2 === 0;
 
@@ -452,7 +457,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       className="border-b border-border/50 group"
       itemScope
       itemType="https://schema.org/CreativeWork"
-      style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(60px)', transition: 'opacity 0.8s ease, transform 0.8s ease' }}
+      style={{ opacity: reveal ? 1 : 0, transform: reveal ? 'translateY(0)' : 'translateY(60px)', transition: 'opacity 0.8s ease, transform 0.8s ease' }}
     >
       <div
         className={`max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 grid md:grid-cols-2 gap-10 md:gap-20 items-center ${
