@@ -90,6 +90,7 @@ function prerenderCaseStudyOg(): Plugin {
         const image = `${SITE}${cs.heroImage}`;
         let html = template;
         html = setTitle(html, cs.metaTitle);
+        html = setMeta(html, 'name', 'description', cs.metaDescription);
         html = setCanonical(html, url);
         html = setMeta(html, 'property', 'og:url', url);
         html = setMeta(html, 'property', 'og:title', cs.metaTitle);
@@ -149,6 +150,7 @@ function prerenderArticleOg(): Plugin {
         const url = `${SITE}/${page.slug}`;
         let html = template;
         html = setTitle(html, page.title);
+        html = setMeta(html, 'name', 'description', page.description);
         html = setCanonical(html, url);
         html = setMeta(html, 'property', 'og:url', url);
         html = setMeta(html, 'property', 'og:title', page.title);
