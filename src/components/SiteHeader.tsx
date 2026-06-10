@@ -56,16 +56,18 @@ export default function SiteHeader() {
               <a
                 key={link}
                 href={hrefFor(link.toLowerCase())}
-                className={`text-xs tracking-widest uppercase transition-colors duration-200 relative group ${
+                className={`text-xs tracking-widest uppercase transition-colors duration-200 group inline-flex items-center min-h-[44px] ${
                   isActive ? 'text-foreground' : 'text-muted hover:text-foreground'
                 }`}
               >
-                {link}
-                <span
-                  className={`absolute -bottom-0.5 left-0 h-px bg-foreground transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}
-                />
+                <span className="relative">
+                  {link}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 h-px bg-foreground transition-all duration-300 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </span>
               </a>
             );
           })}
