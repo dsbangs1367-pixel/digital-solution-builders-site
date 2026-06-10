@@ -396,7 +396,7 @@ function HeroSection() {
               </a>
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 px-5 py-2.5 border border-border/60 text-xs font-medium tracking-wide text-muted hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
+                className="inline-flex items-center gap-2 px-5 min-h-[44px] border border-border/60 text-xs font-medium tracking-wide text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
               >
                 View Recent Projects
               </a>
