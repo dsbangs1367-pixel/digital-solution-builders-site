@@ -595,7 +595,7 @@ function ServicesSection() {
             </div>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted/30 hover:text-foreground group-hover:text-muted/60 transition-colors duration-300 w-fit"
+              className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted/60 hover:text-foreground group-hover:text-muted/80 transition-colors duration-300 w-fit"
             >
               Start this service
               <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -667,7 +667,7 @@ function PricingSection() {
             </div>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted/30 hover:text-foreground group-hover:text-muted/60 transition-colors duration-300 w-fit"
+              className="inline-flex items-center gap-2 text-xs tracking-widest uppercase text-muted/60 hover:text-foreground group-hover:text-muted/80 transition-colors duration-300 w-fit"
             >
               Get a fixed quote
               <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
