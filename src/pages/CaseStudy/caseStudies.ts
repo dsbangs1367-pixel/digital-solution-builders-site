@@ -256,8 +256,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     heroImage: '/projects/salone-gospel-hub.png',
     heroImageAlt:
       'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
-    liveUrl: 'https://dsbdigital.biz/#contact',
-    liveLabel: 'Live — get in touch',
+    liveUrl: 'https://salonegospelhub.com',
+    liveLabel: 'salonegospelhub.com',
     metaTitle:
       'Salone Gospel Hub — A Directory & Community Hub for Sierra Leonean Gospel | Digital Solution Builders',
     metaDescription:

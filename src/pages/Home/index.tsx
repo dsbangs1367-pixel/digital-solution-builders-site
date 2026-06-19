@@ -155,7 +155,7 @@ const projects: Project[] = [
     description:
       "A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artists, instrumentalists, choirs, churches and ministries, producers, gospel DJs and media, songs, and events — for Sierra Leone and the diaspora. Built from the founder's own frustration as a gospel musician watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could. Live, with a Postgres schema, Row-Level Security policies, ownership triggers, a content-moderation engine and auth wiring running in production behind a Vitest + pgTAP CI suite. Next.js 16 + Tailwind v4 on the frontend, Supabase (Postgres, Auth, Storage) on the backend, with security enforced in the database (RLS), not in app-side query filters.",
     services: ['Full-stack Development', 'Database & RLS Design', 'Mobile-first UX'],
-    url: 'https://dsbdigital.biz/#contact',
+    url: 'https://salonegospelhub.com',
     image: '/projects/salone-gospel-hub.png',
     imageAlt:
       'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
