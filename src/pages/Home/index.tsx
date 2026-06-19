@@ -119,9 +119,9 @@ const projects: Project[] = [
     image: '/projects/nexa-continuum.png',
     imageAlt:
       'Nexa-Health Continuum — longitudinal patient-journey dashboard with a unified timeline across providers, multi-provider lab trend chart with abnormal-result flagging, scanned-document viewer, and a clinician-signed AI clinical assessment panel',
-    accent: '#2c6e8f',
+    accent: '#0d655e',
     stats: [
-      { label: 'Stage', value: 'In Development' },
+      { label: 'Stage', value: 'Live' },
       { label: 'Risk Tier', value: 'T1 Clinical' },
       { label: 'Surfaces', value: 'Web + Mobile' },
     ],
@@ -153,7 +153,7 @@ const projects: Project[] = [
     category: 'Faith & Music · Community Platform',
     tagline: 'The home of Sierra Leonean Gospel.',
     description:
-      "A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artists, instrumentalists, choirs, churches and ministries, producers, gospel DJs and media, songs, and events — for Sierra Leone and the diaspora. Built from the founder's own frustration as a gospel musician watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could. Foundation phase is built: a Postgres schema with Row-Level Security policies, ownership triggers and a content-moderation engine, plus auth wiring — running behind a Vitest + pgTAP CI suite. Next.js 16 + Tailwind v4 on the frontend, Supabase (Postgres, Auth, Storage) on the backend, with security enforced in the database (RLS), not in app-side query filters.",
+      "A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artists, instrumentalists, choirs, churches and ministries, producers, gospel DJs and media, songs, and events — for Sierra Leone and the diaspora. Built from the founder's own frustration as a gospel musician watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could. Live, with a Postgres schema, Row-Level Security policies, ownership triggers, a content-moderation engine and auth wiring running in production behind a Vitest + pgTAP CI suite. Next.js 16 + Tailwind v4 on the frontend, Supabase (Postgres, Auth, Storage) on the backend, with security enforced in the database (RLS), not in app-side query filters.",
     services: ['Full-stack Development', 'Database & RLS Design', 'Mobile-first UX'],
     url: 'https://dsbdigital.biz/#contact',
     image: '/projects/salone-gospel-hub.png',
@@ -161,9 +161,9 @@ const projects: Project[] = [
       'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
     accent: '#12A150',
     stats: [
-      { label: 'Stage', value: 'In Development' },
-      { label: 'Phase', value: 'Foundation' },
+      { label: 'Stage', value: 'Live' },
       { label: 'Audience', value: 'SL + Diaspora' },
+      { label: 'Surfaces', value: 'Mobile-first PWA' },
     ],
   },
   {

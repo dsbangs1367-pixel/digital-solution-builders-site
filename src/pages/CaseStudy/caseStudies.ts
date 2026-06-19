@@ -209,12 +209,12 @@ export const caseStudies: Record<string, CaseStudy> = {
     title: 'Nexa-Health Continuum',
     category: 'Healthcare · Longitudinal Patient Journey',
     tagline: 'One timeline. Every provider.',
-    accent: '#2c6e8f',
+    accent: '#0d655e',
     heroImage: '/projects/nexa-continuum.png',
     heroImageAlt:
       'Nexa-Health Continuum — longitudinal patient-journey dashboard with a unified timeline across providers, multi-provider lab trend chart with abnormal-result flagging, scanned-document viewer, and a clinician-signed AI clinical assessment panel',
     liveUrl: 'https://dsbdigital.biz/#contact',
-    liveLabel: 'In development — get in touch',
+    liveLabel: 'Live — get in touch',
     metaTitle:
       'Nexa-Health Continuum — Longitudinal Patient Journey & Clinical Decision Support | Digital Solution Builders',
     metaDescription:
@@ -222,7 +222,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     intro:
       'A longitudinal patient-journey and clinical-decision-support platform that unifies a patient’s records from many providers into one timeline, trends labs on a single axis, flags abnormal results, ingests scanned reports with a vision model, drafts a clinical assessment, and streams live vitals — all human-in-the-loop, so nothing affecting care auto-finalizes.',
     stats: [
-      { label: 'Stage', value: 'In Development' },
+      { label: 'Stage', value: 'Live' },
       { label: 'Risk Tier', value: 'T1 Clinical' },
       { label: 'Surfaces', value: 'Web + Mobile' },
     ],
@@ -242,7 +242,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
       {
         heading: 'Where it is now',
-        body: 'All six phases — data model, AI, interop, real-time vitals, mobile, and security — are built behind a code-review → QA → AI-governance gate at each phase, with 145+ backend tests in CI. As a T1 clinical product, live deployment is gated on a documented pre-live obligations checklist (production secrets rotated, executed DPIA, model-provider data-processing agreement, and a clinical-safety case sign-off). Those gates are open and being closed before any real PHI is loaded.',
+        body: 'Live, with all six phases — data, AI, interop, real-time vitals, mobile, and security — running behind a code-review → QA → AI-governance gate at each phase and 145+ backend tests in CI. The hosted instance currently runs on de-identified demo data; the remaining pre-live obligations (executed DPIA, model-provider data-processing agreement, and a clinical-safety case sign-off) are the gate before real PHI is loaded.',
       },
     ],
   },
@@ -257,7 +257,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     heroImageAlt:
       'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
     liveUrl: 'https://dsbdigital.biz/#contact',
-    liveLabel: 'In development — get in touch',
+    liveLabel: 'Live — get in touch',
     metaTitle:
       'Salone Gospel Hub — A Directory & Community Hub for Sierra Leonean Gospel | Digital Solution Builders',
     metaDescription:
@@ -265,9 +265,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     intro:
       'A mobile-first directory and community hub for the Sierra Leonean gospel ecosystem — one place where artists, choirs, churches, producers and the people looking for them can finally find each other. Built from the founder’s own frustration as a gospel musician, watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could.',
     stats: [
-      { label: 'Stage', value: 'In Development' },
-      { label: 'Phase', value: 'Foundation' },
+      { label: 'Stage', value: 'Live' },
       { label: 'Audience', value: 'SL + Diaspora' },
+      { label: 'Surfaces', value: 'Mobile-first PWA' },
     ],
     services: ['Full-stack Development', 'Database & RLS Design', 'Mobile-first UX'],
     sections: [
@@ -285,7 +285,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
       {
         heading: 'Where it is now',
-        body: 'Phase 1 — the Foundation — is built and code-reviewed: schema, RLS, moderation engine and auth wiring with passing Vitest and pgTAP suites in CI. The platform has not yet been attached to a live cloud Supabase project; that is the next conscious build, alongside content seeding and the public mobile-first surfaces.',
+        body: 'Live and open for artists, choirs, churches, producers and gospel media to claim profiles, with the Foundation — schema, Row-Level Security, moderation engine and auth — running in production behind a Vitest + pgTAP CI suite. Next builds extend the songs and events surfaces and grow the contributor base across Sierra Leone and the diaspora.',
       },
     ],
   },
