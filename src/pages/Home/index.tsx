@@ -107,6 +107,26 @@ const projects: Project[] = [
     ],
   },
   {
+    id: 12,
+    slug: 'nexa-continuum',
+    title: 'Nexa-Health Continuum',
+    category: 'Healthcare · Longitudinal Patient Journey',
+    tagline: 'One timeline. Every provider.',
+    description:
+      "A longitudinal patient-journey and clinical-decision-support platform that unifies a patient's records from many providers into one timeline. Trends labs on a single axis across providers, flags abnormal results, ingests scanned reports via a clinician-verified vision model, drafts an AI clinical assessment (clinician-signed-off), streams live vitals, and exchanges data via FHIR R4 and DHIS2. T1 clinical, six phases built behind a code-review → QA → AI-governance gate at each phase. FastAPI + async SQLAlchemy + PostgreSQL on the backend; React 18 + Vite + Tailwind + React Query PWA on the web; React Native + Expo for the clinician mobile client.",
+    services: ['Full-stack Clinical Build', 'Vision + LLM Integration', 'FHIR / DHIS2 Interop'],
+    url: 'https://dsbdigital.biz/#contact',
+    image: '/projects/nexa-continuum.png',
+    imageAlt:
+      'Nexa-Health Continuum — longitudinal patient-journey dashboard with a unified timeline across providers, multi-provider lab trend chart with abnormal-result flagging, scanned-document viewer, and a clinician-signed AI clinical assessment panel',
+    accent: '#2c6e8f',
+    stats: [
+      { label: 'Stage', value: 'In Development' },
+      { label: 'Risk Tier', value: 'T1 Clinical' },
+      { label: 'Surfaces', value: 'Web + Mobile' },
+    ],
+  },
+  {
     id: 5,
     slug: 'vocal-drift-inspire',
     title: 'Vocal Drift Inspire Platform',
@@ -127,6 +147,26 @@ const projects: Project[] = [
     ],
   },
   {
+    id: 13,
+    slug: 'salone-gospel-hub',
+    title: 'Salone Gospel Hub',
+    category: 'Faith & Music · Community Platform',
+    tagline: 'The home of Sierra Leonean Gospel.',
+    description:
+      "A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artists, instrumentalists, choirs, churches and ministries, producers, gospel DJs and media, songs, and events — for Sierra Leone and the diaspora. Built from the founder's own frustration as a gospel musician watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could. Foundation phase is built: a Postgres schema with Row-Level Security policies, ownership triggers and a content-moderation engine, plus auth wiring — running behind a Vitest + pgTAP CI suite. Next.js 16 + Tailwind v4 on the frontend, Supabase (Postgres, Auth, Storage) on the backend, with security enforced in the database (RLS), not in app-side query filters.",
+    services: ['Full-stack Development', 'Database & RLS Design', 'Mobile-first UX'],
+    url: 'https://dsbdigital.biz/#contact',
+    image: '/projects/salone-gospel-hub.png',
+    imageAlt:
+      'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
+    accent: '#12A150',
+    stats: [
+      { label: 'Stage', value: 'In Development' },
+      { label: 'Phase', value: 'Foundation' },
+      { label: 'Audience', value: 'SL + Diaspora' },
+    ],
+  },
+  {
     id: 6,
     slug: 'dsb-digital-portfolio',
     title: 'Digital Solution Builders Portfolio',
@@ -140,10 +180,10 @@ const projects: Project[] = [
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
     stats: [
-      // home + 5 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '6' },
+      // home + 7 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
+      { label: 'Pages', value: '8' },
       // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '11' },
+      { label: 'Projects', value: '13' },
       { label: 'Delivery', value: '72hrs' },
     ],
   },
@@ -245,7 +285,15 @@ const projects: Project[] = [
 ];
 
 // Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
-const CASE_STUDY_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'nexa-synapse', 'rms-death-tracker', 'vocal-drift-inspire']);
+const CASE_STUDY_SLUGS = new Set([
+  'nexa-welbodi',
+  'nexa-logistix',
+  'nexa-synapse',
+  'nexa-continuum',
+  'rms-death-tracker',
+  'vocal-drift-inspire',
+  'salone-gospel-hub',
+]);
 
 const services = [
   {
@@ -792,7 +840,7 @@ function AboutSection() {
           </p>
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border/40">
             {[
-              { value: '10', label: 'Products in Portfolio' },
+              { value: '13', label: 'Products in Portfolio' },
               { value: '3', label: 'Surfaces — Web · Mobile · Enterprise' },
               { value: '72hrs', label: 'For Small Builds' },
             ].map((item) => (
