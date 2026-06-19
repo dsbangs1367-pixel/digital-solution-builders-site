@@ -167,6 +167,26 @@ const projects: Project[] = [
     ],
   },
   {
+    id: 14,
+    slug: 'prime-care',
+    title: 'Prime Care Medical Services',
+    category: 'Healthcare · Clinic Website + Booking',
+    tagline: 'Three specialists. One shared record.',
+    description:
+      "A public website and end-to-end patient-booking platform for a Freetown specialist clinic — cardiology, mental health and general physician care. Honest, request-based booking: reception triages every request and confirms by SMS. A Next.js 16 (App Router) + React 19 site on Vercel paired with a Node + Express bridge running as a systemd unit on a managed droplet (nginx + Let's Encrypt), which submits each request directly into the clinic's electronic medical record queue with offline-queue retries. JSON-LD MedicalClinic + Physician schema, sitemap, robots, OG. 231 tests in CI; code-review, QA and a compliance gate before each release.",
+    services: ['Full-stack Web + Backend', 'Booking Integration', 'Production Operations'],
+    url: 'https://primecaresl.com',
+    image: '/projects/prime-care.png',
+    imageAlt:
+      'Prime Care Medical Services homepage — deep teal hero with the headline "Three specialists. One shared record.", a coral "Request a consult" CTA and a phone-call CTA, alongside the Freetown clinic address, opening hours and USSD booking short-code',
+    accent: '#087E8B',
+    stats: [
+      { label: 'Stage', value: 'Live' },
+      { label: 'Specialties', value: '3' },
+      { label: 'Surfaces', value: 'Site + Bridge' },
+    ],
+  },
+  {
     id: 6,
     slug: 'dsb-digital-portfolio',
     title: 'Digital Solution Builders Portfolio',
@@ -180,10 +200,10 @@ const projects: Project[] = [
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
     stats: [
-      // home + 7 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '8' },
+      // home + 8 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
+      { label: 'Pages', value: '9' },
       // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '13' },
+      { label: 'Projects', value: '14' },
       { label: 'Delivery', value: '72hrs' },
     ],
   },
@@ -293,6 +313,7 @@ const CASE_STUDY_SLUGS = new Set([
   'rms-death-tracker',
   'vocal-drift-inspire',
   'salone-gospel-hub',
+  'prime-care',
 ]);
 
 const services = [
@@ -840,7 +861,7 @@ function AboutSection() {
           </p>
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border/40">
             {[
-              { value: '13', label: 'Products in Portfolio' },
+              { value: '14', label: 'Products in Portfolio' },
               { value: '3', label: 'Surfaces — Web · Mobile · Enterprise' },
               { value: '72hrs', label: 'For Small Builds' },
             ].map((item) => (

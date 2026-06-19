@@ -1,18 +1,19 @@
 /**
  * case-studies.smoke.mjs
  *
- * Standalone assertion script for the two new case studies added in this
- * change: nexa-continuum and salone-gospel-hub.
+ * Standalone assertion script for the case studies added since the original
+ * portfolio launch: nexa-continuum, salone-gospel-hub, and prime-care.
  *
  * Run:  bun tests/case-studies.smoke.mjs
  *
  * Covers:
- *   Part 1 — caseStudies.ts data integrity for the new slugs
- *   Part 2 — CASE_STUDY_SLUGS in Home/index.tsx includes both new slugs
+ *   Part 1 — caseStudies.ts data integrity for the slugs in NEW_SLUGS
+ *   Part 2 — CASE_STUDY_SLUGS in Home/index.tsx includes the new slugs
  *   Part 3 — Hero image PNGs exist under public/projects/
  *   Part 4 — dist/work/<slug>/index.html exists and has correct baked meta
- *   Part 5 — public/sitemap.xml contains both new /work/<slug> URLs
+ *   Part 5 — public/sitemap.xml contains each /work/<slug> URL
  *   Part 6 — Edge cases: accent hex, slug/heroImage alignment, no stale omissions
+ *   Part 7 — Prime Care-specific assertions (liveUrl, accent, og:image, services, stat shape)
  */
 
 import assert from 'node:assert/strict';
@@ -58,11 +59,11 @@ function escapeAttr(v) {
 // ---------------------------------------------------------------------------
 const { caseStudies } = await import('../src/pages/CaseStudy/caseStudies.ts');
 
-// The two new slugs being validated
-const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub'];
+// The three slugs added to the portfolio since the original launch
+const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub', 'prime-care'];
 
 // ==========================================================================
-// PART 1 — caseStudies.ts data integrity for the two new entries
+// PART 1 — caseStudies.ts data integrity for the new entries
 // ==========================================================================
 
 console.log('\n--- Part 1: caseStudies.ts data integrity ---\n');
@@ -76,6 +77,11 @@ test('caseStudies contains nexa-continuum key', () => {
 test('caseStudies contains salone-gospel-hub key', () => {
   assert.ok('salone-gospel-hub' in caseStudies,
     'salone-gospel-hub is missing from caseStudies record');
+});
+
+test('caseStudies contains prime-care key', () => {
+  assert.ok('prime-care' in caseStudies,
+    'prime-care is missing from caseStudies record');
 });
 
 // Each new entry: slug field matches its key
@@ -154,6 +160,11 @@ test('CASE_STUDY_SLUGS includes salone-gospel-hub', () => {
     "salone-gospel-hub is missing from CASE_STUDY_SLUGS in Home/index.tsx");
 });
 
+test('CASE_STUDY_SLUGS includes prime-care', () => {
+  assert.ok(setMatch && setMatch[1].includes("'prime-care'"),
+    "prime-care is missing from CASE_STUDY_SLUGS in Home/index.tsx");
+});
+
 // Edge case: every slug in caseStudies.ts should have a corresponding entry in
 // CASE_STUDY_SLUGS — a slug that has a case study page but is missing from the
 // set means the "View case study" link never renders on the homepage card.
@@ -175,6 +186,11 @@ test('projects array in Home/index.tsx contains nexa-continuum entry', () => {
 test('projects array in Home/index.tsx contains salone-gospel-hub entry', () => {
   assert.ok(homeSource.includes("slug: 'salone-gospel-hub'"),
     "No project entry with slug 'salone-gospel-hub' found in Home/index.tsx projects array");
+});
+
+test('projects array in Home/index.tsx contains prime-care entry', () => {
+  assert.ok(homeSource.includes("slug: 'prime-care'"),
+    "No project entry with slug 'prime-care' found in Home/index.tsx projects array");
 });
 
 // ==========================================================================
@@ -386,6 +402,26 @@ test('salone-gospel-hub title does not contain "Continuum" (no title swap)', () 
     `salone-gospel-hub <title> contains "Continuum" — titles may have been swapped`);
 });
 
+test('[prime-care] <title> contains "Prime Care"', () => {
+  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
+  if (!existsSync(htmlPath)) {
+    assert.fail('dist/work/prime-care/index.html not found');
+  }
+  const html = readFileSync(htmlPath, 'utf8');
+  const m = html.match(/<title>([\s\S]*?)<\/title>/);
+  assert.ok(m && m[1].includes('Prime Care'),
+    `prime-care <title> does not contain "Prime Care": got "${m?.[1]}"`);
+});
+
+test('prime-care title does not contain "Continuum" or "Gospel" (no title swap)', () => {
+  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
+  if (!existsSync(htmlPath)) return;
+  const html = readFileSync(htmlPath, 'utf8');
+  const m = html.match(/<title>([\s\S]*?)<\/title>/);
+  assert.ok(!m || (!m[1].includes('Continuum') && !m[1].includes('Gospel')),
+    `prime-care <title> contains a foreign slug name — titles may have been swapped: got "${m?.[1]}"`);
+});
+
 // ==========================================================================
 // PART 5 — public/sitemap.xml contains both new /work/<slug> URLs
 // ==========================================================================
@@ -448,12 +484,13 @@ test('All new sitemap entries use https://dsbdigital.biz as base', () => {
 
 console.log('\n--- Part 6: Additional edge cases ---\n');
 
-// The caseStudies.ts now has 7 entries (5 original + 2 new).
-// If this count changes unexpectedly, flag it so the test suite stays honest.
-test('caseStudies.ts has exactly 7 entries', () => {
+// The caseStudies.ts now has 8 entries (5 original + 3 added this session:
+// nexa-continuum, salone-gospel-hub, prime-care). If this count changes
+// unexpectedly, flag it so the test suite stays honest.
+test('caseStudies.ts has exactly 8 entries', () => {
   const count = Object.keys(caseStudies).length;
-  assert.strictEqual(count, 7,
-    `Expected 7 entries in caseStudies, got ${count}. Update this test if adding more.`);
+  assert.strictEqual(count, 8,
+    `Expected 8 entries in caseStudies, got ${count}. Update this test if adding more.`);
 });
 
 // All slugs in caseStudies must follow the kebab-case slug pattern
@@ -466,11 +503,17 @@ test('All caseStudies slugs are valid kebab-case', () => {
 
 // heroImage for each new case study must reference a different file
 // (not accidentally pointing to a shared placeholder)
-test('nexa-continuum and salone-gospel-hub heroImages are distinct', () => {
-  const img1 = caseStudies['nexa-continuum'].heroImage;
-  const img2 = caseStudies['salone-gospel-hub'].heroImage;
-  assert.notStrictEqual(img1, img2,
-    `Both new case studies reference the same heroImage path (${img1}) — likely a copy-paste error`);
+test('All NEW_SLUGS heroImages are distinct', () => {
+  const seen = new Map();
+  for (const slug of NEW_SLUGS) {
+    const img = caseStudies[slug].heroImage;
+    if (seen.has(img)) {
+      assert.fail(
+        `Duplicate heroImage path (${img}) shared between "${seen.get(img)}" and "${slug}" — likely a copy-paste error`,
+      );
+    }
+    seen.set(img, slug);
+  }
 });
 
 // heroImage filename should contain the slug (or a recognisable variant) so
@@ -485,6 +528,91 @@ test('[salone-gospel-hub] heroImage filename contains "salone-gospel-hub"', () =
   const { heroImage } = caseStudies['salone-gospel-hub'];
   assert.ok(heroImage.includes('salone-gospel-hub'),
     `salone-gospel-hub heroImage ("${heroImage}") should contain "salone-gospel-hub" in its filename`);
+});
+
+test('[prime-care] heroImage filename contains "prime-care"', () => {
+  const { heroImage } = caseStudies['prime-care'];
+  assert.ok(heroImage.includes('prime-care'),
+    `prime-care heroImage ("${heroImage}") should contain "prime-care" in its filename`);
+});
+
+// ==========================================================================
+// PART 7 — prime-care-specific edge cases (new additions)
+// ==========================================================================
+
+console.log('\n--- Part 7: prime-care-specific edge cases ---\n');
+
+// Happy path: prime-care liveUrl resolves to the real primecaresl.com domain,
+// NOT the contact-form fallback (#contact) that nexa-continuum still uses.
+test('[prime-care] liveUrl points to primecaresl.com (not contact-form fallback)', () => {
+  const { liveUrl } = caseStudies['prime-care'];
+  assert.ok(
+    liveUrl.includes('primecaresl.com'),
+    `prime-care liveUrl should contain "primecaresl.com", got: "${liveUrl}"`
+  );
+  assert.ok(
+    !liveUrl.includes('#contact'),
+    `prime-care liveUrl should not be the contact-form fallback (#contact), got: "${liveUrl}"`
+  );
+});
+
+// Edge case: prime-care accent must be exactly the brand teal #087E8B.
+// Continuum uses #0d655e; a copy-paste error would produce the wrong teal shade.
+test('[prime-care] accent is exactly the Prime Care brand teal #087E8B', () => {
+  const { accent } = caseStudies['prime-care'];
+  assert.strictEqual(
+    accent.toUpperCase(),
+    '#087E8B',
+    `prime-care accent should be #087E8B (brand teal), got: "${accent}"`
+  );
+});
+
+// Edge case: the prerendered og:image for prime-care must point at
+// https://dsbdigital.biz/projects/prime-care.png — not a different case study's image.
+// (This is a standalone assertion separate from the loop in Part 4, to make the
+// prime-care-specific requirement explicit and independently catchable.)
+test('[prime-care] prerendered og:image path ends with /projects/prime-care.png', () => {
+  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
+  if (!existsSync(htmlPath)) {
+    assert.fail('dist/work/prime-care/index.html not found');
+  }
+  const html = readFileSync(htmlPath, 'utf8');
+  const m = html.match(/property="og:image"\s+content="([^"]*)"/);
+  assert.ok(m, 'og:image meta tag not found in dist/work/prime-care/index.html');
+  assert.ok(
+    m[1].endsWith('/projects/prime-care.png'),
+    `prime-care og:image should end with /projects/prime-care.png, got: "${m[1]}"`
+  );
+});
+
+// Edge case: prime-care services array must include 'Booking Integration'
+// (differentiates it from the plain website builds and reflects the bridge integration).
+test('[prime-care] services array includes "Booking Integration"', () => {
+  const { services } = caseStudies['prime-care'];
+  assert.ok(
+    Array.isArray(services) && services.includes('Booking Integration'),
+    `prime-care services should include "Booking Integration", got: ${JSON.stringify(services)}`
+  );
+});
+
+// Edge case: prime-care has exactly 3 stats (matching the "3 Specialties" tagline).
+test('[prime-care] has exactly 3 stats entries', () => {
+  const { stats } = caseStudies['prime-care'];
+  assert.strictEqual(
+    stats.length,
+    3,
+    `prime-care should have exactly 3 stats, got ${stats.length}: ${JSON.stringify(stats)}`
+  );
+});
+
+// Edge case: liveLabel must match the domain in liveUrl (no stale placeholder text).
+// Regression guard against a label like "In development — get in touch" being left over.
+test('[prime-care] liveLabel reflects the live primecaresl.com domain', () => {
+  const { liveLabel } = caseStudies['prime-care'];
+  assert.ok(
+    liveLabel.toLowerCase().includes('primecaresl'),
+    `prime-care liveLabel should reference primecaresl.com, got: "${liveLabel}"`
+  );
 });
 
 // ==========================================================================

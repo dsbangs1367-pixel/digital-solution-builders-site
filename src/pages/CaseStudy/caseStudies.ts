@@ -290,6 +290,49 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
   },
 
+  'prime-care': {
+    slug: 'prime-care',
+    title: 'Prime Care Medical Services',
+    category: 'Healthcare · Clinic Website + Booking',
+    tagline: 'Three specialists. One shared record.',
+    accent: '#087E8B',
+    heroImage: '/projects/prime-care.png',
+    heroImageAlt:
+      'Prime Care Medical Services homepage — deep teal hero with the headline "Three specialists. One shared record.", a coral "Request a consult" CTA and a phone-call CTA, alongside the Freetown clinic address, opening hours and USSD booking short-code',
+    liveUrl: 'https://primecaresl.com',
+    liveLabel: 'primecaresl.com',
+    metaTitle:
+      'Prime Care Medical Services — Clinic Website + Online Booking | Digital Solution Builders',
+    metaDescription:
+      'A client build for a Freetown specialist clinic — a Next.js 16 public website and a self-hosted Express "bridge" that submits booking requests directly into the clinic\'s electronic medical record. Live at primecaresl.com with end-to-end online booking.',
+    intro:
+      'A public website and end-to-end patient-booking workflow for a Freetown specialist clinic — built as a single product spanning a Next.js public site, a self-hosted bridge service, and an integration into the clinic’s electronic medical record so every web request lands directly in reception’s booking queue.',
+    stats: [
+      { label: 'Stage', value: 'Live' },
+      { label: 'Specialties', value: '3' },
+      { label: 'Surfaces', value: 'Site + Bridge' },
+    ],
+    services: ['Full-stack Web + Backend', 'Booking Integration', 'Production Operations'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'A new specialist clinic opening in central Freetown — cardiology, mental health and general physician care — needed a public home on the web. Patients needed to find the clinic, read about each specialty, see who the clinicians are, and request a consult without calling. Reception needed every web request to land directly in their booking queue, not in a separate inbox to copy out by hand. And the booking flow had to be honest: the clinic is request-based — reception triages every request and confirms by SMS — so the site should never pretend to "hold" or "lose" slots that do not exist.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A complete public site (Services / Our Doctors / Locations / About / Request a consult / My record), an honest request-based booking flow that pulls real availability from the clinic’s configured calendar, a self-service "My record" lookup for returning patients, and a USSD short-code option for patients without smartphones. Behind the site, a self-hosted "bridge" service receives each booking request and writes it directly into the clinic’s electronic medical record queue — with offline-queue retries and a pending → synced → errored state machine, so a brief network blip never drops a request. Reception confirms by SMS and the patient gets a tracking reference. Full SEO baseline: JSON-LD MedicalClinic + Physician schema, sitemap, robots, Open Graph and per-page metadata.',
+      },
+      {
+        heading: 'The stack',
+        body: 'Next.js 16 (App Router) + React 19 with pure-CSS design tokens (no Tailwind) on the frontend, deployed on Vercel. The bridge is a Node + Express service running as a systemd unit on a managed Linux droplet, fronted by nginx with a Let’s Encrypt certificate, and authenticated to the EMR over a scoped service-account JWT. A clear public availability endpoint exposes the clinic’s open weekdays, hours and blackout dates without leaking any patient data. 231 tests in CI; each release passed code-review, QA and a compliance gate before going out.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live in production at primecaresl.com since 2026-06-13, with the booking bridge live at bridge.primecaresl.com (HTTPS, auto-renewing certificate, systemd-managed). Online booking works end to end — request → bridge → clinic queue → reception confirms by SMS. The site also degrades cleanly: if the bridge is ever unreachable, the booking and patient-lookup paths fall back to a clear "call the clinic" message with the phone number, so patients are never left at a dead end. The production SMS sender ID is the final remaining step (in submission with the operators).',
+      },
+    ],
+  },
+
   'vocal-drift-inspire': {
     slug: 'vocal-drift-inspire',
     title: 'Vocal Drift Inspire Platform',
