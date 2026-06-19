@@ -214,7 +214,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     heroImageAlt:
       'Nexa-Health Continuum — longitudinal patient-journey dashboard with a unified timeline across providers, multi-provider lab trend chart with abnormal-result flagging, scanned-document viewer, and a clinician-signed AI clinical assessment panel',
     liveUrl: 'https://dsbdigital.biz/#contact',
-    liveLabel: 'Live — get in touch',
+    liveLabel: 'In development — get in touch',
     metaTitle:
       'Nexa-Health Continuum — Longitudinal Patient Journey & Clinical Decision Support | Digital Solution Builders',
     metaDescription:
@@ -222,7 +222,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     intro:
       'A longitudinal patient-journey and clinical-decision-support platform that unifies a patient’s records from many providers into one timeline, trends labs on a single axis, flags abnormal results, ingests scanned reports with a vision model, drafts a clinical assessment, and streams live vitals — all human-in-the-loop, so nothing affecting care auto-finalizes.',
     stats: [
-      { label: 'Stage', value: 'Live' },
+      { label: 'Stage', value: 'In Development' },
       { label: 'Risk Tier', value: 'T1 Clinical' },
       { label: 'Surfaces', value: 'Web + Mobile' },
     ],
@@ -242,7 +242,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
       {
         heading: 'Where it is now',
-        body: 'Live, with all six phases — data, AI, interop, real-time vitals, mobile, and security — running behind a code-review → QA → AI-governance gate at each phase and 145+ backend tests in CI. The hosted instance currently runs on de-identified demo data; the remaining pre-live obligations (executed DPIA, model-provider data-processing agreement, and a clinical-safety case sign-off) are the gate before real PHI is loaded.',
+        body: 'Running locally with all six phases — data, AI, interop, real-time vitals, mobile, and security — built behind a code-review → QA → AI-governance gate at each phase, with 145+ backend tests in CI. As a T1 clinical product, the path to a hosted release is gated on a documented pre-live obligations checklist (executed DPIA, model-provider data-processing agreement, and a clinical-safety case sign-off). Those gates are open and being closed before the platform is deployed to a public host.',
       },
     ],
   },

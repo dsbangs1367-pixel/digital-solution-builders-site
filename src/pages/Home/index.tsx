@@ -121,7 +121,7 @@ const projects: Project[] = [
       'Nexa-Health Continuum — longitudinal patient-journey dashboard with a unified timeline across providers, multi-provider lab trend chart with abnormal-result flagging, scanned-document viewer, and a clinician-signed AI clinical assessment panel',
     accent: '#0d655e',
     stats: [
-      { label: 'Stage', value: 'Live' },
+      { label: 'Stage', value: 'In Development' },
       { label: 'Risk Tier', value: 'T1 Clinical' },
       { label: 'Surfaces', value: 'Web + Mobile' },
     ],
