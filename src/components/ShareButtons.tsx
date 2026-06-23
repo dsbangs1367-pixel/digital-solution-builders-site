@@ -50,8 +50,8 @@ function InstagramIcon({ className }: IconProps) {
 }
 
 const BTN =
-  'inline-flex items-center justify-center w-11 h-11 border border-border/60 text-muted/60 ' +
-  'hover:text-foreground hover:border-foreground/40 transition-colors duration-200';
+  'fx-glow inline-flex items-center justify-center w-11 h-11 border border-border/60 text-muted/60 ' +
+  'hover:text-foreground hover:border-foreground/40';
 
 export default function ShareButtons({ url, title, summary }: ShareButtonsProps) {
   const [notice, setNotice] = useState<string | null>(null);

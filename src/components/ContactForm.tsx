@@ -109,7 +109,7 @@ export default function ContactForm() {
             required
             autoComplete="name"
             disabled={status === 'submitting'}
-            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-colors"
+            className="fx-focus w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-all"
           />}
         />
         <Field
@@ -122,7 +122,7 @@ export default function ContactForm() {
             required
             autoComplete="email"
             disabled={status === 'submitting'}
-            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-colors"
+            className="fx-focus w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-all"
           />}
         />
       </div>
@@ -136,7 +136,7 @@ export default function ContactForm() {
             onChange={update('company')}
             autoComplete="organization"
             disabled={status === 'submitting'}
-            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-colors"
+            className="fx-focus w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-all"
           />}
         />
         <Field
@@ -145,7 +145,7 @@ export default function ContactForm() {
             value={form.projectType}
             onChange={update('projectType')}
             disabled={status === 'submitting'}
-            className="w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-colors text-muted/80 [&>option]:bg-background"
+            className="fx-focus w-full bg-transparent border-b border-border/40 focus:border-foreground/50 outline-none py-2 text-sm transition-all text-muted/80 [&>option]:bg-background"
           >
             <option value="">Select…</option>
             {PROJECT_TYPES.map((p) => (
@@ -165,7 +165,7 @@ export default function ContactForm() {
           rows={4}
           disabled={status === 'submitting'}
           placeholder="One paragraph is enough — we'll follow up with the right questions."
-          className="w-full bg-transparent border border-border/40 focus:border-foreground/50 outline-none p-3 text-sm transition-colors resize-y"
+          className="fx-focus w-full bg-transparent border border-border/40 focus:border-foreground/50 outline-none p-3 text-sm transition-all resize-y"
         />}
       />
 
@@ -185,7 +185,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === 'submitting'}
-        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 mt-2"
+        className="fx-sweep fx-glow inline-flex items-center justify-center gap-2 px-6 py-3 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
       >
         {status === 'submitting' ? (
           <>

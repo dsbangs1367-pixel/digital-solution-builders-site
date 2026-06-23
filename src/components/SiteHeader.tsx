@@ -63,7 +63,7 @@ export default function SiteHeader() {
                 <span className="relative">
                   {link}
                   <span
-                    className={`absolute -bottom-0.5 left-0 h-px bg-foreground transition-all duration-300 ${
+                    className={`absolute -bottom-0.5 left-0 h-px bg-foreground transition-all duration-300 group-hover:[box-shadow:0_0_8px_hsl(var(--accent-green))] ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   />
@@ -75,7 +75,7 @@ export default function SiteHeader() {
             href={`https://wa.me/23278687787`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 border border-[#25D366]/40 text-[#25D366] text-xs tracking-widest uppercase hover:bg-[#25D366]/10 transition-colors duration-200"
+            className="fx-glow fx-sweep inline-flex items-center gap-2 px-4 py-2 border border-[#25D366]/40 text-[#25D366] text-xs tracking-widest uppercase hover:bg-[#25D366]/10"
           >
             <MessageCircle className="w-3.5 h-3.5" />
             WhatsApp

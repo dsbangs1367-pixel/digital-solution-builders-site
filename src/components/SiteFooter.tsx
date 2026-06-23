@@ -10,13 +10,13 @@ export default function SiteFooter() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-muted/40">
           <p className="font-serif">Digital Solution Builders. — Digital Product Development</p>
           <div className="flex items-center gap-6">
-            <Link to="/insights" className="hover:text-muted/70 transition-colors duration-200">
+            <Link to="/insights" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">
               Insights
             </Link>
             <a
               href="mailto:danielbangs@dsbdigital.biz"
               onClick={() => trackEvent('contact_email')}
-              className="hover:text-muted/70 transition-colors duration-200"
+              className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]"
             >
               Email
             </a>
@@ -25,7 +25,7 @@ export default function SiteFooter() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent('contact_linkedin')}
-              className="hover:text-muted/70 transition-colors duration-200"
+              className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]"
             >
               LinkedIn
             </a>
@@ -51,7 +51,7 @@ export default function SiteFooter() {
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
         onClick={() => trackEvent('contact_whatsapp')}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3 shadow-lg hover:bg-[#20bd5a] hover:scale-105 active:scale-95 transition-all duration-200 group overflow-hidden"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-[#25D366] text-white pl-4 pr-5 py-3 shadow-lg hover:bg-[#20bd5a] hover:scale-105 hover:shadow-[0_0_30px_-2px_rgba(37,211,102,0.65)] active:scale-95 transition-all duration-200 group overflow-hidden"
         style={{ borderRadius: '999px' }}
       >
         {/* Pulse rings */}
