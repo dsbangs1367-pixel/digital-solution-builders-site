@@ -44,3 +44,170 @@
 .text-balance {
   text-wrap: balance;
 }
+
+/* ============================================================
+   Futuristic hover effects — DSB (neon-green / iridescent)
+   Additive utility classes layered onto existing elements.
+   All continuous motion is gated behind prefers-reduced-motion;
+   reduced-motion users still get a static glow as the affordance.
+   ============================================================ */
+
+/* Registered so the conic-gradient angle can be animated in keyframes. */
+@property --fx-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@layer components {
+  /* Glow lift — card rises and emits a neon-green glow.
+     The transition lists every property the host may animate (its own
+     Tailwind colour/border hovers included) so these elements drop the
+     competing `transition-colors` utility and let this rule own easing. */
+  .fx-lift {
+    transition:
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.45s ease,
+      background-color 0.45s ease,
+      color 0.45s ease;
+  }
+  .fx-lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px hsl(var(--accent-green) / 0.35),
+      0 12px 44px -14px hsl(var(--accent-green) / 0.5),
+      0 4px 16px -8px hsl(0 0% 0% / 0.6);
+  }
+
+  /* Neon glow without lift — buttons, tags, links, inputs.
+     Covers the host's own colour/background/border hovers too, so these
+     elements drop `transition-colors` and let this rule own all easing. */
+  .fx-glow {
+    transition:
+      box-shadow 0.35s ease,
+      border-color 0.35s ease,
+      background-color 0.35s ease,
+      color 0.25s ease;
+  }
+  .fx-glow:hover {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent-green) / 0.45),
+      0 0 26px -4px hsl(var(--accent-green) / 0.5);
+    border-color: hsl(var(--accent-green) / 0.55);
+  }
+
+  /* Light sweep / sheen — diagonal highlight glides across the surface */
+  .fx-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+  .fx-sweep::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      hsl(var(--accent-green) / 0.16) 50%,
+      transparent 70%
+    );
+    transform: translateX(-130%) skewX(-18deg);
+    transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .fx-sweep:hover::after {
+    transform: translateX(230%) skewX(-18deg);
+  }
+
+  /* Iridescent border-beam — light traces the border on hover */
+  .fx-beam {
+    position: relative;
+    isolation: isolate;
+  }
+  .fx-beam::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from var(--fx-angle),
+      transparent 0deg,
+      hsl(var(--accent-green) / 0.95) 55deg,
+      #67e8f9 105deg,
+      hsl(var(--foreground) / 0.9) 145deg,
+      transparent 210deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+  .fx-beam:hover::before {
+    opacity: 1;
+  }
+
+  /* Gradient-text shimmer — title fills with an animated brand gradient */
+  .fx-text {
+    transition: color 0.2s ease;
+  }
+  .fx-text:hover {
+    background-image: linear-gradient(
+      100deg,
+      hsl(var(--foreground)),
+      hsl(var(--accent-green)) 45%,
+      #67e8f9 55%,
+      hsl(var(--foreground))
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Focus glow — inputs gain a neon ring on keyboard/click focus */
+  .fx-focus:focus-visible {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent-green) / 0.5),
+      0 0 18px -4px hsl(var(--accent-green) / 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fx-beam:hover::before {
+    animation: fx-beam-spin 3s linear infinite;
+  }
+  @keyframes fx-beam-spin {
+    to {
+      --fx-angle: 360deg;
+    }
+  }
+  .fx-text:hover {
+    animation: fx-text-shimmer 1.2s ease;
+  }
+  @keyframes fx-text-shimmer {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0 0;
+    }
+  }
+}
+
+/* Reduced motion: drop movement, keep a static glow as the affordance. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-lift:hover {
+    transform: none;
+  }
+  .fx-sweep::after {
+    display: none;
+  }
+}

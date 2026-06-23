@@ -458,14 +458,14 @@ function HeroSection() {
             <div className="flex flex-wrap gap-3">
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90 transition-colors duration-200"
+                className="fx-sweep fx-glow inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90"
               >
                 Start Your 72-Hour Build
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 px-5 min-h-[44px] border border-border/60 text-xs font-medium tracking-wide text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
+                className="fx-beam fx-glow inline-flex items-center gap-2 px-5 min-h-[44px] border border-border/60 text-xs font-medium tracking-wide text-foreground/80 hover:text-foreground hover:border-foreground/40"
               >
                 View Recent Projects
               </a>
@@ -535,7 +535,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       >
         {/* Image */}
         <div
-          className={`relative overflow-hidden aspect-[4/3] ${!isEven ? 'md:col-start-2' : ''}`}
+          className={`fx-sweep relative overflow-hidden aspect-[4/3] transition-shadow duration-500 group-hover:[box-shadow:0_0_36px_-8px_hsl(var(--accent-green)/0.4)] ${!isEven ? 'md:col-start-2' : ''}`}
           style={{ borderLeft: `2px solid ${project.accent}` }}
         >
           <motion.img
@@ -562,7 +562,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: project.accent }}>
               {project.category}
             </p>
-            <h2 className="font-serif text-3xl md:text-5xl tracking-tight leading-tight mb-1" itemProp="name">
+            <h2 className="fx-text font-serif text-3xl md:text-5xl tracking-tight leading-tight mb-1" itemProp="name">
               {project.title}
             </h2>
             <p className="font-serif italic text-muted/60 text-lg" itemProp="description">{project.tagline}</p>
@@ -595,7 +595,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {project.services.map((s) => (
               <span
                 key={s}
-                className="text-xs tracking-wider uppercase px-3 py-1 border border-border/60 text-muted/60"
+                className="fx-glow text-xs tracking-wider uppercase px-3 py-1 border border-border/60 text-muted/60"
               >
                 {s}
               </span>
@@ -660,7 +660,7 @@ function ServicesSection() {
         {services.map((service, idx) => (
           <div
             key={service.number}
-            className={`group border-b border-border/50 p-8 md:p-10 hover:bg-foreground/[0.03] transition-colors duration-500 flex flex-col justify-between gap-6${idx % 2 === 0 ? ' md:border-r' : ''}`}
+            className={`fx-sweep group border-b border-border/50 p-8 md:p-10 hover:bg-foreground/[0.03] transition-colors duration-500 flex flex-col justify-between gap-6${idx % 2 === 0 ? ' md:border-r' : ''}`}
           >
             <div>
               <p className="font-serif text-xs text-muted/40 mb-6">{service.number}</p>
@@ -726,7 +726,7 @@ function PricingSection() {
         {pricingBands.map((band, idx) => (
           <div
             key={band.number}
-            className={`group border-b border-border/50 p-8 md:p-10 hover:bg-foreground/[0.03] transition-colors duration-500 flex flex-col justify-between gap-6${idx < 2 ? ' md:border-r' : ''}`}
+            className={`fx-sweep group border-b border-border/50 p-8 md:p-10 hover:bg-foreground/[0.03] transition-colors duration-500 flex flex-col justify-between gap-6${idx < 2 ? ' md:border-r' : ''}`}
           >
             <div>
               <p className="font-serif text-xs text-muted/40 mb-6">{band.number}</p>
@@ -826,7 +826,7 @@ function FAQSection() {
               <h3 className="font-serif font-medium text-xl md:text-2xl tracking-tight pr-6 group-hover:text-foreground transition-colors">
                 {item.q}
               </h3>
-              <span className="font-serif text-2xl text-muted/40 group-open:rotate-45 transition-transform duration-300 select-none">
+              <span className="font-serif text-2xl text-muted/40 group-open:rotate-45 group-hover:text-[hsl(var(--accent-green))] transition-all duration-300 select-none">
                 +
               </span>
             </summary>
@@ -907,7 +907,7 @@ function ContactSection() {
           </p>
           <a
             href="mailto:danielbangs@dsbdigital.biz"
-            className="group inline-flex items-center gap-3 font-serif text-xl md:text-2xl hover:text-muted/70 transition-colors duration-300"
+            className="group inline-flex items-center gap-3 font-serif text-xl md:text-2xl transition-all duration-300 hover:text-[hsl(var(--accent-green))] hover:[text-shadow:0_0_18px_hsl(var(--accent-green)/0.5)]"
           >
             <Mail className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
             danielbangs@dsbdigital.biz
@@ -997,7 +997,7 @@ function TechStackSection() {
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="px-3 py-1.5 border border-border/50 text-xs text-muted/70 hover:text-foreground hover:border-foreground/30 transition-colors duration-200"
+                    className="fx-glow px-3 py-1.5 border border-border/50 text-xs text-muted/70 hover:text-foreground hover:border-foreground/30"
                   >
                     {item}
                   </span>

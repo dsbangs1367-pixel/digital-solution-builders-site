@@ -52,7 +52,7 @@ export default function InsightsPage() {
           <div className="max-w-5xl mx-auto px-6 md:px-12 mt-12">
             <Link
               to={`/${pillar.slug}`}
-              className="group block border border-border/60 p-6 md:p-8 hover:border-border transition-colors duration-200"
+              className="fx-beam fx-lift group block border border-border/60 p-6 md:p-8 hover:border-border"
               style={{ borderLeft: `2px solid ${pillar.accent}` }}
             >
               <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: pillar.accent }}>
@@ -76,12 +76,12 @@ export default function InsightsPage() {
             <Link
               key={a.slug}
               to={`/${a.slug}`}
-              className="group block border border-border/50 p-6 hover:border-border transition-colors duration-200"
+              className="fx-beam fx-lift group block border border-border/50 p-6 hover:border-border"
             >
               <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: a.accent }}>
                 {a.category}
               </p>
-              <h3 className="font-serif text-xl md:text-2xl tracking-tight mb-2 text-balance">{a.title}</h3>
+              <h3 className="fx-text font-serif text-xl md:text-2xl tracking-tight mb-2 text-balance">{a.title}</h3>
               <p className="text-sm text-muted/60 leading-relaxed line-clamp-3">{a.tagline}</p>
             </Link>
           ))}

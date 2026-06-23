@@ -87,7 +87,7 @@ export default function CaseStudyPage() {
               href={cs.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90 transition-colors duration-200"
+              className="fx-sweep fx-glow inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90"
             >
               Visit live site — {cs.liveLabel}
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -95,7 +95,7 @@ export default function CaseStudyPage() {
             {cs.services.map((s) => (
               <span
                 key={s}
-                className="text-xs tracking-wider uppercase px-3 py-1.5 border border-border/60 text-muted/60"
+                className="fx-glow text-xs tracking-wider uppercase px-3 py-1.5 border border-border/60 text-muted/60"
               >
                 {s}
               </span>
@@ -110,12 +110,12 @@ export default function CaseStudyPage() {
 
         {/* Hero image */}
         <div className="max-w-5xl mx-auto px-6 md:px-12 mt-12">
-          <div className="overflow-hidden" style={{ borderLeft: `2px solid ${cs.accent}` }}>
+          <div className="fx-sweep overflow-hidden" style={{ borderLeft: `2px solid ${cs.accent}` }}>
             <img
               src={cs.heroImage}
               alt={cs.heroImageAlt}
               decoding="async"
-              className="w-full block"
+              className="w-full block transition-transform duration-700 ease-out hover:scale-[1.03]"
             />
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function CaseStudyPage() {
         <div className="max-w-3xl mx-auto px-6 md:px-12 mt-20 pt-12 border-t border-border/50 flex flex-wrap items-center gap-6">
           <a
             href="/#contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90 transition-colors duration-200"
+            className="fx-sweep fx-glow inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background text-xs font-medium tracking-wide hover:bg-foreground/90"
           >
             Build something like this
             <ArrowUpRight className="w-3.5 h-3.5" />
