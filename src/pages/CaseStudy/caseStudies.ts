@@ -255,19 +255,19 @@ export const caseStudies: Record<string, CaseStudy> = {
     accent: '#12A150',
     heroImage: '/projects/salone-gospel-hub.png',
     heroImageAlt:
-      'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, plus a song discovery feed and events surface',
+      'Salone Gospel Hub — mobile-first directory and community hub for the Sierra Leonean gospel ecosystem, with profiles for artists, choirs, churches and producers, a song discovery feed, an events surface, a community updates feed from church and choir owners, and a Support this ministry tipping flow',
     liveUrl: 'https://salonegospelhub.com',
     liveLabel: 'salonegospelhub.com',
     metaTitle:
       'Salone Gospel Hub — A Directory & Community Hub for Sierra Leonean Gospel | Digital Solution Builders',
     metaDescription:
-      'A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artists, instrumentalists, choirs, churches, producers, gospel DJs and media, songs, and events. Next.js 16 + Supabase, with Row-Level-Security-enforced moderation. A personal build by Digital Solution Builders.',
+      'A mobile-first, SEO-driven directory and community hub for the Sierra Leonean gospel ecosystem — artist, choir, church, producer and gospel-media profiles, a songs feed, an events surface, church and choir community updates, and a Support this ministry tipping flow. Next.js 16 + Supabase, with Row-Level-Security-enforced moderation. A personal build by Digital Solution Builders.',
     intro:
       'A mobile-first directory and community hub for the Sierra Leonean gospel ecosystem — one place where artists, choirs, churches, producers and the people looking for them can finally find each other. Built from the founder’s own frustration as a gospel musician, watching spirit-filled songs and videos scattered across YouTube, Boomplay, Audiomack, Facebook and WhatsApp never reach the audience they could.',
     stats: [
       { label: 'Stage', value: 'Live' },
       { label: 'Audience', value: 'SL + Diaspora' },
-      { label: 'Surfaces', value: 'Mobile-first PWA' },
+      { label: 'Surfaces', value: 'Directory · Community · Support' },
     ],
     services: ['Full-stack Development', 'Database & RLS Design', 'Mobile-first UX'],
     sections: [
@@ -277,15 +277,15 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
       {
         heading: 'What we built',
-        body: 'A directory and community hub spanning profiles for artists, choirs, churches and ministries, producers and gospel media, a songs feed, and a national and diaspora events surface. The trust layer is the core of the build: a Postgres schema with Row-Level Security policies, ownership triggers, a content-moderation engine (a `moderate_content` RPC, draft → pending → approved/rejected lifecycle) and a roles model that lets owners manage their own drafts but never self-approve. Public pages are server-rendered for SEO; auth (login, signup, callback) and guarded `/dashboard` and `/admin` surfaces are wired in.',
+        body: 'A directory and community hub spanning profiles for artists, choirs, churches and ministries, producers and gospel media, a songs feed and a national + diaspora events surface. Church and choir profile owners can post announcements to a Community Updates feed that any visitor to the profile can read, with admin moderation on anything that gets reported. A "Support this ministry" flow lets supporters send a voluntary, non-refundable tip to a profile, with a tips-received / tips-sent dashboard for owners and a background job that expires stale support intents. The trust layer runs inside the database — Postgres Row-Level Security policies, ownership triggers, a `moderate_content` RPC and a draft → pending → approved/rejected lifecycle so owners can manage their own drafts but never self-approve. Public pages are server-rendered for SEO; auth (login, signup, callback) and guarded `/dashboard` and `/admin` surfaces are wired in.',
       },
       {
         heading: 'The stack',
-        body: 'Next.js 16 (App Router, TypeScript) with Tailwind v4 on the frontend — public pages server-rendered for search visibility. Supabase (Postgres, Auth, Storage) on the backend, with security enforced inside the database as Row-Level Security policies rather than in app-side query filters, so a future React Native app can safely share the same backend. CI on GitHub Actions runs a Vitest unit suite and a pgTAP RLS suite against a local Supabase stack on every push.',
+        body: 'Next.js 16 (App Router, TypeScript) with Tailwind v4 on the frontend — public pages server-rendered for search visibility. Supabase (Postgres, Auth, Storage) on the backend, with security enforced inside the database as Row-Level Security policies rather than in app-side query filters, so a future React Native app can safely share the same backend. CI on GitHub Actions runs a Vitest unit suite and a pgTAP RLS + RPC suite against a local Supabase stack on every push; the tips and community-updates RPCs each ship with pgTAP coverage for their SQLSTATE error codes.',
       },
       {
         heading: 'Where it is now',
-        body: 'Live and open for artists, choirs, churches, producers and gospel media to claim profiles, with the Foundation — schema, Row-Level Security, moderation engine and auth — running in production behind a Vitest + pgTAP CI suite. Next builds extend the songs and events surfaces and grow the contributor base across Sierra Leone and the diaspora.',
+        body: 'Live and open for artists, choirs, churches, producers and gospel media to claim profiles, with the Foundation — schema, Row-Level Security, moderation engine and auth — running behind a Vitest + pgTAP CI suite. The most recent releases added a church and choir community-updates feed with admin moderation, a "Support this ministry" tipping flow (mock-first, voluntary and non-refundable) with a tips-received / tips-sent dashboard for owners, a design-audit sweep that re-skinned tile gradients to the Sierra Leone flag palette and cleaned up the dashboard, profile and admin surfaces, and a step-by-step platform user guide. Next builds extend the songs and events surfaces and grow the contributor base across Sierra Leone and the diaspora.',
       },
     ],
   },

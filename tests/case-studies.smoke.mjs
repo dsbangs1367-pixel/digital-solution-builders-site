@@ -616,6 +616,72 @@ test('[prime-care] liveLabel reflects the live primecaresl.com domain', () => {
 });
 
 // ==========================================================================
+// PART 8 — salone-gospel-hub content-refresh assertions (2026-07-01)
+//
+// These four tests confirm the three changed surfaces in caseStudies.ts
+// (stats[2].value, metaDescription, heroImageAlt) and the sitemap lastmod bump
+// were actually applied.  They key on stable feature-noun tokens ("Community",
+// "Support", "tipping") and a specific date, not on word-for-word prose, so
+// they will not flake on routine copy tweaks.
+// ==========================================================================
+
+console.log('\n--- Part 8: salone-gospel-hub content-refresh (2026-07-01) ---\n');
+
+// Happy path: the third stat value reflects all three surfaces introduced in the
+// refresh — Directory (pre-existing), Community (new feed), Support (new tipping
+// flow).  Both tokens must be present; absence of either means a stale value.
+test('[salone-gospel-hub] stats[2].value contains "Community" and "Support"', () => {
+  const { stats } = caseStudies['salone-gospel-hub'];
+  assert.ok(Array.isArray(stats) && stats.length >= 3,
+    'salone-gospel-hub must have at least 3 stat entries');
+  const val = stats[2].value;
+  assert.ok(val.includes('Community'),
+    `stats[2].value should contain "Community" (new community-updates surface), got: "${val}"`);
+  assert.ok(val.includes('Support'),
+    `stats[2].value should contain "Support" (new tipping-flow surface), got: "${val}"`);
+});
+
+// Happy path: the metaDescription mentions the community-updates feature noun and
+// at least one of the tipping-flow nouns.  Using two independent token checks so
+// a future synonym swap ("tip" → "donate") only fails the relevant one.
+test('[salone-gospel-hub] metaDescription mentions "community" and "tipping" feature nouns', () => {
+  const { metaDescription } = caseStudies['salone-gospel-hub'];
+  const lower = metaDescription.toLowerCase();
+  assert.ok(lower.includes('community'),
+    `salone-gospel-hub metaDescription should mention "community" (community-updates feature), got: "${metaDescription}"`);
+  assert.ok(lower.includes('tipping') || lower.includes('support this ministry'),
+    `salone-gospel-hub metaDescription should mention "tipping" or "support this ministry" (tipping-flow feature), got: "${metaDescription}"`);
+});
+
+// Edge case: heroImageAlt must describe both new UI surfaces so screen readers
+// and crawlers see an accurate description of the screenshot.
+test('[salone-gospel-hub] heroImageAlt mentions "community" and "support" surfaces', () => {
+  const { heroImageAlt } = caseStudies['salone-gospel-hub'];
+  const lower = heroImageAlt.toLowerCase();
+  assert.ok(lower.includes('community'),
+    `salone-gospel-hub heroImageAlt should mention "community" surface, got: "${heroImageAlt}"`);
+  assert.ok(lower.includes('support'),
+    `salone-gospel-hub heroImageAlt should mention "support" surface (tipping flow), got: "${heroImageAlt}"`);
+});
+
+// Edge case: the sitemap <lastmod> for salone-gospel-hub must be 2026-07-01.
+// A stale date (e.g. 2026-06-19) would mean the sitemap was not bumped with
+// the content refresh and crawlers may deprioritise re-indexing the page.
+test('sitemap.xml salone-gospel-hub <lastmod> is 2026-07-01', () => {
+  // Parse the salone-gospel-hub <url> block from the sitemap
+  const urlBlockMatch = sitemapContent.match(
+    /<url>\s*<loc>https:\/\/dsbdigital\.biz\/work\/salone-gospel-hub<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/
+  );
+  assert.ok(urlBlockMatch,
+    'Could not find salone-gospel-hub <url> block with <lastmod> in sitemap.xml');
+  assert.strictEqual(
+    urlBlockMatch[1].trim(),
+    '2026-07-01',
+    `salone-gospel-hub <lastmod> should be 2026-07-01, got: "${urlBlockMatch[1].trim()}"`
+  );
+});
+
+// ==========================================================================
 // Summary
 // ==========================================================================
 
