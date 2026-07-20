@@ -6,6 +6,11 @@ import clientErrorLogger from 'vite-plugin-client-error-logger';
 import { reactFiberSource } from 'vite-plugin-react-fiber-source';
 import { caseStudies } from './src/pages/CaseStudy/caseStudies';
 import { articles, ARTICLE_ORDER, INSIGHTS_META } from './src/pages/Article/articles';
+import {
+  HERO as PLAYBOOK_HERO,
+  META_TITLE as PLAYBOOK_META_TITLE,
+  OG_TITLE as PLAYBOOK_OG_TITLE,
+} from './src/pages/Playbook/content';
 
 const SITE = 'https://dsbdigital.biz';
 
@@ -167,6 +172,59 @@ function prerenderArticleOg(): Plugin {
   };
 }
 
+/**
+ * Same mechanism as prerenderCaseStudyOg, for the /playbook landing page.
+ * Bakes the book's social card (og/playbook-og.png, authored at 1200x630, so
+ * the template's dimension hints stay valid) plus title/description/canonical
+ * into dist/playbook/index.html. og:type becomes "product" to match the
+ * page's Product JSON-LD. The static head is the single OG owner per route;
+ * Seo.tsx deliberately emits no OG tags (scrapers do not execute JS).
+ */
+function prerenderPlaybookOg(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'prerender-playbook-og',
+    apply: 'build',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const indexPath = path.resolve(outDir, 'index.html');
+      let template: string;
+      try {
+        template = readFileSync(indexPath, 'utf8');
+      } catch {
+        this.warn(`prerender-playbook-og: ${indexPath} not found; skipping`);
+        return;
+      }
+
+      const url = `${SITE}/playbook`;
+      const image = `${SITE}/og/playbook-og.png`;
+      const pageTitle = PLAYBOOK_META_TITLE;
+      const ogTitle = PLAYBOOK_OG_TITLE;
+      const description = PLAYBOOK_HERO.headline;
+
+      let html = template;
+      html = setTitle(html, pageTitle);
+      html = setMeta(html, 'name', 'description', description);
+      html = setCanonical(html, url);
+      html = setMeta(html, 'property', 'og:type', 'product');
+      html = setMeta(html, 'property', 'og:url', url);
+      html = setMeta(html, 'property', 'og:title', ogTitle);
+      html = setMeta(html, 'property', 'og:description', description);
+      html = setMeta(html, 'property', 'og:image', image);
+      html = setMeta(html, 'name', 'twitter:url', url);
+      html = setMeta(html, 'name', 'twitter:title', ogTitle);
+      html = setMeta(html, 'name', 'twitter:description', description);
+      html = setMeta(html, 'name', 'twitter:image', image);
+
+      const dir = path.resolve(outDir, 'playbook');
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(path.resolve(dir, 'index.html'), html);
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -183,6 +241,7 @@ export default defineConfig(({ command, mode }) => {
       clientErrorLogger(),
       prerenderCaseStudyOg(),
       prerenderArticleOg(),
+      prerenderPlaybookOg(),
     ],
     resolve: {
       alias: {

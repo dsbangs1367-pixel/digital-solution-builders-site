@@ -187,3 +187,9 @@ export const BIO = {
 };
 
 export const DOWNLOAD_PATH = '/downloads/the-cv-that-gets-you-shortlisted.pdf';
+
+// Single source for the page/social titles, consumed by BOTH the Seo call in
+// index.tsx and the prerender-playbook-og plugin in vite.config.ts so the
+// rendered <title> and the baked og:title can never drift apart.
+export const META_TITLE = 'The Global African Professional | Digital Solution Builders';
+export const OG_TITLE = 'The Global African Professional';
