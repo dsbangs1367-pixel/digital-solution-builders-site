@@ -136,6 +136,41 @@ test('download asset exists and is a PDF', () => {
 });
 
 // ---------------------------------------------------------------------------
+// PART 2b - checkout CTA launch switch (CHECKOUT_URL / CTA_BUY)
+// ---------------------------------------------------------------------------
+
+console.log('\n--- Part 2b: checkout CTA launch switch ---\n');
+
+const { CHECKOUT_URL, CTA_BUY } = await import('../src/pages/Playbook/content.ts');
+
+test('content exports CHECKOUT_URL (string) and CTA_BUY (non-empty)', () => {
+  assert.equal(typeof CHECKOUT_URL, 'string', 'CHECKOUT_URL must be a string');
+  assert.ok(typeof CTA_BUY === 'string' && CTA_BUY.length > 0,
+    'CTA_BUY must be a non-empty string');
+});
+
+test('CHECKOUT_URL, when set, is an https link (guards a launch-day typo)', () => {
+  if (CHECKOUT_URL !== '') {
+    assert.match(CHECKOUT_URL, /^https:\/\/\S+$/,
+      'CHECKOUT_URL must be an https:// link when non-empty');
+  }
+});
+
+test('landing page wires checkout: reads CHECKOUT_URL and tracks the click', () => {
+  const src = read('src/pages/Playbook/index.tsx');
+  assert.ok(src.includes('CHECKOUT_URL'), 'index.tsx does not reference CHECKOUT_URL');
+  assert.ok(src.includes("trackEvent('playbook_checkout_click')"),
+    'index.tsx does not track playbook_checkout_click on the buy CTA');
+});
+
+test('playbook_checkout_click is declared in both track.ts and validators.ts', () => {
+  assert.ok(read('src/lib/track.ts').includes('playbook_checkout_click'),
+    'track.ts TrackEvent union missing playbook_checkout_click');
+  assert.ok(read('api/_lib/validators.ts').includes('playbook_checkout_click'),
+    'validators.ts ALLOWED_EVENTS missing playbook_checkout_click');
+});
+
+// ---------------------------------------------------------------------------
 // PART 3 - lead API contract (api/playbook-lead.ts via mock req/res)
 // ---------------------------------------------------------------------------
 

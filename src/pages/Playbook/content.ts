@@ -188,6 +188,14 @@ export const BIO = {
 
 export const DOWNLOAD_PATH = '/downloads/the-cv-that-gets-you-shortlisted.pdf';
 
+// Launch switch. Empty string = pre-launch: the hero secondary CTA and the
+// price-block button both open the notify-me form. Set this to the Paddle
+// hosted checkout link (from the USD 29 price's Share option) once the
+// dsbdigital.biz domain is approved, and both CTAs become a live "buy" button
+// that opens checkout. That one-line change is the entire go-live flip.
+export const CHECKOUT_URL = '';
+export const CTA_BUY = 'Get the book';
+
 // Single source for the page/social titles, consumed by BOTH the Seo call in
 // index.tsx and the prerender-playbook-og plugin in vite.config.ts so the
 // rendered <title> and the baked og:title can never drift apart.

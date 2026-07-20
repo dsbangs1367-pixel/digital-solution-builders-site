@@ -19,7 +19,8 @@ type EventPayload = {
     | 'contact_linkedin'
     | 'playbook_guide_lead'
     | 'playbook_notify_lead'
-    | 'playbook_guide_download';
+    | 'playbook_guide_download'
+    | 'playbook_checkout_click';
   props?: Record<string, string>;
 };
 

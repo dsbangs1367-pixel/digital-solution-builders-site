@@ -13,6 +13,7 @@ export const ALLOWED_EVENTS = new Set([
   'playbook_guide_lead',
   'playbook_notify_lead',
   'playbook_guide_download',
+  'playbook_checkout_click',
 ]);
 export const ALLOWED_NETWORKS = new Set(['linkedin', 'x', 'facebook', 'instagram', 'copy_link']);
 export const SELF_HOSTS = new Set(['dsbdigital.biz', 'www.dsbdigital.biz', 'dsb-digital.vercel.app']);
