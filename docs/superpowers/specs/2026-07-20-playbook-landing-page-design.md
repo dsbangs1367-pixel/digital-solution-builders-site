@@ -75,6 +75,11 @@ Drafts are written during implementation and pass the standing humanizer + sound
 - `public/og/playbook-og.png` 1200x630: rendered one-off from page 1 of the flagship PDF (PyMuPDF pixmap -> PIL crop/resize), committed as a binary.
 - Book-cover visual in the hero is pure CSS/JSX (like the approved mockup), not an image.
 
+## Design-review gates (Daniel, 2026-07-20)
+
+1. **Pre-implementation:** the two built PDFs (the 84-page flagship and the 9-page lead magnet) pass a `gstack-design-review` BEFORE any implementation of this spec begins. Findings are fixed in the reportlab builder/manuscript and the PDFs rebuilt; the product the page sells is design-approved first.
+2. **Post-implementation:** the finished `/playbook` page (and the three legal pages) pass a second `gstack-design-review` against the running dev server, as the standard step of the Design & Build loop below. Both gates are hard requirements.
+
 ## Testing and verification
 
 - New bun smoke test `tests/playbook.smoke.mjs` following existing tests/ conventions: routes registered, page module exports, landing copy landmarks present (title, USD 29 + Leone line, 30-day refund line, no em dash characters in page source), `api/playbook-lead.ts` validation logic (reject bad email/missing fields/filled honeypot).
