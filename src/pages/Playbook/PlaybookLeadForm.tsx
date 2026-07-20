@@ -108,7 +108,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
               <input
                 type="text" required maxLength={200} value={name}
                 onChange={(e) => setName(e.target.value)} autoComplete="name"
-                className="mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
+                className="fx-focus mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
               />
             </label>
             <label className="block">
@@ -116,7 +116,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
               <input
                 type="email" required value={email}
                 onChange={(e) => setEmail(e.target.value)} autoComplete="email"
-                className="mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
+                className="fx-focus mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
               />
             </label>
           </div>
