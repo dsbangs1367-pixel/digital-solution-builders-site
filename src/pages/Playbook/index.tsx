@@ -107,7 +107,7 @@ export default function PlaybookPage() {
               <button
                 type="button"
                 onClick={() => goToForm('guide')}
-                className="min-h-[44px] px-6 bg-[hsl(var(--accent-green))] text-background text-xs font-medium tracking-wide hover:opacity-90 transition-opacity duration-200"
+                className="fx-sweep fx-glow min-h-[44px] px-6 bg-[hsl(var(--accent-green))] text-background text-xs font-medium tracking-wide hover:opacity-90 transition-opacity duration-200"
               >
                 {HERO.ctaGuide}
               </button>

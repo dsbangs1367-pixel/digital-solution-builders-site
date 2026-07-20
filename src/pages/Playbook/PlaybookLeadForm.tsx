@@ -85,7 +85,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
                 href={DOWNLOAD_PATH}
                 download
                 onClick={() => trackEvent('playbook_guide_download')}
-                className="inline-flex min-h-[44px] items-center px-6 bg-[hsl(var(--accent-green))] text-background text-sm font-medium"
+                className="fx-sweep fx-glow inline-flex min-h-[44px] items-center px-6 bg-[hsl(var(--accent-green))] text-background text-sm font-medium hover:opacity-90 transition-opacity duration-200"
               >
                 Download The CV That Gets You Shortlisted (PDF)
               </a>
@@ -131,7 +131,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
           {error && <p role="alert" className="text-sm text-red-400 mt-4">{error}</p>}
           <button
             type="submit" disabled={status === 'sending'}
-            className="mt-6 min-h-[44px] px-8 bg-[hsl(var(--accent-green))] text-background text-sm font-medium disabled:opacity-50"
+            className="fx-sweep fx-glow mt-6 min-h-[44px] px-8 bg-[hsl(var(--accent-green))] text-background text-sm font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
           >
             {status === 'sending' ? 'Sending…' : mode === 'guide' ? 'Send me the guide' : 'Keep me posted'}
           </button>
