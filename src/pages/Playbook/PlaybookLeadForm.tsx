@@ -68,7 +68,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
             className={`min-h-[44px] px-4 text-xs tracking-widest uppercase border transition-colors duration-200 ${
               mode === t.key
                 ? 'border-[hsl(var(--accent-green))] text-foreground'
-                : 'border-border/50 text-muted/60 hover:text-foreground'
+                : 'border-border/50 text-muted/70 hover:text-foreground'
             }`}
           >
             {t.label}
@@ -89,7 +89,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
               >
                 Download The CV That Gets You Shortlisted (PDF)
               </a>
-              <p className="text-xs text-muted/50 mt-3">Save it somewhere you will find it again. Chapter one of the playbook explains why that matters.</p>
+              <p className="text-xs text-muted/70 mt-3">Save it somewhere you will find it again. Chapter one of the playbook explains why that matters.</p>
             </div>
           ) : (
             <p className="font-serif text-2xl">You are on the list. You will hear from me once, when the playbook goes live.</p>
@@ -97,14 +97,14 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
         </div>
       ) : (
         <form onSubmit={submit} noValidate>
-          <p className="text-sm text-muted/70 mb-5 max-w-xl">
+          <p className="text-sm text-muted/85 mb-5 max-w-xl">
             {mode === 'guide'
               ? 'Tell me where to send updates and the download unlocks right here. No spam, no drip sequence.'
               : 'Leave your name and email and I will send one message when the playbook launches. USD 29, Leone equivalent shown at checkout.'}
           </p>
           <div className="grid gap-4 md:grid-cols-2 max-w-xl">
             <label className="block">
-              <span className="text-xs tracking-widest uppercase text-muted/50">Name</span>
+              <span className="text-xs tracking-widest uppercase text-muted/70">Name</span>
               <input
                 type="text" required maxLength={200} value={name}
                 onChange={(e) => setName(e.target.value)} autoComplete="name"
@@ -112,7 +112,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
               />
             </label>
             <label className="block">
-              <span className="text-xs tracking-widest uppercase text-muted/50">Email</span>
+              <span className="text-xs tracking-widest uppercase text-muted/70">Email</span>
               <input
                 type="email" required value={email}
                 onChange={(e) => setEmail(e.target.value)} autoComplete="email"

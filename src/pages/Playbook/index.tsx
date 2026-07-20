@@ -16,7 +16,7 @@ import {
   OG_TITLE,
 } from './content';
 
-const KICKER = 'text-xs tracking-[0.3em] uppercase mb-3 text-muted/50';
+const KICKER = 'text-xs tracking-[0.3em] uppercase mb-3 text-muted/70';
 const SHELL = 'max-w-5xl mx-auto px-6 md:px-12';
 
 /** Scroll reveal. Same idiom as Home's ProjectCard: useInView once + useReducedMotion,
@@ -90,7 +90,7 @@ export default function PlaybookPage() {
             <p className="font-serif text-sm md:text-base tracking-[0.3em] text-foreground/80">
               {HERO.wordmark}
             </p>
-            <p className="text-xs tracking-[0.3em] uppercase text-muted/50 mt-2">
+            <p className="text-xs tracking-[0.3em] uppercase text-muted/70 mt-2">
               Freetown, Sierra Leone
             </p>
             <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] tracking-tight mt-10 text-balance">
@@ -102,7 +102,7 @@ export default function PlaybookPage() {
             </h1>
             <div className="w-12 h-[3px] bg-[hsl(var(--accent-green))] mt-8" />
             <p className="text-base md:text-lg leading-relaxed mt-6 max-w-2xl">{HERO.headline}</p>
-            <p className="text-sm text-muted/60 leading-relaxed mt-4 max-w-2xl">{HERO.subhead}</p>
+            <p className="text-sm text-muted/85 leading-relaxed mt-4 max-w-2xl">{HERO.subhead}</p>
             <div className="flex flex-wrap gap-3 mt-8">
               <button
                 type="button"
@@ -128,7 +128,7 @@ export default function PlaybookPage() {
             <h2 className={KICKER}>{STORY.kicker}</h2>
             <div className="max-w-2xl space-y-4">
               {STORY.paragraphs.map((p) => (
-                <p key={p} className="text-sm md:text-base text-muted/70 leading-relaxed">
+                <p key={p} className="text-sm md:text-base text-muted/85 leading-relaxed">
                   {p}
                 </p>
               ))}
@@ -150,7 +150,7 @@ export default function PlaybookPage() {
                     <h3 className="font-serif text-xl md:text-2xl tracking-tight text-balance">
                       {c.title}
                     </h3>
-                    <p className="text-sm text-muted/60 leading-relaxed mt-1 max-w-2xl">{c.blurb}</p>
+                    <p className="text-sm text-muted/85 leading-relaxed mt-1 max-w-2xl">{c.blurb}</p>
                   </div>
                 </li>
               ))}
@@ -166,7 +166,7 @@ export default function PlaybookPage() {
               {TEMPLATES.map((t) => (
                 <li key={t.name}>
                   <h3 className="font-serif text-lg md:text-xl tracking-tight">{t.name}</h3>
-                  <p className="text-sm text-muted/60 leading-relaxed mt-1">{t.blurb}</p>
+                  <p className="text-sm text-muted/85 leading-relaxed mt-1">{t.blurb}</p>
                 </li>
               ))}
             </ul>
@@ -182,7 +182,7 @@ export default function PlaybookPage() {
                 <h3 className="font-serif text-xl md:text-2xl tracking-tight mb-4">Who it is for</h3>
                 <ul className="space-y-4">
                   {WHO.forYou.map((item) => (
-                    <li key={item} className="text-sm text-muted/70 leading-relaxed">
+                    <li key={item} className="text-sm text-muted/85 leading-relaxed">
                       {item}
                     </li>
                   ))}
@@ -192,7 +192,7 @@ export default function PlaybookPage() {
                 <h3 className="font-serif text-xl md:text-2xl tracking-tight mb-4">Who it is not for</h3>
                 <ul className="space-y-4">
                   {WHO.notForYou.map((item) => (
-                    <li key={item} className="text-sm text-muted/70 leading-relaxed">
+                    <li key={item} className="text-sm text-muted/85 leading-relaxed">
                       {item}
                     </li>
                   ))}
@@ -211,7 +211,7 @@ export default function PlaybookPage() {
             </p>
             <div className="max-w-2xl space-y-4 mt-4">
               {COVENANT.paragraphs.slice(1).map((p) => (
-                <p key={p} className="text-sm md:text-base text-muted/70 leading-relaxed">
+                <p key={p} className="text-sm md:text-base text-muted/85 leading-relaxed">
                   {p}
                 </p>
               ))}
@@ -225,11 +225,11 @@ export default function PlaybookPage() {
             <h2 className={KICKER}>Price</h2>
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <p className="font-serif text-5xl md:text-6xl tracking-tight">{PRICE.amount}</p>
-              <p className="text-sm text-muted/60">{PRICE.note}</p>
+              <p className="text-sm text-muted/85">{PRICE.note}</p>
             </div>
             <ul className="space-y-2 mt-6 max-w-2xl">
               {PRICE.includes.map((line) => (
-                <li key={line} className="text-sm text-muted/70 leading-relaxed">
+                <li key={line} className="text-sm text-muted/85 leading-relaxed">
                   {line}
                 </li>
               ))}
@@ -255,11 +255,11 @@ export default function PlaybookPage() {
                     <h3 className="font-serif text-lg md:text-xl tracking-tight pr-6 group-hover:text-foreground transition-colors">
                       {f.q}
                     </h3>
-                    <span className="font-serif text-2xl text-muted/40 group-open:rotate-45 group-hover:text-[hsl(var(--accent-green))] transition-all duration-300 select-none">
+                    <span className="font-serif text-2xl text-muted/70 group-open:rotate-45 group-hover:text-[hsl(var(--accent-green))] transition-all duration-300 select-none">
                       +
                     </span>
                   </summary>
-                  <p className="text-sm text-muted/70 leading-relaxed pb-6 max-w-3xl">{f.a}</p>
+                  <p className="text-sm text-muted/85 leading-relaxed pb-6 max-w-3xl">{f.a}</p>
                 </details>
               ))}
             </div>
@@ -272,7 +272,7 @@ export default function PlaybookPage() {
             <h2 className={KICKER}>{BIO.kicker}</h2>
             <div className="max-w-2xl space-y-4">
               {BIO.paragraphs.map((p) => (
-                <p key={p} className="text-sm md:text-base text-muted/70 leading-relaxed">
+                <p key={p} className="text-sm md:text-base text-muted/85 leading-relaxed">
                   {p}
                 </p>
               ))}
