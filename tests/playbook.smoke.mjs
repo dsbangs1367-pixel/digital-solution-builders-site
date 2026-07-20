@@ -94,6 +94,7 @@ const CONTENT_FILES = [
   'src/pages/Playbook/index.tsx',
   'src/pages/Playbook/PlaybookLeadForm.tsx',
   'src/pages/Legal/LegalPage.tsx',
+  'src/pages/Legal/legalContent.ts',
   'src/pages/Legal/Terms.tsx',
   'src/pages/Legal/Privacy.tsx',
   'src/pages/Legal/Refunds.tsx',
@@ -123,8 +124,9 @@ test('dual-currency rule at price mentions', () => {
 test('30-day refund stated in FAQ and refunds page', () => {
   assert.ok(read('src/pages/Playbook/content.ts').includes('30 days'),
     'content.ts FAQ missing the 30 days refund promise');
-  assert.ok(read('src/pages/Legal/Refunds.tsx').includes('30 days'),
-    'Refunds.tsx missing the 30 days refund promise');
+  // Legal copy lives in legalContent.ts (Refunds.tsx is a thin data wrapper).
+  assert.ok(read('src/pages/Legal/legalContent.ts').includes('30 days'),
+    'legalContent.ts REFUNDS missing the 30 days refund promise');
 });
 
 test('download asset exists and is a PDF', () => {
