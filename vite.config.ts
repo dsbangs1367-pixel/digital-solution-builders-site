@@ -39,7 +39,8 @@ function escapeHtml(value: string): string {
 // Insert a crawler-only content block before </body>. Non-JS crawlers (and any
 // automated site review that does not execute JavaScript, e.g. a payment
 // processor's domain check) read this; browsers ignore it once the SPA mounts.
-// Throws if the anchor is missing so a changed template fails the build loudly.
+// The built SPA shell has exactly one </body>, so first-match replace targets
+// it; throws if the anchor is missing so a changed template fails the build loudly.
 function injectNoscriptBody(html: string, bodyHtml: string): string {
   const marker = '</body>';
   if (!html.includes(marker)) {
@@ -89,7 +90,7 @@ function setMeta(html: string, attr: 'property' | 'name', key: string, value: st
   const re = new RegExp(`(<meta\\s+${attr}="${escapeRe(key)}"\\s+content=")[^"]*(")`);
   if (!re.test(html)) {
     throw new Error(
-      `prerender-case-study-og: <meta ${attr}="${key}"> not found in built index.html — the OG template may have changed`,
+      `prerender: <meta ${attr}="${key}"> not found in built index.html; the head template may have changed`,
     );
   }
   return html.replace(re, `$1${escapeAttr(value)}$2`);
@@ -103,18 +104,18 @@ function removeMeta(html: string, attr: 'property' | 'name', key: string): strin
 function setTitle(html: string, value: string): string {
   const re = /<title>[\s\S]*?<\/title>/;
   if (!re.test(html)) {
-    throw new Error('prerender-case-study-og: <title> not found in built index.html');
+    throw new Error('prerender: <title> not found in built index.html');
   }
   return html.replace(re, `<title>${escapeAttr(value)}</title>`);
 }
 
 // Assumes attribute order `rel="canonical" href="..."` in index.html. If
 // reordered, the build throws (above) rather than silently shipping the home
-// canonical on every case study — keep the source order to match.
+// canonical on every case study; keep the source order to match.
 function setCanonical(html: string, url: string): string {
   const re = /(<link\s+rel="canonical"\s+href=")[^"]*(")/;
   if (!re.test(html)) {
-    throw new Error('prerender-case-study-og: <link rel="canonical"> not found in built index.html');
+    throw new Error('prerender: <link rel="canonical"> not found in built index.html');
   }
   return html.replace(re, `$1${escapeAttr(url)}$2`);
 }
