@@ -149,10 +149,17 @@ test('content exports CHECKOUT_URL (string) and CTA_BUY (non-empty)', () => {
     'CTA_BUY must be a non-empty string');
 });
 
-test('CHECKOUT_URL, when set, is an https link (guards a launch-day typo)', () => {
+test('CHECKOUT_URL launch guard: https regex accepts good links, rejects bad', () => {
+  // This regex is the launch-day safety net (empty today, a real link when live),
+  // so exercise it against synthetic values now rather than only at launch.
+  const HTTPS = /^https:\/\/\S+$/;
+  assert.match('https://buy.paddle.com/checkout', HTTPS, 'valid https link should pass');
+  assert.doesNotMatch('http://buy.paddle.com/checkout', HTTPS, 'non-https should fail');
+  assert.doesNotMatch('buy.paddle.com/checkout', HTTPS, 'bare domain should fail');
+  assert.doesNotMatch('  https://buy.paddle.com/x  ', HTTPS, 'whitespace-padded should fail');
+  // And the actually shipped value must satisfy it (empty pre-launch; a link at launch).
   if (CHECKOUT_URL !== '') {
-    assert.match(CHECKOUT_URL, /^https:\/\/\S+$/,
-      'CHECKOUT_URL must be an https:// link when non-empty');
+    assert.match(CHECKOUT_URL, HTTPS, 'CHECKOUT_URL must be an https:// link when set');
   }
 });
 
