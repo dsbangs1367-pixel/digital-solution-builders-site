@@ -33,6 +33,18 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (status === 'sending') return;
+    // Same checks and wording as api/playbook-lead.ts, so an empty or malformed
+    // submit gets a specific message without a network round-trip (offline included).
+    if (!name.trim() || !email.trim()) {
+      setStatus('error');
+      setError('Name and email are required.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setStatus('error');
+      setError('Invalid email address.');
+      return;
+    }
     setStatus('sending');
     setError('');
     try {
