@@ -17,8 +17,12 @@ interface SeoProps {
 
 /**
  * Per-route head management. Owns only the tags that must differ per page —
- * title, description, canonical, and JSON-LD. OG/Twitter stay static in
- * index.html as the shared social card (see the SEO spec, approach C).
+ * title, description, canonical, and JSON-LD. OG/Twitter are NEVER emitted
+ * here: social scrapers do not execute JS, so the static head is the single
+ * owner of OG tags. index.html carries the site-default card, and the
+ * prerender plugins in vite.config.ts rewrite it per route at build time
+ * (case studies, articles, /playbook). Emitting OG from Helmet would only
+ * create duplicate tags in the hydrated DOM (see the SEO spec, approach C).
  */
 export default function Seo({ title, description, canonicalPath, jsonLd }: SeoProps) {
   const canonical = `${SITE}${canonicalPath}`;

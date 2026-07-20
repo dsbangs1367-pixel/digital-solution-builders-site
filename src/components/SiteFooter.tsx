@@ -13,6 +13,9 @@ export default function SiteFooter() {
             <Link to="/insights" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">
               Insights
             </Link>
+            <Link to="/playbook" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">
+              Playbook
+            </Link>
             <a
               href="mailto:danielbangs@dsbdigital.biz"
               onClick={() => trackEvent('contact_email')}
@@ -42,6 +45,12 @@ export default function SiteFooter() {
           <p className="text-muted/30">Anonymous, cookie-free visit analytics for the site owner.</p>
           <p>© {new Date().getFullYear()} All rights reserved.</p>
         </div>
+        {/* Own centered line: the floating WhatsApp button occupies the bottom-right corner. */}
+        <p className="max-w-7xl mx-auto flex justify-center gap-4 mt-4 text-xs text-muted/40">
+          <Link to="/terms" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">Terms</Link>
+          <Link to="/privacy" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">Privacy</Link>
+          <Link to="/refunds" className="transition-all duration-200 hover:text-muted/70 hover:[text-shadow:0_0_10px_hsl(var(--accent-green)/0.45)]">Refunds</Link>
+        </p>
       </footer>
 
       {/* WhatsApp floating button */}

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, type ReactNode } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import HomePage from '@/pages/Home/index';
 import CaseStudyPage from '@/pages/CaseStudy/index';
@@ -13,12 +13,22 @@ import Layout from '@/components/Layout';
 const AdminAnalyticsPage = lazy(() => import('@/pages/Admin/index'));
 const AdminReportPage = lazy(() => import('@/pages/Admin/ReportPage'));
 
+// Playbook product page + legal pages, lazy-loaded off the main bundle.
+const PlaybookPage = lazy(() => import('@/pages/Playbook/index'));
+const TermsPage = lazy(() => import('@/pages/Legal/Terms'));
+const PrivacyPage = lazy(() => import('@/pages/Legal/Privacy'));
+const RefundsPage = lazy(() => import('@/pages/Legal/Refunds'));
+
 function AdminFallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background text-muted/40 text-xs tracking-widest uppercase">
       Loading…
     </div>
   );
+}
+
+function Lazy({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<AdminFallback />}>{children}</Suspense>;
 }
 
 /**
@@ -47,6 +57,22 @@ export const router = createBrowserRouter([
       {
         path: '/insights',
         element: <InsightsPage />,
+      },
+      {
+        path: '/playbook',
+        element: <Lazy><PlaybookPage /></Lazy>,
+      },
+      {
+        path: '/terms',
+        element: <Lazy><TermsPage /></Lazy>,
+      },
+      {
+        path: '/privacy',
+        element: <Lazy><PrivacyPage /></Lazy>,
+      },
+      {
+        path: '/refunds',
+        element: <Lazy><RefundsPage /></Lazy>,
       },
       // Health-software SEO cluster: one root-level route per article, generated
       // from ARTICLE_ORDER. Explicit static paths so unknown paths still 404.
