@@ -126,7 +126,7 @@ export default function PlaybookLeadForm({ mode, onModeChange }: {
             <label className="block">
               <span className="text-xs tracking-widest uppercase text-muted/70">Email</span>
               <input
-                type="email" required value={email}
+                type="email" required maxLength={254} value={email}
                 onChange={(e) => setEmail(e.target.value)} autoComplete="email"
                 className="fx-focus mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
               />
