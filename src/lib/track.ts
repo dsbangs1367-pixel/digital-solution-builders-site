@@ -11,7 +11,15 @@ type PageviewPayload = {
 
 type EventPayload = {
   type: 'event';
-  name: 'share' | 'contact_submit' | 'contact_email' | 'contact_whatsapp' | 'contact_linkedin';
+  name:
+    | 'share'
+    | 'contact_submit'
+    | 'contact_email'
+    | 'contact_whatsapp'
+    | 'contact_linkedin'
+    | 'playbook_guide_lead'
+    | 'playbook_notify_lead'
+    | 'playbook_guide_download';
   props?: Record<string, string>;
 };
 

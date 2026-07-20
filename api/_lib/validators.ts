@@ -4,7 +4,16 @@
 export const MAX_PATH = 200;
 export const MAX_NAME = 64;
 export const MAX_PROP_VAL = 64;
-export const ALLOWED_EVENTS = new Set(['share', 'contact_submit', 'contact_email', 'contact_whatsapp', 'contact_linkedin']);
+export const ALLOWED_EVENTS = new Set([
+  'share',
+  'contact_submit',
+  'contact_email',
+  'contact_whatsapp',
+  'contact_linkedin',
+  'playbook_guide_lead',
+  'playbook_notify_lead',
+  'playbook_guide_download',
+]);
 export const ALLOWED_NETWORKS = new Set(['linkedin', 'x', 'facebook', 'instagram', 'copy_link']);
 export const SELF_HOSTS = new Set(['dsbdigital.biz', 'www.dsbdigital.biz', 'dsb-digital.vercel.app']);
 // Bound the cardinality of analytics:z:share_by_slug to known case studies.

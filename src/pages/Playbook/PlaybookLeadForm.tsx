@@ -1,0 +1,124 @@
+import { useState } from 'react';
+import { trackEvent } from '@/lib/track';
+import { DOWNLOAD_PATH } from './content';
+
+type Mode = 'guide' | 'notify';
+type Status = 'idle' | 'sending' | 'done' | 'error';
+
+/** Single lead-capture form for /playbook. Two modes, one instance on the
+ *  page (anchor #get-started). Guide mode reveals an instant download on
+ *  success; notify mode shows a confirmation line. */
+export default function PlaybookLeadForm({ mode, onModeChange }: {
+  mode: Mode;
+  onModeChange: (m: Mode) => void;
+}) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [website, setWebsite] = useState(''); // honeypot
+  const [status, setStatus] = useState<Status>('idle');
+  const [error, setError] = useState('');
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    setError('');
+    try {
+      const r = await fetch('/api/playbook-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, interest: mode, website }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || 'Something went wrong. Please retry.');
+      setStatus('done');
+      trackEvent(mode === 'guide' ? 'playbook_guide_lead' : 'playbook_notify_lead');
+    } catch (err) {
+      setStatus('error');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please retry.');
+    }
+  }
+
+  const tabs: { key: Mode; label: string }[] = [
+    { key: 'guide', label: 'Free CV guide' },
+    { key: 'notify', label: 'Notify me at launch' },
+  ];
+
+  return (
+    <div id="get-started" className="relative border border-border/60 p-6 md:p-10 scroll-mt-28">
+      <div role="tablist" aria-label="What would you like?" className="flex gap-2 mb-6">
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            role="tab"
+            aria-selected={mode === t.key}
+            onClick={() => { onModeChange(t.key); setStatus('idle'); setError(''); }}
+            className={`min-h-[44px] px-4 text-xs tracking-widest uppercase border transition-colors duration-200 ${
+              mode === t.key
+                ? 'border-[hsl(var(--accent-green))] text-foreground'
+                : 'border-border/50 text-muted/60 hover:text-foreground'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {status === 'done' && mode === 'guide' ? (
+        <div>
+          <p className="font-serif text-2xl mb-3">The guide is yours.</p>
+          <a
+            href={DOWNLOAD_PATH}
+            download
+            onClick={() => trackEvent('playbook_guide_download')}
+            className="inline-flex min-h-[44px] items-center px-6 bg-[hsl(var(--accent-green))] text-background text-sm font-medium"
+          >
+            Download The CV That Gets You Shortlisted (PDF)
+          </a>
+          <p className="text-xs text-muted/50 mt-3">Save it somewhere you will find it again. Chapter one of the playbook explains why that matters.</p>
+        </div>
+      ) : status === 'done' ? (
+        <p className="font-serif text-2xl">You are on the list. You will hear from me once, when the playbook goes live.</p>
+      ) : (
+        <form onSubmit={submit} noValidate>
+          <p className="text-sm text-muted/70 mb-5 max-w-xl">
+            {mode === 'guide'
+              ? 'Tell me where to send updates and the download unlocks right here. No spam, no drip sequence.'
+              : 'Leave your name and email and I will send one message when the playbook launches. USD 29, Leone equivalent shown at checkout.'}
+          </p>
+          <div className="grid gap-4 md:grid-cols-2 max-w-xl">
+            <label className="block">
+              <span className="text-xs tracking-widest uppercase text-muted/50">Name</span>
+              <input
+                type="text" required maxLength={200} value={name}
+                onChange={(e) => setName(e.target.value)} autoComplete="name"
+                className="mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
+              />
+            </label>
+            <label className="block">
+              <span className="text-xs tracking-widest uppercase text-muted/50">Email</span>
+              <input
+                type="email" required value={email}
+                onChange={(e) => setEmail(e.target.value)} autoComplete="email"
+                className="mt-1 w-full min-h-[44px] bg-transparent border border-border/60 px-3 text-sm focus:border-[hsl(var(--accent-green))] outline-none"
+              />
+            </label>
+          </div>
+          {/* honeypot: hidden from real users, bots fill it */}
+          <input
+            type="text" name="website" value={website} tabIndex={-1} aria-hidden="true"
+            onChange={(e) => setWebsite(e.target.value)} autoComplete="off"
+            className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+          />
+          {error && <p className="text-sm text-red-400 mt-4">{error}</p>}
+          <button
+            type="submit" disabled={status === 'sending'}
+            className="mt-6 min-h-[44px] px-8 bg-[hsl(var(--accent-green))] text-background text-sm font-medium disabled:opacity-50"
+          >
+            {status === 'sending' ? 'Sending…' : mode === 'guide' ? 'Send me the guide' : 'Keep me posted'}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
