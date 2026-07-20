@@ -43,8 +43,8 @@ export default function Privacy() {
 
       <h2>Third parties</h2>
       <p>
-        There is no third-party ad tracking on this site. No advertising pixels, no cross-site
-        trackers, no analytics scripts from ad networks.
+        There is no third-party ad tracking on this site: no advertising pixels, no cross-site
+        trackers, and no analytics scripts from ad networks.
       </p>
 
       <h2>Deleting your data</h2>

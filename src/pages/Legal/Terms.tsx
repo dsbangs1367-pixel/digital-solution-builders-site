@@ -45,7 +45,7 @@ export default function Terms() {
 
       <h2>Refunds</h2>
       <p>
-        Every purchase carries a 30-day refund window. Email me within 30 days of purchase and
+        Every purchase has a 30-day refund window. Email me within 30 days of purchase and
         I will refund you. The full policy is on the refunds page of this site.
       </p>
 
