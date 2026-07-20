@@ -179,6 +179,12 @@ await asyncTest('rejects name over 200 chars with 400', async () => {
   assert.equal(r.code, 400);
 });
 
+await asyncTest('rejects email over 254 chars with 400 (RFC 5321 bound)', async () => {
+  // 295 + '@e.io' = 300 chars, regex-valid shape but over the length cap
+  const r = await call({ name: 'D', email: `${'a'.repeat(295)}@e.io`, interest: 'guide' });
+  assert.equal(r.code, 400, `Expected 400, got ${r.code}`);
+});
+
 await asyncTest('rejects bad interest with 400', async () => {
   assert.equal((await call({ name: 'D', email: 'd@e.io', interest: 'buy' })).code, 400);
 });
@@ -188,7 +194,7 @@ await asyncTest('honeypot silently accepted, nothing relayed', async () => {
   process.env[ENV_KEY] = 'https://example.test/webhook';
   globalThis.fetch = async (...args) => { calls.push(args); return { ok: true }; };
   try {
-    const r = await call({ name: 'B', email: 'b@t.io', interest: 'guide', website: 'spam' });
+    const r = await call({ name: 'B', email: 'b@t.io', interest: 'guide', form_topic: 'spam' });
     assert.equal(r.code, 200, `Expected 200, got ${r.code}`);
     assert.deepEqual(r.body, { ok: true });
     assert.equal(calls.length, 0, 'honeypot submission must never hit the webhook');
@@ -240,10 +246,15 @@ await asyncTest('webhook non-OK response returns 502', async () => {
 await asyncTest('webhook unreachable (fetch throws) returns 502', async () => {
   process.env[ENV_KEY] = 'https://example.test/webhook';
   globalThis.fetch = async () => { throw new Error('connect ECONNREFUSED'); };
+  // The handler logs the thrown error; stub console.error so passing runs
+  // do not print a deliberate stack trace.
+  const realConsoleError = console.error;
+  console.error = () => {};
   try {
     const r = await call({ name: 'D', email: 'd@e.io', interest: 'guide' });
     assert.equal(r.code, 502, `Expected 502, got ${r.code}`);
   } finally {
+    console.error = realConsoleError;
     globalThis.fetch = REAL_FETCH;
     delete process.env[ENV_KEY];
   }

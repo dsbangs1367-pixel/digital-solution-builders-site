@@ -6,7 +6,9 @@ interface LeadBody {
   name?: string;
   email?: string;
   interest?: string;
-  website?: string; // honeypot: real users never fill this
+  // honeypot: real users never fill this. Named form_topic because "website"
+  // is a common autofill target and an autofilled honeypot drops a real lead.
+  form_topic?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +22,7 @@ export default async function handler(req: any, res: any) {
   const name = String(body.name || '').trim();
   const email = String(body.email || '').trim();
   const interest = String(body.interest || '').trim();
-  const honeypot = String(body.website || '').trim();
+  const honeypot = String(body.form_topic || '').trim();
 
   // silent drop for bots: pretend success, relay nothing
   if (honeypot) return res.status(200).json({ ok: true });
@@ -30,6 +32,10 @@ export default async function handler(req: any, res: any) {
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Invalid email address.' });
+  }
+  if (email.length > 254) {
+    // RFC 5321 upper bound for a deliverable address
+    return res.status(400).json({ error: 'Email too long (254 char max).' });
   }
   if (name.length > 200) {
     return res.status(400).json({ error: 'Name too long (200 char max).' });
