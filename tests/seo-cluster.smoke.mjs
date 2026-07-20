@@ -629,6 +629,66 @@ for (const slug of ARTICLE_ORDER) {
 }
 
 // ==========================================================================
+// PART 4 — Legal + playbook content prerender (noscript body for non-JS crawlers)
+// ==========================================================================
+
+const { LEGAL_DOCS } = await import('../src/pages/Legal/legalContent.ts');
+const playbookContent = await import('../src/pages/Playbook/content.ts');
+
+// Mirror the plugin's escapeHtml so expectations match the baked output even if
+// copy later gains an &, <, or > character.
+const escHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+for (const doc of LEGAL_DOCS) {
+  const slug = doc.canonicalPath.replace(/^\//, '');
+  const htmlPath = resolve(DIST, slug, 'index.html');
+  const html = existsSync(htmlPath) ? readFileSync(htmlPath, 'utf8') : '';
+
+  test(`[prerender] dist/${slug}/index.html exists`, () => {
+    assert.ok(existsSync(htmlPath), `Missing: dist/${slug}/index.html`);
+  });
+
+  test(`[prerender] ${slug} has its own <title>`, () => {
+    const m = html.match(/<title>([^<]*)<\/title>/);
+    assert.ok(m, `<title> not found in dist/${slug}/index.html`);
+    assert.strictEqual(m[1], `${doc.title} | Digital Solution Builders`,
+      `title mismatch for ${slug}`);
+  });
+
+  test(`[prerender] ${slug} canonical is the route URL`, () => {
+    const m = html.match(/rel="canonical"\s+href="([^"]*)"/);
+    assert.ok(m, `canonical not found for ${slug}`);
+    assert.strictEqual(m[1], `${SITE}${doc.canonicalPath}`,
+      `canonical mismatch for ${slug}`);
+  });
+
+  test(`[prerender] ${slug} noscript carries the full policy text`, () => {
+    const ns = html.match(/<noscript>([\s\S]*?)<\/noscript>/);
+    assert.ok(ns, `<noscript> block not found in dist/${slug}/index.html`);
+    const body = ns[1];
+    assert.ok(body.includes(escHtml(doc.intro)), `${slug} noscript missing intro text`);
+    for (const s of doc.sections) {
+      assert.ok(body.includes(escHtml(s.heading)), `${slug} noscript missing heading "${s.heading}"`);
+      assert.ok(body.includes(escHtml(s.body)), `${slug} noscript missing body for "${s.heading}"`);
+    }
+  });
+}
+
+test('[prerender] playbook noscript carries product summary + FAQ', () => {
+  const htmlPath = resolve(DIST, 'playbook', 'index.html');
+  assert.ok(existsSync(htmlPath), 'Missing: dist/playbook/index.html');
+  const ns = readFileSync(htmlPath, 'utf8').match(/<noscript>([\s\S]*?)<\/noscript>/);
+  assert.ok(ns, '<noscript> block not found in dist/playbook/index.html');
+  const body = ns[1];
+  assert.ok(body.includes(escHtml(playbookContent.HERO.headline)),
+    'playbook noscript missing hero headline');
+  assert.ok(body.includes('USD 29'), 'playbook noscript missing price');
+  for (const f of playbookContent.FAQS) {
+    assert.ok(body.includes(escHtml(f.q)), `playbook noscript missing FAQ question "${f.q}"`);
+  }
+});
+
+// ==========================================================================
 // Summary
 // ==========================================================================
 
