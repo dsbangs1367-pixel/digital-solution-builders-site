@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
 import Seo from '@/components/Seo';
+import { trackEvent } from '@/lib/track';
 import PlaybookLeadForm from './PlaybookLeadForm';
 import {
   HERO,
@@ -14,7 +15,51 @@ import {
   BIO,
   META_TITLE,
   OG_TITLE,
+  CHECKOUT_URL,
+  CTA_BUY,
 } from './content';
+
+/**
+ * The hero secondary CTA and the price-block button. Pre-launch (CHECKOUT_URL
+ * empty) both render the outline "notify me" button that opens the form. Once
+ * CHECKOUT_URL is set they become a "buy" link that opens Paddle checkout in a
+ * new tab: buyVariant="primary" gives the price block the prominent green fill,
+ * "outline" keeps the hero secondary quiet under the free-guide primary CTA.
+ */
+function SecondaryCta({
+  onNotify,
+  buyVariant,
+  className = '',
+}: {
+  onNotify: () => void;
+  buyVariant: 'primary' | 'outline';
+  className?: string;
+}) {
+  const base = `min-h-[44px] px-6 text-xs font-medium tracking-wide ${className}`.trim();
+  const outline =
+    'border border-border/60 text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors duration-200';
+  const primary =
+    'fx-sweep fx-glow bg-[hsl(var(--accent-green))] text-background hover:opacity-90 transition-opacity duration-200';
+
+  if (CHECKOUT_URL) {
+    return (
+      <a
+        href={CHECKOUT_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackEvent('playbook_checkout_click')}
+        className={`${base} ${buyVariant === 'primary' ? primary : outline} inline-flex items-center`}
+      >
+        {CTA_BUY}
+      </a>
+    );
+  }
+  return (
+    <button type="button" onClick={onNotify} className={`${base} ${outline}`}>
+      {HERO.ctaNotify}
+    </button>
+  );
+}
 
 const KICKER = 'text-xs tracking-[0.3em] uppercase mb-3 text-muted/70';
 const SHELL = 'max-w-5xl mx-auto px-6 md:px-12';
@@ -111,13 +156,7 @@ export default function PlaybookPage() {
               >
                 {HERO.ctaGuide}
               </button>
-              <button
-                type="button"
-                onClick={() => goToForm('notify')}
-                className="min-h-[44px] px-6 border border-border/60 text-xs font-medium tracking-wide text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
-              >
-                {HERO.ctaNotify}
-              </button>
+              <SecondaryCta onNotify={() => goToForm('notify')} buyVariant="outline" />
             </div>
           </Reveal>
         </section>
@@ -234,13 +273,7 @@ export default function PlaybookPage() {
                 </li>
               ))}
             </ul>
-            <button
-              type="button"
-              onClick={() => goToForm('notify')}
-              className="mt-8 min-h-[44px] px-6 border border-border/60 text-xs font-medium tracking-wide text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors duration-200"
-            >
-              {HERO.ctaNotify}
-            </button>
+            <SecondaryCta onNotify={() => goToForm('notify')} buyVariant="primary" className="mt-8" />
           </Reveal>
         </section>
 
