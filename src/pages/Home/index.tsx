@@ -73,27 +73,6 @@ const baseProjects: Project[] = [
     ],
   },
   {
-    id: 15,
-    slug: 'nexa-fleet',
-    live: false,
-    title: 'Nexa-Fleet Waka',
-    category: 'Health Logistics · Fleet Telematics',
-    tagline: 'Cold chain, tracked to the door.',
-    description:
-      'A fleet telematics and dispatch platform for health logistics: cold-chain trucks, ambulances and delivery bikes. It ingests GPS from Teltonika devices over TCP, MQTT and HTTP, then drives a live map, breadcrumb trip replay, PostGIS geofencing, a when-then rules engine, WHO-PQS cold-chain excursion monitoring, driver-safety scoring, job dispatch and proof-of-delivery capture. FastAPI with async SQLAlchemy on PostgreSQL 16, TimescaleDB and PostGIS; React 18 with MapLibre GL over self-hosted Sierra Leone map tiles; a role-adaptive PWA that gives drivers an offline outbox so a dead spot never loses a delivery. 1,363 tests and 20 migrations.',
-    services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
-    url: 'https://fleet.dsbdigital.biz',
-    image: '/projects/nexa-fleet.png',
-    imageAlt:
-      'Nexa-Fleet Waka sign-in screen: the product name set in a serif over a deep navy field, above a white panel with username and password fields and a teal sign-in button, under the line "Fleet telematics for Sierra Leone health logistics". The console itself sits behind the login and is not public.',
-    accent: '#2f9fb0',
-    stats: [
-      { label: 'Stage', value: 'UAT' },
-      { label: 'Tests', value: '1,363' },
-      { label: 'Surfaces', value: 'Console + PWA' },
-    ],
-  },
-  {
     id: 16,
     slug: 'freetown-city-os',
     live: true,
@@ -112,6 +91,27 @@ const baseProjects: Project[] = [
       { label: 'Stage', value: 'Demo' },
       { label: 'Programme', value: 'USD 825M' },
       { label: 'Horizon', value: '10 years' },
+    ],
+  },
+  {
+    id: 15,
+    slug: 'nexa-fleet',
+    live: false,
+    title: 'Nexa-Fleet Waka',
+    category: 'Health Logistics · Fleet Telematics',
+    tagline: 'Cold chain, tracked to the door.',
+    description:
+      'A fleet telematics and dispatch platform for health logistics: cold-chain trucks, ambulances and delivery bikes. It ingests GPS from Teltonika devices over TCP, MQTT and HTTP, then drives a live map, breadcrumb trip replay, PostGIS geofencing, a when-then rules engine, WHO-PQS cold-chain excursion monitoring, driver-safety scoring, job dispatch and proof-of-delivery capture. FastAPI with async SQLAlchemy on PostgreSQL 16, TimescaleDB and PostGIS; React 18 with MapLibre GL over self-hosted Sierra Leone map tiles; a role-adaptive PWA that gives drivers an offline outbox so a dead spot never loses a delivery. 1,363 tests and 20 migrations.',
+    services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
+    url: 'https://fleet.dsbdigital.biz',
+    image: '/projects/nexa-fleet.png',
+    imageAlt:
+      'Nexa-Fleet Waka sign-in screen: the product name set in a serif over a deep navy field, above a white panel with username and password fields and a teal sign-in button, under the line "Fleet telematics for Sierra Leone health logistics". The console itself sits behind the login and is not public.',
+    accent: '#2f9fb0',
+    stats: [
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Tests', value: '1,363' },
+      { label: 'Surfaces', value: 'Console + PWA' },
     ],
   },
   {
