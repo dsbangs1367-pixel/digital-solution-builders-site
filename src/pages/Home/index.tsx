@@ -86,6 +86,27 @@ const baseProjects: Project[] = [
     ],
   },
   {
+    id: 16,
+    slug: 'freetown-city-os',
+    live: true,
+    title: 'Freetown City OS',
+    category: 'Smart City · Programme Dashboard (demo)',
+    tagline: 'A ten-year plan you can actually open.',
+    description:
+      'A planning and investor dashboard that turns the Freetown 2035 smart-city plan from a document into something you can interrogate: investment pillars and phased budget, a project register, KPI monitoring against baselines, a Leaflet map of the network, and a read-only view of four infrastructure systems and their components. Built to carry the plan\'s honesty discipline into the product, so every figure, indicator and map layer is badged either verified against a primary source or flagged as a Phase 0 due-diligence item. FastAPI with async SQLAlchemy on the backend; React 19, React Query and Leaflet on the frontend; JWT auth with viewer, officer and admin roles.',
+    services: ['Full-stack Dashboard', 'Geospatial UI', 'Data Modelling'],
+    url: 'https://cityos.dsbdigital.biz',
+    image: '/projects/freetown-city-os.png',
+    imageAlt:
+      'Freetown City OS programme overview: a total programme figure of USD 825M split across three phases, four investment pillar cards with committed and spent draw-down bars, and headline indicator tiles for piped water, fibre coverage and peak traffic speed, each carrying a "Verified" badge. A banner across the top notes that energy, climate, map geometry and committed values are Phase 0 due-diligence items.',
+    accent: '#1fb85c',
+    stats: [
+      { label: 'Stage', value: 'Demo' },
+      { label: 'Programme', value: 'USD 825M' },
+      { label: 'Horizon', value: '10 years' },
+    ],
+  },
+  {
     id: 2,
     slug: 'nexa-logistix',
     live: true,
@@ -355,6 +376,7 @@ const baseProjects: Project[] = [
 // Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
 const CASE_STUDY_SLUGS = new Set([
   'nexa-fleet',
+  'freetown-city-os',
   'nexa-welbodi',
   'nexa-logistix',
   'nexa-synapse',

@@ -62,7 +62,10 @@ function escapeAttr(v) {
 const { caseStudies } = await import('../src/pages/CaseStudy/caseStudies.ts');
 
 // The slugs added to the portfolio since the original launch
-const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub', 'prime-care', 'nexa-fleet'];
+const NEW_SLUGS = [
+  'nexa-continuum', 'salone-gospel-hub', 'prime-care',
+  'nexa-fleet', 'freetown-city-os',
+];
 
 // ==========================================================================
 // PART 1 — caseStudies.ts data integrity for the new entries
@@ -484,7 +487,7 @@ console.log('\n--- Part 6: Additional edge cases ---\n');
 
 // Tripwire on the entry count. Bump it deliberately when adding a case study,
 // so an accidental deletion or a bad merge cannot pass unnoticed.
-const EXPECTED_CASE_STUDIES = 9;
+const EXPECTED_CASE_STUDIES = 10;
 test(`caseStudies.ts has exactly ${EXPECTED_CASE_STUDIES} entries`, () => {
   const count = Object.keys(caseStudies).length;
   assert.strictEqual(count, EXPECTED_CASE_STUDIES,

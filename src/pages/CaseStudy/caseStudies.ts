@@ -422,4 +422,47 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  'freetown-city-os': {
+    slug: 'freetown-city-os',
+    title: 'Freetown City OS',
+    category: 'Smart City · Programme Dashboard (demo)',
+    tagline: 'A ten-year plan you can actually open.',
+    accent: '#1fb85c',
+    heroImage: '/projects/freetown-city-os.png',
+    heroImageAlt:
+      'Freetown City OS programme overview: a total programme figure of USD 825M split across three phases, four investment pillar cards with committed and spent draw-down bars, and headline indicator tiles for piped water, fibre coverage and peak traffic speed, each carrying a "Verified" badge. A banner across the top notes that energy, climate, map geometry and committed values are Phase 0 due-diligence items.',
+    liveUrl: 'https://cityos.dsbdigital.biz',
+    liveLabel: 'cityos.dsbdigital.biz',
+    metaTitle:
+      'Freetown City OS: Smart-city Programme and Investor Dashboard | Digital Solution Builders',
+    metaDescription:
+      'A planning and investor dashboard for a ten-year, USD 825M smart-city programme: phased budget, project register, KPI monitoring, geospatial map and infrastructure systems view, with every figure badged verified or flagged for due diligence. A full-stack build by Digital Solution Builders.',
+    intro:
+      'A planning and investor dashboard that turns a ten-year smart-city plan from a PDF nobody opens into something a funder can actually interrogate, pillar by pillar and indicator by indicator.',
+    stats: [
+      { label: 'Stage', value: 'Demo' },
+      { label: 'Programme', value: 'USD 825M' },
+      { label: 'Horizon', value: '10 years' },
+    ],
+    services: ['Full-stack Dashboard', 'Geospatial UI', 'Data Modelling'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'A ten-year plan for Freetown existed as a long document with a big number at the front. That is the format every infrastructure plan dies in: nobody reads to page forty, the phasing is invisible, and a funder who wants to know what USD 825M actually buys has to take it on trust. The other problem was sharper. Plans like this get their credibility destroyed by one unsourced figure, because a reader who catches a single invented number stops believing the verified ones too. So the product had to do two jobs at once: make the programme navigable, and make the difference between a confirmed figure and a working assumption impossible to miss.',
+      },
+      {
+        heading: 'What we built',
+        body: 'Six slices, each one a working view rather than a mockup. A programme overview that reconciles USD 825M across three phases and four investment pillars, with committed and spent draw-down. A project register with full create, read, update and delete. KPI monitoring that tracks each indicator from its baseline to its target. A Leaflet map of the network. A read-only infrastructure section covering four systems and their thirty components, with a dependency-free schematic drawn in SVG. And roles throughout: viewer, officer and admin, with the denials actually enforced rather than hidden in the interface. The honesty discipline runs through all of it as a badge on every figure, indicator and map layer.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy 2.0 and Alembic on the backend, SQLite in development and Postgres in production, with 77 tests across 6 migrations. React 19, TypeScript, Tailwind and React Query on the frontend, Leaflet for the map and Recharts for the trend views, plus a hand-drawn SVG schematic rather than a diagramming dependency. Authentication is JWT over bcrypt with three roles. The single-page app is on Vercel and the API sits behind nginx on a managed droplet, wired so the browser only ever talks to one origin. There is no AI anywhere in it, and no personal data beyond a username and a password hash.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live end to end at cityos.dsbdigital.biz since 18 June 2026, and worth being precise about what that means. This is a demonstration and planning tool, not an operational city system: nothing in it is wired to a live municipal feed, and it has no official standing. The baseline figures come from primary sources and are badged as verified. The energy and climate values, the map geometry, and the committed and spent draw-down are seeded illustrations, badged as Phase 0 due-diligence items, and the interface says so on every screen rather than in a footnote. All thirty infrastructure components are illustrative.',
+      },
+    ],
+  },
 };
