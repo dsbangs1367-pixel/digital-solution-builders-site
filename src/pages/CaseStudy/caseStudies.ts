@@ -400,7 +400,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     stats: [
       { label: 'Stage', value: 'UAT' },
       { label: 'Tests', value: '1,363' },
-      { label: 'Surfaces', value: 'Console + Driver PWA' },
+      { label: 'Surfaces', value: 'Console + PWA' },
     ],
     services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
     sections: [
