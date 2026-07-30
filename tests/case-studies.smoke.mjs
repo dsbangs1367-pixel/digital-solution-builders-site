@@ -14,6 +14,8 @@
  *   Part 5 — public/sitemap.xml contains each /work/<slug> URL
  *   Part 6 — Edge cases: accent hex, slug/heroImage alignment, no stale omissions
  *   Part 7 — Prime Care-specific assertions (liveUrl, accent, og:image, services, stat shape)
+ *   Part 8 — salone-gospel-hub content-refresh assertions
+ *   Part 9 — SHARE_SLUGS parity with caseStudies.ts (analytics allowlist)
  */
 
 import assert from 'node:assert/strict';
@@ -679,6 +681,34 @@ test('sitemap.xml salone-gospel-hub <lastmod> is 2026-07-01', () => {
     '2026-07-01',
     `salone-gospel-hub <lastmod> should be 2026-07-01, got: "${urlBlockMatch[1].trim()}"`
   );
+});
+
+// ==========================================================================
+// PART 9 — SHARE_SLUGS parity with caseStudies.ts
+// ==========================================================================
+//
+// api/track.ts passes props.slug through normalizeProp(raw, SHARE_SLUGS), which
+// returns null for any slug outside the set. A case study missing from
+// SHARE_SLUGS therefore has its share events silently dropped from
+// analytics:z:share_by_slug: no error, no log line, just absent data. This
+// drifted once already (the set held 4 of 8 slugs), so assert set equality in
+// both directions. Adding a case study without updating SHARE_SLUGS now fails
+// here, and so does leaving a stale slug behind after removing one.
+
+console.log('\n--- Part 9: SHARE_SLUGS parity with caseStudies.ts ---\n');
+
+const { SHARE_SLUGS } = await import('../api/_lib/validators.ts');
+
+test('SHARE_SLUGS covers every slug in caseStudies.ts', () => {
+  const missing = Object.keys(caseStudies).filter(slug => !SHARE_SLUGS.has(slug));
+  assert.deepStrictEqual(missing, [],
+    `Case studies missing from SHARE_SLUGS (their share events are dropped): ${missing.join(', ')}`);
+});
+
+test('SHARE_SLUGS contains no slug without a case study', () => {
+  const stale = [...SHARE_SLUGS].filter(slug => !(slug in caseStudies));
+  assert.deepStrictEqual(stale, [],
+    `SHARE_SLUGS entries with no matching case study: ${stale.join(', ')}`);
 });
 
 // ==========================================================================
