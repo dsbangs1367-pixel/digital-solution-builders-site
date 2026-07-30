@@ -508,4 +508,90 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  'nexa-scribe': {
+    slug: 'nexa-scribe',
+    title: 'Nexa-Scribe',
+    category: 'Healthcare · Clinical Knowledge API',
+    tagline: 'The national formulary, as an endpoint.',
+    accent: '#b5677f',
+    heroImage: '/projects/nexa-scribe.png',
+    heroImageAlt:
+      'The public Nexa-Scribe API documentation: an OpenAPI 3.1 page headed "Nexa-Scribe 0.1.0" with the note "Reference data only, this service holds no PHI", listing endpoint groups for meta, terminology, coding, drugs and interactions, most of them marked with a padlock for API-key authentication.',
+    liveUrl: 'https://scribe.dsbdigital.biz/docs',
+    liveLabel: 'scribe.dsbdigital.biz/docs',
+    metaTitle:
+      'Nexa-Scribe: Clinical Knowledge API for Drugs, Interactions and Coding | Digital Solution Builders',
+    metaDescription:
+      'A clinical knowledge service built from Sierra Leone Ministry of Health source documents: drug and terminology lookup, interaction checking, dose recommendations and clinical coding, behind an API-key authenticated OpenAPI surface. A backend build by Digital Solution Builders.',
+    intro:
+      'A clinical knowledge service that answers the four questions an electronic medical record has to ask mid-consultation, built from the national formulary rather than from whichever drug dataset happened to be open.',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Sources', value: 'SL MoHS' },
+      { label: 'Dose statements', value: '1,014' },
+    ],
+    services: ['Clinical Data Engineering', 'API Design', 'Document Extraction'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'An electronic medical record has to answer four questions in the middle of a consultation. What is this drug. What does it interact with. What dose for a patient this age and this weight. What code does this diagnosis file under. The commercial clinical databases that answer them well are priced for hospital systems in wealthy countries, and the open datasets that are free are built around formularies nobody in Freetown dispenses from. A drug interaction warning is worthless if the drug is not stocked, and a paediatric dose is worse than worthless if it came from a different national guideline. The answers had to come from the documents Sierra Leone clinicians actually work to.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A knowledge database assembled from Ministry of Health source documents, starting with the Essential Medicines List and the Standard Treatment Guidelines. That meant real extraction work rather than an import: 602 rows of medicines list resolved across a nested category structure with collision-safe keys, and 1,014 dose and frequency statements pulled out of 20,474 paragraphs and 157 tables of treatment guidelines. Doses go through a dual-review gate before anything is readable. A deterministic parser and a language-model pass each produce a structured reading, the two are adjudicated across seven fields, and only rows where they agree are served. Disagreements sit pending for a human. On top of the data: a code-system registry that tracks each source licence, and endpoints for terminology search, concept mapping, drug lookup, interaction checking and code suggestion.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI on PostgreSQL 16 with Alembic, 647 tests across 3 migrations, behind API-key authentication. Containers run non-root and migrate on start, fronted by nginx with an auto-renewing certificate. The language-model extraction is a build-time step rather than a request-time one, which matters: a clinician gets a deterministic lookup against reviewed rows, not a generated answer. Interactions are the deliberate exception to the read-time filter and always surface, because an unreviewed interaction warning is a nuisance while a suppressed one is a hazard. A parity checkpoint proved all 47 interaction pairs from the previous in-record checker return identical severities before anything was cut over.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live in production since 18 July 2026 with the reference data loaded: 12 code systems, the full 602-row medicines list, and the curated diagnostic codes. Two things are worth stating plainly. The first is scope. Only the knowledge database exists. Dictation, note generation and the record adapters were specified alongside it and are not built, so this is one component of a larger idea rather than the finished thing. The second is licensing. It is deliberately non-commercial, because the source material is licensed for non-commercial use and the record system it serves is donated. That is a constraint we chose, and it is the reason the service can exist at all.',
+      },
+    ],
+  },
+
+  'nexa-kopo': {
+    slug: 'nexa-kopo',
+    title: 'Nexa-Kopo',
+    category: 'Fintech · Ledger and Payments Service',
+    tagline: 'Five service surfaces. No screen.',
+    accent: '#3f8f7a',
+    heroImage: '/projects/nexa-kopo.png',
+    heroImageAlt:
+      'A designed illustration, not a screenshot, in the site\'s own dark palette: the Nexa-Kopo name above five numbered panels for Ledger, KYC, Payments, USSD and Webhooks, the single public response "GET /healthz to 200 status ok", counters for 457 tests, 93.77% coverage, 9 migrations and 8 database triggers, and a footnote stating that the service has no interface to capture and that settlement still runs on a simulator.',
+    liveUrl: 'https://dsbdigital.biz/#contact',
+    liveLabel: 'API and USSD service, no public web UI',
+    metaTitle:
+      'Nexa-Kopo: Double-entry Ledger, USSD and Payments API | Digital Solution Builders',
+    metaDescription:
+      'A finance service with no user interface: an append-only double-entry ledger, a KYC tier registry, payments orchestration over a Postgres outbox, a USSD gateway for feature phones, and signed webhooks that let sibling platforms move money. A backend build by Digital Solution Builders.',
+    intro:
+      'A finance service other products call rather than one anyone logs into: a double-entry ledger, KYC tiers, payments orchestration, a USSD gateway and signed webhooks, with no screen anywhere in it.',
+    stats: [
+      { label: 'Stage', value: 'Live API' },
+      { label: 'Coverage', value: '93.77%' },
+      { label: 'Surfaces', value: 'API + USSD' },
+    ],
+    services: ['Double-entry Ledger', 'Payments Orchestration', 'USSD Gateway'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Several products in the same family had reached the point of needing to move money: pay a driver, take a fee, hold a deposit. The obvious path is for each one to grow its own wallet table, and it is the wrong one. You end up with four half-ledgers, four interpretations of what a balance means, four sets of identity checks and no single place where the books balance. The brief was to build the money layer once, properly, as a service the others call. Which means it has no interface, and it has to be right in a way a screen would let you get away with not being.',
+      },
+      {
+        heading: 'What we built',
+        body: 'An append-only double-entry ledger where a repeated request cannot double-post and a correction is an explicit reversal rather than an edit, with eight database triggers enforcing the invariants below the application so a future bug in Python cannot unbalance the books. Around it: an identity and tier registry where Tier 0 is automatic and higher tiers need a reviewer decision, and payments orchestration built on escrow holds, a payment-intent state machine and a Postgres outbox worker with an orphaned-job reaper. A USSD gateway means a feature phone can register, set a PIN, check a balance, send money, cash in and out and pull a mini-statement, no smartphone required. Sibling products reach it through a consumer API with HMAC-signed webhooks, links owned by construction, and an append-only log of every sensitive read.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy and Alembic on PostgreSQL across 9 migrations, Celery and Redis for the worker layer, Fernet for encryption at rest on the sensitive columns, and least-privilege database roles so the application cannot alter its own audit trail. 457 tests at 93.77% coverage against an 85% gate. Docker Compose behind nginx with a modern-cipher-only certificate, deployed automatically from the main branch. Guard rails that only matter when something goes wrong: outbound requests are checked against server-side request forgery, and a payout that cannot be resolved is parked for a human rather than voided, because a stuck payment is recoverable and a wrongly voided one is not.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live at kopo.dsbdigital.biz since 13 July 2026, with the first sibling product onboarded as a consumer three days later. There is no web interface, the interactive API documentation is switched off in production, and a health check is the only thing a browser can reach, which is why the image above is a diagram rather than a screenshot. The honest headline is that no real money has moved through it. Settlement still runs on a deterministic simulator, and the mobile-money rail is deployed dormant, waiting on a processing agreement and a controlled live micro-payout before it is switched on. The ledger is real, the money is not yet.',
+      },
+    ],
+  },
 };

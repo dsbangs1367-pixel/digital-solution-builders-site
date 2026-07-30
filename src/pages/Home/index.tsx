@@ -272,6 +272,48 @@ const baseProjects: Project[] = [
     ],
   },
   {
+    id: 18,
+    slug: 'nexa-scribe',
+    live: true,
+    title: 'Nexa-Scribe',
+    category: 'Healthcare · Clinical Knowledge API',
+    tagline: 'The national formulary, as an endpoint.',
+    description:
+      'A clinical knowledge service that answers the questions an electronic medical record has to ask mid-consultation: what is this drug, what does it interact with, what dose for this weight, what code do I file this under. Built primarily out of Sierra Leone Ministry of Health source documents rather than open datasets, so the answers match the formulary a clinician actually dispenses from. Doses pass a dual-review gate, a deterministic parser and a language-model pass adjudicated field by field, and only agreed rows are readable. FastAPI on PostgreSQL 16 behind API-key auth, in a non-root container that migrates on start. It holds reference data only and no patient data.',
+    services: ['Clinical Data Engineering', 'API Design', 'Document Extraction'],
+    url: 'https://scribe.dsbdigital.biz/docs',
+    image: '/projects/nexa-scribe.png',
+    imageAlt:
+      'The public Nexa-Scribe API documentation: an OpenAPI 3.1 page headed "Nexa-Scribe 0.1.0" with the note "Reference data only, this service holds no PHI", listing endpoint groups for meta, terminology, coding, drugs and interactions, most of them marked with a padlock for API-key authentication.',
+    accent: '#b5677f',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Sources', value: 'SL MoHS' },
+      { label: 'Dose statements', value: '1,014' },
+    ],
+  },
+  {
+    id: 19,
+    slug: 'nexa-kopo',
+    live: true,
+    title: 'Nexa-Kopo',
+    category: 'Fintech · Ledger and Payments Service',
+    tagline: 'Five service surfaces. No screen.',
+    description:
+      'A finance service the other products call rather than a product anyone logs into: an append-only double-entry ledger with idempotent posting and explicit reversals, a KYC tier registry, payments orchestration with escrow holds and a Postgres outbox worker, a USSD gateway so a feature phone can register, check a balance and send money, and a signed-webhook API that lets a sibling platform move money without holding its own ledger. FastAPI with async SQLAlchemy on PostgreSQL, Celery and Redis, and eight database triggers enforcing the ledger invariants below the application. 457 tests at 93.77% coverage.',
+    services: ['Double-entry Ledger', 'Payments Orchestration', 'USSD Gateway'],
+    url: 'https://dsbdigital.biz/#contact',
+    image: '/projects/nexa-kopo.png',
+    imageAlt:
+      'A designed illustration, not a screenshot, in the site\'s own dark palette: the Nexa-Kopo name above five numbered panels for Ledger, KYC, Payments, USSD and Webhooks, the single public response "GET /healthz to 200 status ok", counters for 457 tests, 93.77% coverage, 9 migrations and 8 database triggers, and a footnote stating that the service has no interface to capture and that settlement still runs on a simulator.',
+    accent: '#3f8f7a',
+    stats: [
+      { label: 'Stage', value: 'Live API' },
+      { label: 'Coverage', value: '93.77%' },
+      { label: 'Surfaces', value: 'API + USSD' },
+    ],
+  },
+  {
     id: 6,
     slug: 'dsb-digital-portfolio',
     live: true,
@@ -399,6 +441,8 @@ const CASE_STUDY_SLUGS = new Set([
   'nexa-fleet',
   'freetown-city-os',
   'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
   'nexa-welbodi',
   'nexa-logistix',
   'nexa-synapse',

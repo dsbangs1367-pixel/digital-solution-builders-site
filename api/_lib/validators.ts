@@ -34,6 +34,8 @@ export const SHARE_SLUGS = new Set([
   'nexa-fleet',
   'freetown-city-os',
   'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
 ]);
 
 /** Returns null when the path is invalid; otherwise returns a normalised path. */
