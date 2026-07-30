@@ -15,6 +15,25 @@ const motion = _motion as any;
 interface Project {
   id: number;
   slug: string;
+  /**
+   * True when the product is publicly reachable AND doing the job it exists to
+   * do. Drives the hero trust-bar count, so it is a public claim a visitor can
+   * check against the cards.
+   *
+   * The test is the product's purpose, not the polish of its data. A fleet
+   * console whose whole point is tracking real vehicles is false while it
+   * carries none (nexa-fleet, UAT). A learning platform is false until it has
+   * carried a cohort (nexa-sabi, staging). A dashboard built to present a
+   * programme to funders is true once it presents that programme, even though
+   * its figures are badged illustrative, because presenting is the job
+   * (freetown-city-os, demo).
+   *
+   * Deliberately not derived from the `Stage` stat: those values are free text
+   * (Live, UAT, Production, Prototype, Demo, Live MVP) and three entries carry
+   * no Stage stat at all, so a derivation would silently change a public number
+   * the next time someone edited a stat label.
+   */
+  live: boolean;
   title: string;
   category: string;
   tagline: string;
@@ -29,10 +48,14 @@ interface Project {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const projects: Project[] = [
+// The portfolio entries. Display order is array order. Read through the
+// `projects` binding below, which fills in the counters this site reports
+// about itself.
+const baseProjects: Project[] = [
   {
     id: 1,
     slug: 'nexa-welbodi',
+    live: false,
     title: 'Nexa-Health Welbodi EMR',
     category: 'Healthcare · Electronic Medical Records',
     tagline: 'Lifelong health records. Starting today.',
@@ -50,8 +73,72 @@ const projects: Project[] = [
     ],
   },
   {
+    id: 16,
+    slug: 'freetown-city-os',
+    live: true,
+    title: 'Freetown City OS',
+    category: 'Smart City · Programme Dashboard (demo)',
+    tagline: 'A ten-year plan you can actually open.',
+    description:
+      'A planning and investor dashboard that turns the Freetown 2035 smart-city plan from a document into something you can interrogate: investment pillars and phased budget, a project register, KPI monitoring against baselines, a Leaflet map of the network, and a read-only view of four infrastructure systems and their components. Built to carry the plan\'s honesty discipline into the product, so every figure, indicator and map layer is badged either verified against a primary source or flagged as a Phase 0 due-diligence item. FastAPI with async SQLAlchemy on the backend; React 19, React Query and Leaflet on the frontend; JWT auth with viewer, officer and admin roles.',
+    services: ['Full-stack Dashboard', 'Geospatial UI', 'Data Modelling'],
+    url: 'https://cityos.dsbdigital.biz',
+    image: '/projects/freetown-city-os.png',
+    imageAlt:
+      'Freetown City OS programme overview: a total programme figure of USD 825M split across three phases, four investment pillar cards with committed and spent draw-down bars, and headline indicator tiles for piped water, fibre coverage and peak traffic speed, each carrying a "Verified" badge. A banner across the top notes that energy, climate, map geometry and committed values are Phase 0 due-diligence items.',
+    accent: '#1fb85c',
+    stats: [
+      { label: 'Stage', value: 'Demo' },
+      { label: 'Programme', value: 'USD 825M' },
+      { label: 'Horizon', value: '10 years' },
+    ],
+  },
+  {
+    id: 15,
+    slug: 'nexa-fleet',
+    live: false,
+    title: 'Nexa-Fleet Waka',
+    category: 'Health Logistics · Fleet Telematics',
+    tagline: 'Cold chain, tracked to the door.',
+    description:
+      'A fleet telematics and dispatch platform for health logistics: cold-chain trucks, ambulances and delivery bikes. It ingests GPS from Teltonika devices over TCP, MQTT and HTTP, then drives a live map, breadcrumb trip replay, PostGIS geofencing, a when-then rules engine, WHO-PQS cold-chain excursion monitoring, driver-safety scoring, job dispatch and proof-of-delivery capture. FastAPI with async SQLAlchemy on PostgreSQL 16, TimescaleDB and PostGIS; React 18 with MapLibre GL over self-hosted Sierra Leone map tiles; a role-adaptive PWA that gives drivers an offline outbox so a dead spot never loses a delivery. 1,363 tests and 20 migrations.',
+    services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
+    url: 'https://fleet.dsbdigital.biz',
+    image: '/projects/nexa-fleet.png',
+    imageAlt:
+      'Nexa-Fleet Waka sign-in screen: the product name set in a serif over a deep navy field, above a white panel with username and password fields and a teal sign-in button, under the line "Fleet telematics for Sierra Leone health logistics". The console itself sits behind the login and is not public.',
+    accent: '#2f9fb0',
+    stats: [
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Tests', value: '1,363' },
+      { label: 'Surfaces', value: 'Console + PWA' },
+    ],
+  },
+  {
+    id: 17,
+    slug: 'nexa-sabi',
+    live: false,
+    title: 'Nexa-Learn Sabi',
+    category: 'Education · Adaptive Learning Platform',
+    tagline: 'Learn offline. Prove it anywhere.',
+    description:
+      'An adaptive learning platform built on an append-only event log: a frozen published catalogue, server-scored attempts, and a materialised progress view that can be rebuilt from the events at any time. Placement uses item-response theory to pick the most informative next question rather than marching through a fixed list, and a calibration pass re-fits item difficulty from real responses, though nothing applies automatically without a human accepting it. Completion issues a W3C Verifiable Credential and an Open Badge signed with did:web, so a learner can prove what they finished somewhere the platform does not run. FastAPI on PostgreSQL; an offline-first React PWA with a write-ahead event queue.',
+    services: ['Adaptive Learning Engine', 'Verifiable Credentials', 'Offline-first PWA'],
+    url: 'https://sabi.dsbdigital.biz',
+    image: '/projects/nexa-sabi.png',
+    imageAlt:
+      'Sabi sign-in screen: a white card centred on a deep navy field, the wordmark "Sabi." set in a serif with an orange full stop, the line "Learn, online or offline." beneath it, and username and password fields above an orange sign-in button. The learner app sits behind the login and is not public.',
+    accent: '#e8952a',
+    stats: [
+      { label: 'Stage', value: 'Staging' },
+      { label: 'Coverage', value: '97.69%' },
+      { label: 'Credentials', value: 'W3C VC 2.0' },
+    ],
+  },
+  {
     id: 2,
     slug: 'nexa-logistix',
+    live: true,
     title: 'Nexa-Logistix LMIS',
     category: 'Health Logistics · Web Application',
     tagline: 'A pharmaceutical supply-chain operating system.',
@@ -71,6 +158,7 @@ const projects: Project[] = [
   {
     id: 3,
     slug: 'rms-death-tracker',
+    live: true,
     title: 'RMS Death Tracker',
     category: 'Public Health · Surveillance Platform',
     tagline: 'One death, counted once. Excess mortality, in real time.',
@@ -90,6 +178,7 @@ const projects: Project[] = [
   {
     id: 4,
     slug: 'nexa-synapse',
+    live: false,
     title: 'Nexa-Analytics Synapse',
     category: 'Analytics · Intelligence Layer',
     tagline: 'The intelligence layer connecting every product.',
@@ -109,6 +198,7 @@ const projects: Project[] = [
   {
     id: 12,
     slug: 'nexa-continuum',
+    live: false,
     title: 'Nexa-Health Continuum',
     category: 'Healthcare · Longitudinal Patient Journey',
     tagline: 'One timeline. Every provider.',
@@ -129,6 +219,7 @@ const projects: Project[] = [
   {
     id: 5,
     slug: 'vocal-drift-inspire',
+    live: true,
     title: 'Vocal Drift Inspire Platform',
     category: 'Reality TV · Entertainment Platform',
     tagline: 'One stage. Every voice.',
@@ -149,6 +240,7 @@ const projects: Project[] = [
   {
     id: 13,
     slug: 'salone-gospel-hub',
+    live: true,
     title: 'Salone Gospel Hub',
     category: 'Faith & Music · Community Platform',
     tagline: 'The home of Sierra Leonean Gospel.',
@@ -169,6 +261,7 @@ const projects: Project[] = [
   {
     id: 14,
     slug: 'prime-care',
+    live: true,
     title: 'Prime Care Medical Services',
     category: 'Healthcare · Clinic Website + Booking',
     tagline: 'Three specialists. One shared record.',
@@ -187,8 +280,51 @@ const projects: Project[] = [
     ],
   },
   {
+    id: 18,
+    slug: 'nexa-scribe',
+    live: true,
+    title: 'Nexa-Scribe',
+    category: 'Healthcare · Clinical Knowledge API',
+    tagline: 'The national formulary, as an endpoint.',
+    description:
+      'A clinical knowledge service that answers the questions an electronic medical record has to ask mid-consultation: what is this drug, what does it interact with, what dose for this weight, what code do I file this under. Built primarily out of Sierra Leone Ministry of Health source documents, not open datasets, so the answers match the formulary a clinician actually dispenses from. Doses pass a dual-review gate, a deterministic parser and a language-model pass adjudicated field by field, and only agreed rows are readable. FastAPI on PostgreSQL 16 behind API-key auth, in a non-root container that migrates on start. It holds reference data only and no patient data.',
+    services: ['Clinical Data Engineering', 'API Design', 'Document Extraction'],
+    url: 'https://scribe.dsbdigital.biz/docs',
+    image: '/projects/nexa-scribe.png',
+    imageAlt:
+      'The public Nexa-Scribe API documentation: an OpenAPI 3.1 page headed "Nexa-Scribe 0.1.0" with the note "Reference data only, this service holds no PHI", listing endpoint groups for meta, terminology, coding, drugs and interactions, most of them marked with a padlock for API-key authentication.',
+    accent: '#b5677f',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Sources', value: 'SL MoHS' },
+      { label: 'Dose statements', value: '1,014' },
+    ],
+  },
+  {
+    id: 19,
+    slug: 'nexa-kopo',
+    live: true,
+    title: 'Nexa-Kopo',
+    category: 'Fintech · Ledger and Payments Service',
+    tagline: 'Five service surfaces. No screen.',
+    description:
+      'A finance service the other products call, with nothing for a human to log into: an append-only double-entry ledger with idempotent posting and explicit reversals, a KYC tier registry, payments orchestration with escrow holds and a Postgres outbox worker, a USSD gateway so a feature phone can register, check a balance and send money, and a signed-webhook API that lets a sibling platform move money without holding its own ledger. FastAPI with async SQLAlchemy on PostgreSQL, Celery and Redis, and eight database triggers enforcing the ledger invariants below the application. 457 tests at 93.77% coverage.',
+    services: ['Double-entry Ledger', 'Payments Orchestration', 'USSD Gateway'],
+    url: 'https://dsbdigital.biz/#contact',
+    image: '/projects/nexa-kopo.png',
+    imageAlt:
+      'A designed illustration, not a screenshot, in the site\'s own dark palette: the Nexa-Kopo name above five numbered panels for Ledger, KYC, Payments, USSD and Webhooks, the single public response "GET /healthz to 200 status ok", counters for 457 tests, 93.77% coverage, 9 migrations and 8 database triggers, and a footnote stating that the service has no interface to capture and that settlement still runs on a simulator.',
+    accent: '#3f8f7a',
+    stats: [
+      { label: 'Stage', value: 'Live API' },
+      { label: 'Coverage', value: '93.77%' },
+      { label: 'Surfaces', value: 'API + USSD' },
+    ],
+  },
+  {
     id: 6,
     slug: 'dsb-digital-portfolio',
+    live: true,
     title: 'Digital Solution Builders Portfolio',
     category: 'Portfolio · Website Design',
     tagline: 'From Concept to MVP. In 72 Hours.',
@@ -199,17 +335,17 @@ const projects: Project[] = [
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
+    // Pages and Projects describe this site, so they are computed in the
+    // `projects` binding below rather than typed here. Anything listed at this
+    // point would go stale the next time an entry was added.
     stats: [
-      // home + 8 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '9' },
-      // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '14' },
       { label: 'Delivery', value: '72hrs' },
     ],
   },
   {
     id: 7,
     slug: 'bangura-brothers',
+    live: true,
     title: 'The Bangura Brothers',
     category: 'Youth Brand · Website Design',
     tagline: 'Create. Develop. Explore.',
@@ -229,6 +365,7 @@ const projects: Project[] = [
   {
     id: 8,
     slug: 'bangura-training-app',
+    live: false,
     title: 'Bangura Brothers Training App',
     category: 'Youth Sports · App Design',
     tagline: "Let's Train!",
@@ -248,6 +385,7 @@ const projects: Project[] = [
   {
     id: 9,
     slug: 'kellas-kitchen',
+    live: true,
     title: "Kella's Kitchen & Events",
     category: 'Food & Beverage · Website Design',
     tagline: 'Fresh, Healthy Meals Delivered to You.',
@@ -267,6 +405,7 @@ const projects: Project[] = [
   {
     id: 10,
     slug: 'sprout',
+    live: false,
     title: 'Sprout',
     category: 'Family · Native Mobile App',
     tagline: 'Education · Faith · Wealth · Health.',
@@ -286,6 +425,7 @@ const projects: Project[] = [
   {
     id: 11,
     slug: 'nexa-ideation',
+    live: true,
     title: 'Nexa-Ideation',
     category: 'SaaS · Application Design',
     tagline: 'AI Business Idea Analyzer.',
@@ -306,6 +446,11 @@ const projects: Project[] = [
 
 // Projects with a dedicated /work/<slug> case-study page (keep in sync with caseStudies.ts)
 const CASE_STUDY_SLUGS = new Set([
+  'nexa-fleet',
+  'freetown-city-os',
+  'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
   'nexa-welbodi',
   'nexa-logistix',
   'nexa-synapse',
@@ -315,6 +460,34 @@ const CASE_STUDY_SLUGS = new Set([
   'salone-gospel-hub',
   'prime-care',
 ]);
+
+// ─── Derived counters ────────────────────────────────────────────────────────
+//
+// The site reports three numbers about itself. They used to be typed by hand in
+// three places and had drifted apart. Derive them from the data instead, so
+// adding an entry updates every counter at once.
+
+const PROJECT_COUNT = baseProjects.length;
+const LIVE_COUNT = baseProjects.filter((p) => p.live).length;
+/** Home plus one page per case study. Matches the /work/ URLs in sitemap.xml. */
+const SITE_PAGE_COUNT = CASE_STUDY_SLUGS.size + 1;
+
+// The portfolio card is about this site, so its Pages and Projects stats are
+// injected here. They cannot live in the array literal above: that literal is
+// what PROJECT_COUNT measures, and CASE_STUDY_SLUGS is not yet initialised at
+// that point.
+const projects: Project[] = baseProjects.map((p) =>
+  p.slug === 'dsb-digital-portfolio'
+    ? {
+        ...p,
+        stats: [
+          { label: 'Pages', value: String(SITE_PAGE_COUNT) },
+          { label: 'Projects', value: String(PROJECT_COUNT) },
+          ...p.stats,
+        ],
+      }
+    : p,
+);
 
 const services = [
   {
@@ -475,7 +648,7 @@ function HeroSection() {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                <span className="text-xs text-muted/50">8 products shipped</span>
+                <span className="text-xs text-muted/50">{LIVE_COUNT} products live</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
@@ -861,7 +1034,7 @@ function AboutSection() {
           </p>
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border/40">
             {[
-              { value: '14', label: 'Products in Portfolio' },
+              { value: String(PROJECT_COUNT), label: 'Products in Portfolio' },
               { value: '3', label: 'Surfaces — Web · Mobile · Enterprise' },
               { value: '72hrs', label: 'For Small Builds' },
             ].map((item) => (

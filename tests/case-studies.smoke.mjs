@@ -14,6 +14,8 @@
  *   Part 5 — public/sitemap.xml contains each /work/<slug> URL
  *   Part 6 — Edge cases: accent hex, slug/heroImage alignment, no stale omissions
  *   Part 7 — Prime Care-specific assertions (liveUrl, accent, og:image, services, stat shape)
+ *   Part 8 — salone-gospel-hub content-refresh assertions
+ *   Part 9 — SHARE_SLUGS parity with caseStudies.ts (analytics allowlist)
  */
 
 import assert from 'node:assert/strict';
@@ -59,8 +61,11 @@ function escapeAttr(v) {
 // ---------------------------------------------------------------------------
 const { caseStudies } = await import('../src/pages/CaseStudy/caseStudies.ts');
 
-// The three slugs added to the portfolio since the original launch
-const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub', 'prime-care'];
+// The slugs added to the portfolio since the original launch
+const NEW_SLUGS = [
+  'nexa-continuum', 'salone-gospel-hub', 'prime-care',
+  'nexa-fleet', 'freetown-city-os', 'nexa-sabi', 'nexa-scribe', 'nexa-kopo',
+];
 
 // ==========================================================================
 // PART 1 — caseStudies.ts data integrity for the new entries
@@ -359,68 +364,64 @@ for (const slug of NEW_SLUGS) {
   });
 }
 
-// Edge case: nexa-continuum title contains "Continuum" (basic sanity that titles
-// were not accidentally swapped between the two new slugs)
-test('[nexa-continuum] <title> contains "Continuum"', () => {
-  const htmlPath = resolve(DIST, 'work', 'nexa-continuum', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/nexa-continuum/index.html not found');
+// Title identity + cross-contamination guard.
+//
+// prerenderCaseStudyOg clones one dist/index.html per slug and rewrites the
+// head in place, so a bug in the loop shows up as the right file carrying
+// another entry's title. Each slug gets a token that appears in its own title
+// and in nobody else's, then we assert presence for its own and absence for
+// every other. Tokens must be distinctive: "Nexa-" is shared by four slugs and
+// would make every assertion pass vacuously.
+const TITLE_TOKENS = {
+  'nexa-continuum': 'Continuum',
+  'salone-gospel-hub': 'Gospel',
+  'prime-care': 'Prime Care',
+  'nexa-fleet': 'Waka',
+  'freetown-city-os': 'City OS',
+  'nexa-sabi': 'Sabi',
+  'nexa-scribe': 'Scribe',
+  'nexa-kopo': 'Kopo',
+};
+
+// Guard the guard: a token that is a substring of another entry's title would
+// make the cross-contamination assertions fire on correct output.
+test('TITLE_TOKENS are mutually exclusive across every case-study title', () => {
+  for (const [slug, token] of Object.entries(TITLE_TOKENS)) {
+    const bleed = Object.keys(caseStudies).filter(
+      other => other !== slug && caseStudies[other].metaTitle.includes(token)
+    );
+    assert.deepStrictEqual(bleed, [],
+      `Token "${token}" (for ${slug}) also appears in the title of: ${bleed.join(', ')}`);
   }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Continuum'),
-    `nexa-continuum <title> does not contain "Continuum": got "${m?.[1]}"`);
 });
 
-test('[salone-gospel-hub] <title> contains "Gospel"', () => {
-  const htmlPath = resolve(DIST, 'work', 'salone-gospel-hub', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/salone-gospel-hub/index.html not found');
-  }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Gospel'),
-    `salone-gospel-hub <title> does not contain "Gospel": got "${m?.[1]}"`);
-});
+for (const slug of Object.keys(TITLE_TOKENS)) {
+  if (!(slug in caseStudies)) continue; // token declared ahead of the entry
 
-// Edge case: titles must not be swapped (cross-contamination guard)
-test('nexa-continuum title does not contain "Gospel" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'nexa-continuum', 'index.html');
-  if (!existsSync(htmlPath)) return; // already caught above
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || !m[1].includes('Gospel'),
-    `nexa-continuum <title> contains "Gospel" — titles may have been swapped`);
-});
+  test(`[${slug}] <title> contains "${TITLE_TOKENS[slug]}"`, () => {
+    const htmlPath = resolve(DIST, 'work', slug, 'index.html');
+    if (!existsSync(htmlPath)) {
+      assert.fail(`dist/work/${slug}/index.html not found`);
+    }
+    const html = readFileSync(htmlPath, 'utf8');
+    const m = html.match(/<title>([\s\S]*?)<\/title>/);
+    assert.ok(m && m[1].includes(TITLE_TOKENS[slug]),
+      `${slug} <title> does not contain "${TITLE_TOKENS[slug]}": got "${m?.[1]}"`);
+  });
 
-test('salone-gospel-hub title does not contain "Continuum" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'salone-gospel-hub', 'index.html');
-  if (!existsSync(htmlPath)) return;
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || !m[1].includes('Continuum'),
-    `salone-gospel-hub <title> contains "Continuum" — titles may have been swapped`);
-});
-
-test('[prime-care] <title> contains "Prime Care"', () => {
-  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/prime-care/index.html not found');
-  }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Prime Care'),
-    `prime-care <title> does not contain "Prime Care": got "${m?.[1]}"`);
-});
-
-test('prime-care title does not contain "Continuum" or "Gospel" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
-  if (!existsSync(htmlPath)) return;
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || (!m[1].includes('Continuum') && !m[1].includes('Gospel')),
-    `prime-care <title> contains a foreign slug name — titles may have been swapped: got "${m?.[1]}"`);
-});
+  test(`[${slug}] <title> carries no other entry's token (no title swap)`, () => {
+    const htmlPath = resolve(DIST, 'work', slug, 'index.html');
+    if (!existsSync(htmlPath)) return; // already caught above
+    const html = readFileSync(htmlPath, 'utf8');
+    const m = html.match(/<title>([\s\S]*?)<\/title>/);
+    if (!m) return;
+    const foreign = Object.entries(TITLE_TOKENS)
+      .filter(([other, token]) => other !== slug && m[1].includes(token))
+      .map(([other]) => other);
+    assert.deepStrictEqual(foreign, [],
+      `${slug} <title> carries tokens belonging to ${foreign.join(', ')}: got "${m[1]}"`);
+  });
+}
 
 // ==========================================================================
 // PART 5 — public/sitemap.xml contains both new /work/<slug> URLs
@@ -484,13 +485,13 @@ test('All new sitemap entries use https://dsbdigital.biz as base', () => {
 
 console.log('\n--- Part 6: Additional edge cases ---\n');
 
-// The caseStudies.ts now has 8 entries (5 original + 3 added this session:
-// nexa-continuum, salone-gospel-hub, prime-care). If this count changes
-// unexpectedly, flag it so the test suite stays honest.
-test('caseStudies.ts has exactly 8 entries', () => {
+// Tripwire on the entry count. Bump it deliberately when adding a case study,
+// so an accidental deletion or a bad merge cannot pass unnoticed.
+const EXPECTED_CASE_STUDIES = 13;
+test(`caseStudies.ts has exactly ${EXPECTED_CASE_STUDIES} entries`, () => {
   const count = Object.keys(caseStudies).length;
-  assert.strictEqual(count, 8,
-    `Expected 8 entries in caseStudies, got ${count}. Update this test if adding more.`);
+  assert.strictEqual(count, EXPECTED_CASE_STUDIES,
+    `Expected ${EXPECTED_CASE_STUDIES} entries in caseStudies, got ${count}. Update this test if adding more.`);
 });
 
 // All slugs in caseStudies must follow the kebab-case slug pattern
@@ -516,25 +517,54 @@ test('All NEW_SLUGS heroImages are distinct', () => {
   }
 });
 
-// heroImage filename should contain the slug (or a recognisable variant) so
-// it is easy to associate the image file with the case study
-test('[nexa-continuum] heroImage filename contains "nexa-continuum"', () => {
-  const { heroImage } = caseStudies['nexa-continuum'];
-  assert.ok(heroImage.includes('nexa-continuum'),
-    `nexa-continuum heroImage ("${heroImage}") should contain "nexa-continuum" in its filename`);
-});
+// heroImage filename must contain the slug, so the image file is trivially
+// traceable to its case study. Scoped to NEW_SLUGS on purpose: two of the
+// original entries predate the convention (nexa-logistix uses nexa-lmis.png,
+// rms-death-tracker uses nexa-rms.png) and renaming them would break the
+// already-cached social OG images.
+for (const slug of NEW_SLUGS) {
+  test(`[${slug}] heroImage filename contains "${slug}"`, () => {
+    const { heroImage } = caseStudies[slug];
+    assert.ok(heroImage.includes(slug),
+      `${slug} heroImage ("${heroImage}") should contain "${slug}" in its filename`);
+  });
+}
 
-test('[salone-gospel-hub] heroImage filename contains "salone-gospel-hub"', () => {
-  const { heroImage } = caseStudies['salone-gospel-hub'];
-  assert.ok(heroImage.includes('salone-gospel-hub'),
-    `salone-gospel-hub heroImage ("${heroImage}") should contain "salone-gospel-hub" in its filename`);
-});
+// Card-to-case-study image parity lives in Part 10, where baseProjects has
+// already been parsed into per-entry blocks. Doing it here with a lazy regex
+// over the whole file would match the nearest following `image:` instead of
+// the one belonging to this entry.
 
-test('[prime-care] heroImage filename contains "prime-care"', () => {
-  const { heroImage } = caseStudies['prime-care'];
-  assert.ok(heroImage.includes('prime-care'),
-    `prime-care heroImage ("${heroImage}") should contain "prime-care" in its filename`);
-});
+// Forward-compatibility tripwire.
+//
+// Entries authored from 2026-07-30 on are written em-dash free so they survive
+// the pending brand rebrand, which enforces a site-wide no-em-dash rule across
+// all of src/. The eight older entries are exempt and get converted as part of
+// that cutover, not here, so this list is deliberately narrower than NEW_SLUGS.
+const EM_DASH = '—';
+const EM_DASH_FREE_SLUGS = [
+  'nexa-fleet',
+  'freetown-city-os',
+  'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
+];
+const PROSE_FIELDS = ['title', 'tagline', 'intro', 'metaTitle', 'metaDescription', 'heroImageAlt'];
+
+for (const slug of EM_DASH_FREE_SLUGS) {
+  if (!(slug in caseStudies)) continue; // listed ahead of the entry landing
+
+  test(`[${slug}] prose is free of em dashes`, () => {
+    const cs = caseStudies[slug];
+    const offenders = PROSE_FIELDS.filter(f => cs[f].includes(EM_DASH));
+    cs.sections.forEach((s, i) => {
+      if (s.heading.includes(EM_DASH)) offenders.push(`sections[${i}].heading`);
+      if (s.body.includes(EM_DASH)) offenders.push(`sections[${i}].body`);
+    });
+    assert.deepStrictEqual(offenders, [],
+      `${slug} uses em dashes in: ${offenders.join(', ')}. Use a colon, comma or parentheses instead.`);
+  });
+}
 
 // ==========================================================================
 // PART 7 — prime-care-specific edge cases (new additions)
@@ -680,6 +710,263 @@ test('sitemap.xml salone-gospel-hub <lastmod> is 2026-07-01', () => {
     `salone-gospel-hub <lastmod> should be 2026-07-01, got: "${urlBlockMatch[1].trim()}"`
   );
 });
+
+// ==========================================================================
+// PART 9 — SHARE_SLUGS parity with caseStudies.ts
+// ==========================================================================
+//
+// api/track.ts passes props.slug through normalizeProp(raw, SHARE_SLUGS), which
+// returns null for any slug outside the set. A case study missing from
+// SHARE_SLUGS therefore has its share events silently dropped from
+// analytics:z:share_by_slug: no error, no log line, just absent data. This
+// drifted once already (the set held 4 of 8 slugs), so assert set equality in
+// both directions. Adding a case study without updating SHARE_SLUGS now fails
+// here, and so does leaving a stale slug behind after removing one.
+
+console.log('\n--- Part 9: SHARE_SLUGS parity with caseStudies.ts ---\n');
+
+const { SHARE_SLUGS } = await import('../api/_lib/validators.ts');
+
+test('SHARE_SLUGS covers every slug in caseStudies.ts', () => {
+  const missing = Object.keys(caseStudies).filter(slug => !SHARE_SLUGS.has(slug));
+  assert.deepStrictEqual(missing, [],
+    `Case studies missing from SHARE_SLUGS (their share events are dropped): ${missing.join(', ')}`);
+});
+
+test('SHARE_SLUGS contains no slug without a case study', () => {
+  const stale = [...SHARE_SLUGS].filter(slug => !(slug in caseStudies));
+  assert.deepStrictEqual(stale, [],
+    `SHARE_SLUGS entries with no matching case study: ${stale.join(', ')}`);
+});
+
+// ==========================================================================
+// PART 10 — Portfolio-wide integrity (2026-07-30 five-entry batch)
+//
+// Covers the counter refactor (PROJECT_COUNT/LIVE_COUNT/SITE_PAGE_COUNT) and
+// the five new entries end to end: required Project fields on every
+// baseProjects entry, the dsb-digital-portfolio stat-injection arithmetic,
+// six-way cross-registry completeness for the five new slugs, the house
+// four-section convention on every case study, the 3-stat convention on
+// every card and case study, and accent-hex uniqueness across all cards.
+// ==========================================================================
+
+console.log('\n--- Part 10: Portfolio-wide integrity (counters, fields, injection, registries) ---\n');
+
+// --- 10a: parse baseProjects out of Home/index.tsx into structured objects ---
+//
+// baseProjects, PROJECT_COUNT, LIVE_COUNT and SITE_PAGE_COUNT are not exported,
+// so they cannot be imported and checked directly. Parse the array literal
+// itself instead of trusting the derived constants (or Daniel's summary of
+// them): every top-level object in the array prints as `  {\n` ... `\n  },\n`,
+// one indent level shallower than the nested `stats` entries
+// (`      { label: ..., value: ... }`), so that indent boundary is what
+// separates one project object from the next.
+const baseProjectsBlockMatch = homeSource.match(
+  /const baseProjects: Project\[\] = \[([\s\S]*?)\n\];\n\n\/\/ Projects with a dedicated/
+);
+
+test('baseProjects array literal is present and parseable in Home/index.tsx', () => {
+  assert.ok(baseProjectsBlockMatch, 'Could not find `const baseProjects: Project[] = [...]` in Home/index.tsx');
+});
+
+const REQUIRED_PROJECT_FIELDS = [
+  'id', 'slug', 'live', 'title', 'category', 'tagline', 'description',
+  'services', 'url', 'image', 'imageAlt', 'accent', 'stats',
+];
+
+function parseBaseProjects(blockText) {
+  const entryRe = /  \{\n([\s\S]*?)\n  \},\n/g;
+  const text = `${blockText}\n`;
+  const entries = [];
+  let m;
+  while ((m = entryRe.exec(text)) !== null) {
+    const body = m[1];
+    const slug = body.match(/^ {4}slug: '([^']+)'/m)?.[1];
+    const live = body.match(/^ {4}live: (true|false)/m)?.[1];
+    const accent = body.match(/^ {4}accent: '([^']+)'/m)?.[1];
+    const image = body.match(/^ {4}image: '([^']+)'/m)?.[1];
+    const statsBlock = body.match(/^ {4}stats: \[([\s\S]*?)\n {4}\],/m);
+    const statsCount = statsBlock ? (statsBlock[1].match(/\{ label:/g) ?? []).length : 0;
+    const keys = [...body.matchAll(/^ {4}(\w+):/gm)].map((km) => km[1]);
+    entries.push({ slug, live: live === 'true', accent, image, statsCount, keys });
+  }
+  return entries;
+}
+
+const baseProjectEntries = baseProjectsBlockMatch ? parseBaseProjects(baseProjectsBlockMatch[1]) : [];
+
+// --- 10b: PROJECT_COUNT / LIVE_COUNT / SITE_PAGE_COUNT match what renders ---
+//
+// Expected values as of the 2026-07-30 batch: 19 projects, 12 live, 14 pages
+// (13 case-study slugs in CASE_STUDY_SLUGS + the Home page itself).
+
+const EXPECTED_PROJECT_COUNT = 19;
+const EXPECTED_LIVE_COUNT = 12;
+const EXPECTED_SITE_PAGE_COUNT = 14;
+
+test(`baseProjects has exactly ${EXPECTED_PROJECT_COUNT} entries (drives PROJECT_COUNT)`, () => {
+  assert.strictEqual(baseProjectEntries.length, EXPECTED_PROJECT_COUNT,
+    `Parsed ${baseProjectEntries.length} entries in baseProjects, expected ${EXPECTED_PROJECT_COUNT}. Update this expectation if the addition/removal is intentional.`);
+});
+
+test(`exactly ${EXPECTED_LIVE_COUNT} baseProjects entries have live: true (drives LIVE_COUNT)`, () => {
+  const liveCount = baseProjectEntries.filter((e) => e.live).length;
+  assert.strictEqual(liveCount, EXPECTED_LIVE_COUNT,
+    `Parsed ${liveCount} entries with live: true, expected ${EXPECTED_LIVE_COUNT}.`);
+});
+
+test(`CASE_STUDY_SLUGS.size + 1 equals ${EXPECTED_SITE_PAGE_COUNT} (drives SITE_PAGE_COUNT)`, () => {
+  assert.ok(setMatch, 'CASE_STUDY_SLUGS set not found in Home/index.tsx (see Part 2)');
+  const slugsInSet = setMatch[1].match(/'[^']+'/g) ?? [];
+  const sitePageCount = slugsInSet.length + 1;
+  assert.strictEqual(sitePageCount, EXPECTED_SITE_PAGE_COUNT,
+    `CASE_STUDY_SLUGS has ${slugsInSet.length} entries (+1 for Home) = ${sitePageCount}, expected ${EXPECTED_SITE_PAGE_COUNT}.`);
+});
+
+// --- 10c: every baseProjects entry has exactly the required Project fields ---
+//
+// Both directions: nothing missing (in particular `live`, since a card that
+// never carries it silently reads as `undefined`, which is falsy and would
+// misreport as not-live) and nothing extra that isn't part of the interface.
+
+for (const entry of baseProjectEntries) {
+  test(`[${entry.slug}] baseProjects entry has exactly the required Project fields`, () => {
+    const missing = REQUIRED_PROJECT_FIELDS.filter((f) => !entry.keys.includes(f));
+    const unexpected = entry.keys.filter((k) => !REQUIRED_PROJECT_FIELDS.includes(k));
+    assert.deepStrictEqual(missing, [],
+      `[${entry.slug}] missing required field(s): ${missing.join(', ')}`);
+    assert.deepStrictEqual(unexpected, [],
+      `[${entry.slug}] has field(s) not in the Project interface: ${unexpected.join(', ')}`);
+  });
+
+  test(`[${entry.slug}] baseProjects entry declares live as an explicit boolean`, () => {
+    assert.ok(entry.keys.includes('live'), `[${entry.slug}] is missing the \`live\` field entirely`);
+    assert.ok(typeof entry.live === 'boolean', `[${entry.slug}] \`live\` did not parse to true/false`);
+  });
+}
+
+// --- 10d: dsb-digital-portfolio ends up with exactly 3 stats after injection ---
+//
+// The literal in baseProjects carries 1 stat (Delivery); Pages and Projects
+// are injected ahead of it by the `projects` map() in Home/index.tsx. 1 + 2 = 3.
+
+test('[dsb-digital-portfolio] baseProjects literal carries exactly 1 stat before injection', () => {
+  const portfolioEntry = baseProjectEntries.find((e) => e.slug === 'dsb-digital-portfolio');
+  assert.ok(portfolioEntry, 'dsb-digital-portfolio entry not found in baseProjects');
+  assert.strictEqual(portfolioEntry.statsCount, 1,
+    `Expected exactly 1 literal stat on dsb-digital-portfolio before injection, got ${portfolioEntry.statsCount}`);
+});
+
+test('[dsb-digital-portfolio] Pages and Projects stats are injected ahead of the literal', () => {
+  assert.ok(homeSource.includes("{ label: 'Pages', value: String(SITE_PAGE_COUNT) }"),
+    'Pages stat injection not found ahead of the dsb-digital-portfolio literal stats');
+  assert.ok(homeSource.includes("{ label: 'Projects', value: String(PROJECT_COUNT) }"),
+    'Projects stat injection not found ahead of the dsb-digital-portfolio literal stats');
+});
+
+test('[dsb-digital-portfolio] rendered card ends up with exactly 3 stats (1 literal + 2 injected)', () => {
+  const portfolioEntry = baseProjectEntries.find((e) => e.slug === 'dsb-digital-portfolio');
+  const injectedCount = 2; // Pages + Projects, existence asserted above
+  assert.strictEqual(portfolioEntry.statsCount + injectedCount, 3,
+    `Expected 3 stats after injection (1 literal + 2 injected), got ${portfolioEntry.statsCount + injectedCount}`);
+});
+
+// --- 10e: each of the 5 new slugs is present in all six registries ---
+
+const FIVE_NEW_SLUGS = ['nexa-fleet', 'freetown-city-os', 'nexa-sabi', 'nexa-scribe', 'nexa-kopo'];
+
+for (const slug of FIVE_NEW_SLUGS) {
+  test(`[${slug}] present in all six registries (card, caseStudies, CASE_STUDY_SLUGS, SHARE_SLUGS, sitemap, NEW_SLUGS)`, () => {
+    const registryResults = {
+      'card array (baseProjects)': baseProjectEntries.some((e) => e.slug === slug),
+      'caseStudies.ts': slug in caseStudies,
+      'CASE_STUDY_SLUGS': !!setMatch && setMatch[1].includes(`'${slug}'`),
+      'SHARE_SLUGS': SHARE_SLUGS.has(slug),
+      'sitemap.xml': sitemapContent.includes(`${SITE}/work/${slug}`),
+      'NEW_SLUGS (this test file)': NEW_SLUGS.includes(slug),
+    };
+    const missingRegistries = Object.entries(registryResults)
+      .filter(([, present]) => !present)
+      .map(([name]) => name);
+
+    assert.deepStrictEqual(missingRegistries, [],
+      `${slug} is missing from: ${missingRegistries.join(', ')}`);
+  });
+}
+
+// --- 10f: every caseStudies entry has exactly 4 sections in the house order ---
+
+const EXPECTED_SECTION_HEADINGS = ['The brief', 'What we built', 'The stack', 'Where it is now'];
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] has exactly 4 sections with the house headings in order`, () => {
+    const { sections } = caseStudies[slug];
+    assert.strictEqual(sections.length, 4,
+      `[${slug}] expected exactly 4 sections, got ${sections.length}`);
+    const headings = sections.map((s) => s.heading);
+    assert.deepStrictEqual(headings, EXPECTED_SECTION_HEADINGS,
+      `[${slug}] section headings out of order or mismatched: ${JSON.stringify(headings)}`);
+  });
+}
+
+// --- 10g: every rendered card stats array and every case-study stats array
+//          has exactly 3 entries ---
+
+for (const entry of baseProjectEntries) {
+  test(`[${entry.slug}] rendered card has exactly 3 stats`, () => {
+    const injected = entry.slug === 'dsb-digital-portfolio' ? 2 : 0;
+    const renderedCount = entry.statsCount + injected;
+    assert.strictEqual(renderedCount, 3,
+      `[${entry.slug}] rendered stats count is ${renderedCount} (literal ${entry.statsCount} + injected ${injected}), expected 3`);
+  });
+}
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] case-study stats array has exactly 3 entries`, () => {
+    const { stats } = caseStudies[slug];
+    assert.strictEqual(stats.length, 3,
+      `[${slug}] case-study stats has ${stats.length} entries, expected 3`);
+  });
+}
+
+// --- 10h: every accent hex is unique across all baseProjects cards ---
+//
+// A duplicate accent means two cards render with an identical category label
+// color, stats color and image left-border, i.e. they look identical.
+
+test('Every accent hex is unique across all baseProjects cards', () => {
+  const seen = new Map();
+  const duplicates = [];
+  for (const entry of baseProjectEntries) {
+    const key = entry.accent?.toLowerCase();
+    if (seen.has(key)) {
+      duplicates.push(`${entry.accent} shared by "${seen.get(key)}" and "${entry.slug}"`);
+    } else {
+      seen.set(key, entry.slug);
+    }
+  }
+  assert.deepStrictEqual(duplicates, [],
+    `Duplicate accent hex codes found: ${duplicates.join('; ')}`);
+});
+
+// --- 10i: card image matches the case-study heroImage ---
+//
+// Card and case study are two hand-maintained copies of the same entry. A card
+// pointing at a different image than its case study renders a homepage
+// thumbnail that does not match the page it links to, and nothing else catches
+// it: both files typecheck, both build, and the mismatch is only visible by
+// clicking through. Reads the image off the parsed entry block, so it cannot
+// drift onto a neighbouring entry's field the way a lazy whole-file scan can.
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] homepage card image matches the case-study heroImage`, () => {
+    const entry = baseProjectEntries.find((e) => e.slug === slug);
+    assert.ok(entry, `No baseProjects entry found for slug '${slug}' in Home/index.tsx`);
+    assert.ok(entry.image, `baseProjects entry '${slug}' has no image field`);
+    assert.strictEqual(entry.image, caseStudies[slug].heroImage,
+      `Card image for ${slug} ("${entry.image}") differs from its heroImage ("${caseStudies[slug].heroImage}")`);
+  });
+}
 
 // ==========================================================================
 // Summary

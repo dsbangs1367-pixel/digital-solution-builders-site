@@ -375,4 +375,223 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  // Entries below are written without em dashes, so they carry over unchanged
+  // when the site-wide no-em-dash brand rule lands. Enforced by the em-dash
+  // tripwire in tests/case-studies.smoke.mjs.
+
+  'nexa-fleet': {
+    slug: 'nexa-fleet',
+    title: 'Nexa-Fleet Waka',
+    category: 'Health Logistics · Fleet Telematics',
+    tagline: 'Cold chain, tracked to the door.',
+    accent: '#2f9fb0',
+    heroImage: '/projects/nexa-fleet.png',
+    heroImageAlt:
+      'Nexa-Fleet Waka sign-in screen: the product name set in a serif over a deep navy field, above a white panel with username and password fields and a teal sign-in button, under the line "Fleet telematics for Sierra Leone health logistics". The console itself sits behind the login and is not public.',
+    liveUrl: 'https://fleet.dsbdigital.biz',
+    liveLabel: 'fleet.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Fleet Waka: Fleet Telematics and Cold-chain Dispatch | Digital Solution Builders',
+    metaDescription:
+      'A fleet telematics, dispatch and cold-chain platform for health logistics in Sierra Leone. GPS ingestion straight off Teltonika devices, PostGIS geofencing, WHO-PQS excursion monitoring, driver-safety scoring and proof-of-delivery capture, with an offline-first driver PWA. A full-stack build by Digital Solution Builders.',
+    intro:
+      'A fleet telematics and dispatch platform for health logistics, built end to end from the device protocol upward: raw GPS in at one end, a signed proof of delivery out at the other.',
+    stats: [
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Tests', value: '1,363' },
+      { label: 'Surfaces', value: 'Console + PWA' },
+    ],
+    services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Vaccines, medicines and patients move around Sierra Leone in cold-chain trucks, ambulances and delivery bikes, and the people responsible for them were working blind. Where is the vehicle. Did the fridge stay in range for the whole trip, or did it drift at the second stop. Did the delivery actually arrive, and who signed for it. The answers lived on paper waybills that reached the office days later, if at all. The brief was one system that could answer all three questions while the vehicle was still moving, on the phones drivers already carry and over the patchy rural coverage they already have.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A telemetry spine that takes GPS straight off Teltonika devices over TCP, MQTT and HTTP, de-duplicates it and quarantines clock-skewed points before they reach the map. On top of that: a live vehicle map with clustering and follow, breadcrumb trip replay you can scrub at up to sixteen times speed, PostGIS geofences you draw by clicking, and a when-then rules engine that raises alarms and sends SMS in English and Krio. Then the logistics half: WHO-PQS cold-chain profiles with a consignment-level excursion engine, driver-safety scoring over harsh braking, speeding and idling, a dispatch board with a job state machine, and proof-of-delivery capture with an on-screen signature and photos. Drivers get their own mode with an offline outbox.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy 2.0 over PostgreSQL 16, extended with TimescaleDB for the telemetry series and PostGIS for the geofence maths, across 20 Alembic migrations. The console and driver client are one React 18 and TypeScript PWA that adapts by role, mapping with MapLibre GL over Sierra Leone tiles we host ourselves, so nobody pays per map view, and queueing writes through Workbox so a dead spot never loses a delivery. Docker Compose behind nginx with an auto-renewing certificate. 969 backend and 394 frontend tests, and the review loop earned its keep: it caught a login failure that killed the idle-lock overlay, a permanently exposed device install token, and a cache purge that would have destroyed queued GPS points on logout.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Deployed and running at fleet.dsbdigital.biz since 15 July 2026, in a deliberately UAT-safe posture, not full production. Outbound SMS is switched off at the key, so the alerting paths run end to end without a single real message reaching a driver, and the Synapse, DHIS2 and LMIS integrations are built but dormant until their endpoints are configured. That is not an oversight. A data-protection sign-off covering driver location, shared-phone handling and proof-of-delivery retention gates the move to real messages and real vehicle data, and it is still open. The code is deployed and waiting on that decision, not on more code.',
+      },
+    ],
+  },
+
+  'freetown-city-os': {
+    slug: 'freetown-city-os',
+    title: 'Freetown City OS',
+    category: 'Smart City · Programme Dashboard (demo)',
+    tagline: 'A ten-year plan you can actually open.',
+    accent: '#1fb85c',
+    heroImage: '/projects/freetown-city-os.png',
+    heroImageAlt:
+      'Freetown City OS programme overview: a total programme figure of USD 825M split across three phases, four investment pillar cards with committed and spent draw-down bars, and headline indicator tiles for piped water, fibre coverage and peak traffic speed, each carrying a "Verified" badge. A banner across the top notes that energy, climate, map geometry and committed values are Phase 0 due-diligence items.',
+    liveUrl: 'https://cityos.dsbdigital.biz',
+    liveLabel: 'cityos.dsbdigital.biz',
+    metaTitle:
+      'Freetown City OS: Smart-city Programme and Investor Dashboard | Digital Solution Builders',
+    metaDescription:
+      'A planning and investor dashboard for a ten-year, USD 825M smart-city programme: phased budget, project register, KPI monitoring, geospatial map and infrastructure systems view, with every figure badged verified or flagged for due diligence. A full-stack build by Digital Solution Builders.',
+    intro:
+      'A planning and investor dashboard that turns a ten-year smart-city plan from a PDF nobody opens into something a funder can actually interrogate, pillar by pillar and indicator by indicator.',
+    stats: [
+      { label: 'Stage', value: 'Demo' },
+      { label: 'Programme', value: 'USD 825M' },
+      { label: 'Horizon', value: '10 years' },
+    ],
+    services: ['Full-stack Dashboard', 'Geospatial UI', 'Data Modelling'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'A ten-year plan for Freetown existed as a long document with a big number at the front. That is the format every infrastructure plan dies in: nobody reads to page forty, the phasing is invisible, and a funder who wants to know what USD 825M actually buys has to take it on trust. The other problem was sharper. Plans like this get their credibility destroyed by one unsourced figure, because a reader who catches a single invented number stops believing the verified ones too. So the product had to do two jobs at once: make the programme navigable, and make the difference between a confirmed figure and a working assumption impossible to miss.',
+      },
+      {
+        heading: 'What we built',
+        body: 'Six slices, each one a working view, not a mockup. A programme overview that reconciles USD 825M across three phases and four investment pillars, with committed and spent draw-down. A project register with full create, read, update and delete. KPI monitoring that tracks each indicator from its baseline to its target. A Leaflet map of the network. A read-only infrastructure section covering four systems and their thirty components, with a dependency-free schematic drawn in SVG. And roles throughout: viewer, officer and admin, and the denials hold in the API, not just in the interface. The honesty discipline runs through all of it as a badge on every figure, indicator and map layer.',
+      },
+      {
+        heading: 'The stack',
+        body: 'The backend is FastAPI with async SQLAlchemy 2.0 and Alembic, on SQLite in development and Postgres in production, with 77 tests across 6 migrations. React 19, TypeScript, Tailwind and React Query on the frontend, Leaflet for the map and Recharts for the trend views, plus a hand-drawn SVG schematic instead of another diagramming dependency. Authentication is JWT over bcrypt with three roles. The single-page app is on Vercel and the API sits behind nginx on a managed droplet, wired so the browser only ever talks to one origin. There is no AI anywhere in it, and no personal data beyond a username and a password hash.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Running at cityos.dsbdigital.biz since 18 June 2026, front end and API both. This is a demonstration and planning tool, not an operational city system: nothing in it is wired to a live municipal feed, and it has no official standing. The baseline figures come from primary sources and are badged as verified. The energy and climate values, the map geometry, and the committed and spent draw-down are seeded illustrations, badged as Phase 0 due-diligence items, and the interface says so on every screen, not in a footnote. All thirty infrastructure components are illustrative.',
+      },
+    ],
+  },
+
+  'nexa-sabi': {
+    slug: 'nexa-sabi',
+    title: 'Nexa-Learn Sabi',
+    category: 'Education · Adaptive Learning Platform',
+    tagline: 'Learn offline. Prove it anywhere.',
+    accent: '#e8952a',
+    heroImage: '/projects/nexa-sabi.png',
+    heroImageAlt:
+      'Sabi sign-in screen: a white card centred on a deep navy field, the wordmark "Sabi." set in a serif with an orange full stop, the line "Learn, online or offline." beneath it, and username and password fields above an orange sign-in button. The learner app sits behind the login and is not public.',
+    liveUrl: 'https://sabi.dsbdigital.biz',
+    liveLabel: 'sabi.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Learn Sabi: Adaptive Learning and Verifiable Credentials | Digital Solution Builders',
+    metaDescription:
+      'An offline-first adaptive learning platform built on an append-only event log, with item-response-theory placement, a mastery engine, and W3C Verifiable Credentials signed with did:web so a learner can prove what they finished. A full-stack build by Digital Solution Builders.',
+    intro:
+      'An adaptive learning platform for places where the connection drops and the certificate has to mean something: it scores on the server, records every attempt in an append-only log, and issues a credential a third party can verify without asking us.',
+    stats: [
+      { label: 'Stage', value: 'Staging' },
+      { label: 'Coverage', value: '97.69%' },
+      { label: 'Credentials', value: 'W3C VC 2.0' },
+    ],
+    services: ['Adaptive Learning Engine', 'Verifiable Credentials', 'Offline-first PWA'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Two problems that most learning platforms quietly ignore. The first is the connection: a learner on a rural phone loses signal mid-lesson, and if the platform scores in the browser and syncs later, their progress is a guess and their score is editable. The second is what the certificate is worth. A PDF with a logo proves nothing to an employer who has never heard of the issuer, and a database row proves nothing at all once the platform is gone. We wanted a learner to work through a lesson offline, have the record be authoritative instead of reconstructed, and walk away with something a third party could verify without contacting us.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A learning core where published content is frozen, every interaction lands in an append-only event log, and attempts are scored on the server, never in the client. Progress is a materialised view over those events, so it can be rebuilt from scratch and reconciled by a command-line tool. On top of that, adaptive placement using item-response theory, which picks the question carrying the most information about a learner instead of working down a fixed list, and a mastery engine a facilitator can override. Item difficulty is re-fitted from real responses through a calibration pass, but nothing applies automatically: a human accepts or rejects each change, with drift flagged. Completion issues a W3C Verifiable Credential and an Open Badge, signed with did:web, revocable through a bitstring status list. The learner client is a PWA with an offline content cache and a write-ahead event queue. Continuing professional development is embedded straight into the clinical record system.',
+      },
+      {
+        heading: 'The stack',
+        body: 'Backend is FastAPI, SQLAlchemy and Alembic on PostgreSQL: 567 tests at 97.69% coverage across 12 migrations. Credentials use W3C VC 2.0 and Open Badge 3.0 over Ed25519, with did:web identifiers and a bitstring status list for revocation. The learner client is Vite and React with a Workbox precache, an IndexedDB content store and a write-ahead queue that survives a hard reload. Deployment runs on Docker Compose to a dedicated staging droplet through a pipeline that migrates, health-checks and rolls back on failure. Credential hashes anchor into a tamper-evident Merkle log on a fifteen-minute cron, so an issued credential can be checked against an independently published root.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Sabi has sat on staging at sabi.dsbdigital.biz since 6 July 2026. Staging, not production, and the difference matters: it has never carried a real cohort. The Socratic tutor is the sharper caveat. It is built, it went through six hardening passes covering consent, output safety, transcript erasure and facilitator escalation, and it has never once been switched on. There is no API key configured in any environment and the endpoints return a 503. It stays off until a data-protection review clears cross-border processing. The safety screen is also still a rule-based first version, not a classifier, and we would sooner leave the tutor off than ship it as good enough. Erasure has the same shape of caveat: it works by supersession, so the record is redacted but the bytes survive, and calling that deletion would be a stretch.',
+      },
+    ],
+  },
+
+  'nexa-scribe': {
+    slug: 'nexa-scribe',
+    title: 'Nexa-Scribe',
+    category: 'Healthcare · Clinical Knowledge API',
+    tagline: 'The national formulary, as an endpoint.',
+    accent: '#b5677f',
+    heroImage: '/projects/nexa-scribe.png',
+    heroImageAlt:
+      'The public Nexa-Scribe API documentation: an OpenAPI 3.1 page headed "Nexa-Scribe 0.1.0" with the note "Reference data only, this service holds no PHI", listing endpoint groups for meta, terminology, coding, drugs and interactions, most of them marked with a padlock for API-key authentication.',
+    liveUrl: 'https://scribe.dsbdigital.biz/docs',
+    liveLabel: 'scribe.dsbdigital.biz/docs',
+    metaTitle:
+      'Nexa-Scribe: Clinical Knowledge API for Drugs, Interactions and Coding | Digital Solution Builders',
+    metaDescription:
+      'A clinical knowledge service built from Sierra Leone Ministry of Health source documents: drug and terminology lookup, interaction checking, dose recommendations and clinical coding, behind an API-key authenticated OpenAPI surface. A backend build by Digital Solution Builders.',
+    intro:
+      'A clinical knowledge service that answers the four questions an electronic medical record has to ask mid-consultation, built from the national formulary rather than from whichever drug dataset happened to be open.',
+    stats: [
+      { label: 'Stage', value: 'Production' },
+      { label: 'Sources', value: 'SL MoHS' },
+      { label: 'Dose statements', value: '1,014' },
+    ],
+    services: ['Clinical Data Engineering', 'API Design', 'Document Extraction'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'An electronic medical record has to answer four questions in the middle of a consultation. What is this drug. What does it interact with. What dose for a patient this age and this weight. What code does this diagnosis file under. The commercial clinical databases that answer them well are priced for hospital systems in wealthy countries, and the open datasets that are free are built around formularies nobody in Freetown dispenses from. A drug interaction warning is worthless if the drug is not stocked, and a paediatric dose is worse than worthless if it came from a different national guideline. The answers had to come from the documents Sierra Leone clinicians actually work to.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A knowledge database assembled from Ministry of Health source documents, starting with the Essential Medicines List and the Standard Treatment Guidelines. That meant real extraction work, not an import: 602 rows of medicines list resolved across a nested category structure with collision-safe keys, and 1,014 dose and frequency statements pulled out of 20,474 paragraphs and 157 tables of treatment guidelines. Doses go through a dual-review gate before anything is readable. A deterministic parser and a language-model pass each produce a structured reading, the two are adjudicated across seven fields, and only rows where they agree are served. Disagreements sit pending for a human. On top of the data: a code-system registry that tracks each source licence, and endpoints for terminology search, concept mapping, drug lookup, interaction checking and code suggestion.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI on PostgreSQL 16 with Alembic, 647 tests across 3 migrations, behind API-key authentication. Containers run non-root and migrate on start, fronted by nginx with an auto-renewing certificate. The language-model extraction is a build-time step, not a request-time one, which matters: a clinician gets a deterministic lookup against reviewed rows, not a generated answer. Interactions are the deliberate exception to the read-time filter and always surface, because an unreviewed interaction warning is a nuisance while a suppressed one is a hazard. A parity checkpoint proved all 47 interaction pairs from the previous in-record checker return identical severities before anything was cut over.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'The service went into production on 18 July 2026 with its reference data loaded: 12 code systems, the full 602-row medicines list, and the curated diagnostic codes. Two caveats. Only the knowledge database exists: dictation, note generation and the record adapters were specified alongside it and never got built, so this is one component of a larger idea, not the finished thing. And it is deliberately non-commercial, because the source material is licensed for non-commercial use and the record system it serves is donated. We chose that constraint, and it is the only reason the service can exist at all.',
+      },
+    ],
+  },
+
+  'nexa-kopo': {
+    slug: 'nexa-kopo',
+    title: 'Nexa-Kopo',
+    category: 'Fintech · Ledger and Payments Service',
+    tagline: 'Five service surfaces. No screen.',
+    accent: '#3f8f7a',
+    heroImage: '/projects/nexa-kopo.png',
+    heroImageAlt:
+      'A designed illustration, not a screenshot, in the site\'s own dark palette: the Nexa-Kopo name above five numbered panels for Ledger, KYC, Payments, USSD and Webhooks, the single public response "GET /healthz to 200 status ok", counters for 457 tests, 93.77% coverage, 9 migrations and 8 database triggers, and a footnote stating that the service has no interface to capture and that settlement still runs on a simulator.',
+    liveUrl: 'https://dsbdigital.biz/#contact',
+    liveLabel: 'API and USSD service, no public web UI',
+    metaTitle:
+      'Nexa-Kopo: Double-entry Ledger, USSD and Payments API | Digital Solution Builders',
+    metaDescription:
+      'A finance service with no user interface: an append-only double-entry ledger, a KYC tier registry, payments orchestration over a Postgres outbox, a USSD gateway for feature phones, and signed webhooks that let sibling platforms move money. A backend build by Digital Solution Builders.',
+    intro:
+      'A finance service other products call rather than one anyone logs into: a double-entry ledger, KYC tiers, payments orchestration, a USSD gateway and signed webhooks, with no screen anywhere in it.',
+    stats: [
+      { label: 'Stage', value: 'Live API' },
+      { label: 'Coverage', value: '93.77%' },
+      { label: 'Surfaces', value: 'API + USSD' },
+    ],
+    services: ['Double-entry Ledger', 'Payments Orchestration', 'USSD Gateway'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Several products in the same family had reached the point of needing to move money: pay a driver, take a fee, hold a deposit. The obvious path is for each one to grow its own wallet table, and it is the wrong one. You end up with four half-ledgers, four interpretations of what a balance means, four sets of identity checks and no single place where the books balance. The brief was to build the money layer once, properly, as a service the others call. Which means it has no interface, and it has to be right in a way a screen would let you get away with not being.',
+      },
+      {
+        heading: 'What we built',
+        body: 'An append-only double-entry ledger where a repeated request cannot double-post and a correction is an explicit reversal, never an edit, with eight database triggers enforcing the invariants below the application so a future bug in Python cannot unbalance the books. Around it: an identity and tier registry where Tier 0 is automatic and higher tiers need a reviewer decision, and payments orchestration built on escrow holds, a payment-intent state machine and a Postgres outbox worker with an orphaned-job reaper. The USSD gateway covers register, set a PIN, check a balance, send money, cash in and out, and a mini-statement, all of it from a feature phone. Sibling products reach it through a consumer API with HMAC-signed webhooks, links owned by construction, and an append-only log of every sensitive read.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy and Alembic on PostgreSQL across 9 migrations, Celery and Redis for the worker layer, Fernet for encryption at rest on the sensitive columns, and least-privilege database roles so the application cannot alter its own audit trail. 457 tests at 93.77% coverage against an 85% gate. Docker Compose behind nginx with a modern-cipher-only certificate, deployed automatically from the main branch. Guard rails that only matter when something goes wrong: outbound requests are checked against server-side request forgery, and a payout that cannot be resolved is parked for a human instead of voided, because a stuck payment is recoverable and a wrongly voided one is not.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Live at kopo.dsbdigital.biz since 13 July 2026, with the first sibling product onboarded as a consumer three days later. There is no web interface, the interactive API documentation is switched off in production, and a health check is the only thing a browser can reach, which is why the image above is a diagram rather than a screenshot. No real money has moved through it. Settlement still runs on a deterministic simulator, and the mobile-money rail is deployed dormant, waiting on a processing agreement and a controlled live micro-payout before it is switched on. The ledger is real, the money is not yet.',
+      },
+    ],
+  },
 };

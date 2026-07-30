@@ -18,9 +18,25 @@ export const ALLOWED_EVENTS = new Set([
 export const ALLOWED_NETWORKS = new Set(['linkedin', 'x', 'facebook', 'instagram', 'copy_link']);
 export const SELF_HOSTS = new Set(['dsbdigital.biz', 'www.dsbdigital.biz', 'dsb-digital.vercel.app']);
 // Bound the cardinality of analytics:z:share_by_slug to known case studies.
-// Mirrors the slugs in src/pages/CaseStudy/caseStudies.ts — update both when
-// adding a case study.
-export const SHARE_SLUGS = new Set(['nexa-welbodi', 'nexa-logistix', 'rms-death-tracker', 'vocal-drift-inspire']);
+// Mirrors the keys of src/pages/CaseStudy/caseStudies.ts. Kept as a literal
+// rather than an import so the Vercel function bundle stays free of frontend
+// source; the "SHARE_SLUGS parity" block in tests/case-studies.smoke.mjs
+// asserts set equality in both directions, so this cannot silently drift.
+export const SHARE_SLUGS = new Set([
+  'nexa-welbodi',
+  'nexa-logistix',
+  'rms-death-tracker',
+  'nexa-synapse',
+  'nexa-continuum',
+  'salone-gospel-hub',
+  'prime-care',
+  'vocal-drift-inspire',
+  'nexa-fleet',
+  'freetown-city-os',
+  'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
+]);
 
 /** Returns null when the path is invalid; otherwise returns a normalised path. */
 export function normalizePath(raw: string): string | null {
