@@ -279,7 +279,7 @@ const baseProjects: Project[] = [
     category: 'Healthcare · Clinical Knowledge API',
     tagline: 'The national formulary, as an endpoint.',
     description:
-      'A clinical knowledge service that answers the questions an electronic medical record has to ask mid-consultation: what is this drug, what does it interact with, what dose for this weight, what code do I file this under. Built primarily out of Sierra Leone Ministry of Health source documents rather than open datasets, so the answers match the formulary a clinician actually dispenses from. Doses pass a dual-review gate, a deterministic parser and a language-model pass adjudicated field by field, and only agreed rows are readable. FastAPI on PostgreSQL 16 behind API-key auth, in a non-root container that migrates on start. It holds reference data only and no patient data.',
+      'A clinical knowledge service that answers the questions an electronic medical record has to ask mid-consultation: what is this drug, what does it interact with, what dose for this weight, what code do I file this under. Built primarily out of Sierra Leone Ministry of Health source documents, not open datasets, so the answers match the formulary a clinician actually dispenses from. Doses pass a dual-review gate, a deterministic parser and a language-model pass adjudicated field by field, and only agreed rows are readable. FastAPI on PostgreSQL 16 behind API-key auth, in a non-root container that migrates on start. It holds reference data only and no patient data.',
     services: ['Clinical Data Engineering', 'API Design', 'Document Extraction'],
     url: 'https://scribe.dsbdigital.biz/docs',
     image: '/projects/nexa-scribe.png',
@@ -300,7 +300,7 @@ const baseProjects: Project[] = [
     category: 'Fintech · Ledger and Payments Service',
     tagline: 'Five service surfaces. No screen.',
     description:
-      'A finance service the other products call rather than a product anyone logs into: an append-only double-entry ledger with idempotent posting and explicit reversals, a KYC tier registry, payments orchestration with escrow holds and a Postgres outbox worker, a USSD gateway so a feature phone can register, check a balance and send money, and a signed-webhook API that lets a sibling platform move money without holding its own ledger. FastAPI with async SQLAlchemy on PostgreSQL, Celery and Redis, and eight database triggers enforcing the ledger invariants below the application. 457 tests at 93.77% coverage.',
+      'A finance service the other products call, with nothing for a human to log into: an append-only double-entry ledger with idempotent posting and explicit reversals, a KYC tier registry, payments orchestration with escrow holds and a Postgres outbox worker, a USSD gateway so a feature phone can register, check a balance and send money, and a signed-webhook API that lets a sibling platform move money without holding its own ledger. FastAPI with async SQLAlchemy on PostgreSQL, Celery and Redis, and eight database triggers enforcing the ledger invariants below the application. 457 tests at 93.77% coverage.',
     services: ['Double-entry Ledger', 'Payments Orchestration', 'USSD Gateway'],
     url: 'https://dsbdigital.biz/#contact',
     image: '/projects/nexa-kopo.png',
