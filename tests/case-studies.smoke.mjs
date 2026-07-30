@@ -61,8 +61,8 @@ function escapeAttr(v) {
 // ---------------------------------------------------------------------------
 const { caseStudies } = await import('../src/pages/CaseStudy/caseStudies.ts');
 
-// The three slugs added to the portfolio since the original launch
-const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub', 'prime-care'];
+// The slugs added to the portfolio since the original launch
+const NEW_SLUGS = ['nexa-continuum', 'salone-gospel-hub', 'prime-care', 'nexa-fleet'];
 
 // ==========================================================================
 // PART 1 — caseStudies.ts data integrity for the new entries
@@ -482,13 +482,13 @@ test('All new sitemap entries use https://dsbdigital.biz as base', () => {
 
 console.log('\n--- Part 6: Additional edge cases ---\n');
 
-// The caseStudies.ts now has 8 entries (5 original + 3 added this session:
-// nexa-continuum, salone-gospel-hub, prime-care). If this count changes
-// unexpectedly, flag it so the test suite stays honest.
-test('caseStudies.ts has exactly 8 entries', () => {
+// Tripwire on the entry count. Bump it deliberately when adding a case study,
+// so an accidental deletion or a bad merge cannot pass unnoticed.
+const EXPECTED_CASE_STUDIES = 9;
+test(`caseStudies.ts has exactly ${EXPECTED_CASE_STUDIES} entries`, () => {
   const count = Object.keys(caseStudies).length;
-  assert.strictEqual(count, 8,
-    `Expected 8 entries in caseStudies, got ${count}. Update this test if adding more.`);
+  assert.strictEqual(count, EXPECTED_CASE_STUDIES,
+    `Expected ${EXPECTED_CASE_STUDIES} entries in caseStudies, got ${count}. Update this test if adding more.`);
 });
 
 // All slugs in caseStudies must follow the kebab-case slug pattern

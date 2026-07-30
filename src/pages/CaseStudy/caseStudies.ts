@@ -375,4 +375,51 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  // Entries below are written without em dashes, so they carry over unchanged
+  // when the site-wide no-em-dash brand rule lands. Enforced by the em-dash
+  // tripwire in tests/case-studies.smoke.mjs.
+
+  'nexa-fleet': {
+    slug: 'nexa-fleet',
+    title: 'Nexa-Fleet Waka',
+    category: 'Health Logistics · Fleet Telematics',
+    tagline: 'Cold chain, tracked to the door.',
+    accent: '#2f9fb0',
+    heroImage: '/projects/nexa-fleet.png',
+    heroImageAlt:
+      'Nexa-Fleet Waka sign-in screen: the product name set in a serif over a deep navy field, above a white panel with username and password fields and a teal sign-in button, under the line "Fleet telematics for Sierra Leone health logistics". The console itself sits behind the login and is not public.',
+    liveUrl: 'https://fleet.dsbdigital.biz',
+    liveLabel: 'fleet.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Fleet Waka: Fleet Telematics and Cold-chain Dispatch | Digital Solution Builders',
+    metaDescription:
+      'A fleet telematics, dispatch and cold-chain platform for health logistics in Sierra Leone. GPS ingestion straight off Teltonika devices, PostGIS geofencing, WHO-PQS excursion monitoring, driver-safety scoring and proof-of-delivery capture, with an offline-first driver PWA. A full-stack build by Digital Solution Builders.',
+    intro:
+      'A fleet telematics and dispatch platform for health logistics, built end to end from the device protocol upward: raw GPS in at one end, a signed proof of delivery out at the other.',
+    stats: [
+      { label: 'Stage', value: 'UAT' },
+      { label: 'Tests', value: '1,363' },
+      { label: 'Surfaces', value: 'Console + Driver PWA' },
+    ],
+    services: ['Fleet Telematics Platform', 'Cold-chain Monitoring', 'Offline-first PWA'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Vaccines, medicines and patients move around Sierra Leone in cold-chain trucks, ambulances and delivery bikes, and the people responsible for them were working blind. Where is the vehicle. Did the fridge stay in range for the whole trip, or did it drift at the second stop. Did the delivery actually arrive, and who signed for it. The answers lived on paper waybills that reached the office days later, if at all. The brief was one system that could answer all three questions while the vehicle was still moving, on the phones drivers already carry and over the patchy rural coverage they already have.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A telemetry spine that takes GPS straight off Teltonika devices over TCP, MQTT and HTTP, de-duplicates it and quarantines clock-skewed points before they reach the map. On top of that: a live vehicle map with clustering and follow, breadcrumb trip replay you can scrub at up to sixteen times speed, PostGIS geofences you draw by clicking, and a when-then rules engine that raises alarms and sends SMS in English and Krio. Then the logistics half: WHO-PQS cold-chain profiles with a consignment-level excursion engine, driver-safety scoring over harsh braking, speeding and idling, a dispatch board with a job state machine, and proof-of-delivery capture with an on-screen signature and photos. Drivers get their own mode with an offline outbox.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with async SQLAlchemy 2.0 over PostgreSQL 16, extended with TimescaleDB for the telemetry series and PostGIS for the geofence maths, across 20 Alembic migrations. The console and driver client are one React 18 and TypeScript PWA that adapts by role, mapping with MapLibre GL over Sierra Leone tiles we host ourselves rather than paying per view, and queueing writes through Workbox so a dead spot never loses a delivery. Docker Compose behind nginx with an auto-renewing certificate. 969 backend and 394 frontend tests, and the review loop earned its keep: it caught a login failure that killed the idle-lock overlay, a permanently exposed device install token, and a cache purge that would have destroyed queued GPS points on logout.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Deployed and running at fleet.dsbdigital.biz since 15 July 2026, in a deliberately UAT-safe posture rather than full production. Outbound SMS is switched off at the key, so the alerting paths run end to end without a single real message reaching a driver, and the Synapse, DHIS2 and LMIS integrations are built but dormant until their endpoints are configured. That is not an oversight. A data-protection sign-off covering driver location, shared-phone handling and proof-of-delivery retention gates the move to real messages and real vehicle data, and it is still open. The code is deployed and waiting on that decision, not on more code.',
+      },
+    ],
+  },
 };
