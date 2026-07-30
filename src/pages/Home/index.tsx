@@ -15,6 +15,17 @@ const motion = _motion as any;
 interface Project {
   id: number;
   slug: string;
+  /**
+   * True when the product has a publicly reachable URL and is in real use.
+   * Drives the hero trust-bar count, so it is a public claim a visitor can
+   * check against the cards. Staging, UAT and prototype builds are false even
+   * when their URL resolves, because the product is not yet in real use.
+   * Not derived from the `Stage` stat: those values are free text (Live, UAT,
+   * Production, Prototype, Live MVP) and three entries carry no Stage stat at
+   * all, so a derivation would silently change a public number the next time
+   * someone edited a stat label.
+   */
+  live: boolean;
   title: string;
   category: string;
   tagline: string;
@@ -29,10 +40,14 @@ interface Project {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const projects: Project[] = [
+// The portfolio entries. Display order is array order. Read through the
+// `projects` binding below, which fills in the counters this site reports
+// about itself.
+const baseProjects: Project[] = [
   {
     id: 1,
     slug: 'nexa-welbodi',
+    live: false,
     title: 'Nexa-Health Welbodi EMR',
     category: 'Healthcare · Electronic Medical Records',
     tagline: 'Lifelong health records. Starting today.',
@@ -52,6 +67,7 @@ const projects: Project[] = [
   {
     id: 2,
     slug: 'nexa-logistix',
+    live: true,
     title: 'Nexa-Logistix LMIS',
     category: 'Health Logistics · Web Application',
     tagline: 'A pharmaceutical supply-chain operating system.',
@@ -71,6 +87,7 @@ const projects: Project[] = [
   {
     id: 3,
     slug: 'rms-death-tracker',
+    live: true,
     title: 'RMS Death Tracker',
     category: 'Public Health · Surveillance Platform',
     tagline: 'One death, counted once. Excess mortality, in real time.',
@@ -90,6 +107,7 @@ const projects: Project[] = [
   {
     id: 4,
     slug: 'nexa-synapse',
+    live: false,
     title: 'Nexa-Analytics Synapse',
     category: 'Analytics · Intelligence Layer',
     tagline: 'The intelligence layer connecting every product.',
@@ -109,6 +127,7 @@ const projects: Project[] = [
   {
     id: 12,
     slug: 'nexa-continuum',
+    live: false,
     title: 'Nexa-Health Continuum',
     category: 'Healthcare · Longitudinal Patient Journey',
     tagline: 'One timeline. Every provider.',
@@ -129,6 +148,7 @@ const projects: Project[] = [
   {
     id: 5,
     slug: 'vocal-drift-inspire',
+    live: true,
     title: 'Vocal Drift Inspire Platform',
     category: 'Reality TV · Entertainment Platform',
     tagline: 'One stage. Every voice.',
@@ -149,6 +169,7 @@ const projects: Project[] = [
   {
     id: 13,
     slug: 'salone-gospel-hub',
+    live: true,
     title: 'Salone Gospel Hub',
     category: 'Faith & Music · Community Platform',
     tagline: 'The home of Sierra Leonean Gospel.',
@@ -169,6 +190,7 @@ const projects: Project[] = [
   {
     id: 14,
     slug: 'prime-care',
+    live: true,
     title: 'Prime Care Medical Services',
     category: 'Healthcare · Clinic Website + Booking',
     tagline: 'Three specialists. One shared record.',
@@ -189,6 +211,7 @@ const projects: Project[] = [
   {
     id: 6,
     slug: 'dsb-digital-portfolio',
+    live: true,
     title: 'Digital Solution Builders Portfolio',
     category: 'Portfolio · Website Design',
     tagline: 'From Concept to MVP. In 72 Hours.',
@@ -199,17 +222,17 @@ const projects: Project[] = [
     image: 'https://cdn.wegic.ai/assets/onepage/uploads/2027378739789144065/image/2026/03/18/01KKYBPAJ6QWX1SCGB9YZ7HYPN.png?imageMogr2/format/webp',
     imageAlt: 'Digital Solution Builders Portfolio website — dark mode typographic single-page portfolio with Framer Motion animations and social share modal',
     accent: '#a78bfa',
+    // Pages and Projects describe this site, so they are computed in the
+    // `projects` binding below rather than typed here. Anything listed at this
+    // point would go stale the next time an entry was added.
     stats: [
-      // home + 8 case-study pages; keep in sync with caseStudies.ts / sitemap.xml
-      { label: 'Pages', value: '9' },
-      // keep 'Projects' in sync with the total number of entries in the `projects` array above
-      { label: 'Projects', value: '14' },
       { label: 'Delivery', value: '72hrs' },
     ],
   },
   {
     id: 7,
     slug: 'bangura-brothers',
+    live: true,
     title: 'The Bangura Brothers',
     category: 'Youth Brand · Website Design',
     tagline: 'Create. Develop. Explore.',
@@ -229,6 +252,7 @@ const projects: Project[] = [
   {
     id: 8,
     slug: 'bangura-training-app',
+    live: false,
     title: 'Bangura Brothers Training App',
     category: 'Youth Sports · App Design',
     tagline: "Let's Train!",
@@ -248,6 +272,7 @@ const projects: Project[] = [
   {
     id: 9,
     slug: 'kellas-kitchen',
+    live: true,
     title: "Kella's Kitchen & Events",
     category: 'Food & Beverage · Website Design',
     tagline: 'Fresh, Healthy Meals Delivered to You.',
@@ -267,6 +292,7 @@ const projects: Project[] = [
   {
     id: 10,
     slug: 'sprout',
+    live: false,
     title: 'Sprout',
     category: 'Family · Native Mobile App',
     tagline: 'Education · Faith · Wealth · Health.',
@@ -286,6 +312,7 @@ const projects: Project[] = [
   {
     id: 11,
     slug: 'nexa-ideation',
+    live: true,
     title: 'Nexa-Ideation',
     category: 'SaaS · Application Design',
     tagline: 'AI Business Idea Analyzer.',
@@ -315,6 +342,34 @@ const CASE_STUDY_SLUGS = new Set([
   'salone-gospel-hub',
   'prime-care',
 ]);
+
+// ─── Derived counters ────────────────────────────────────────────────────────
+//
+// The site reports three numbers about itself. They used to be typed by hand in
+// three places and had drifted apart. Derive them from the data instead, so
+// adding an entry updates every counter at once.
+
+const PROJECT_COUNT = baseProjects.length;
+const LIVE_COUNT = baseProjects.filter((p) => p.live).length;
+/** Home plus one page per case study. Matches the /work/ URLs in sitemap.xml. */
+const SITE_PAGE_COUNT = CASE_STUDY_SLUGS.size + 1;
+
+// The portfolio card is about this site, so its Pages and Projects stats are
+// injected here. They cannot live in the array literal above: that literal is
+// what PROJECT_COUNT measures, and CASE_STUDY_SLUGS is not yet initialised at
+// that point.
+const projects: Project[] = baseProjects.map((p) =>
+  p.slug === 'dsb-digital-portfolio'
+    ? {
+        ...p,
+        stats: [
+          { label: 'Pages', value: String(SITE_PAGE_COUNT) },
+          { label: 'Projects', value: String(PROJECT_COUNT) },
+          ...p.stats,
+        ],
+      }
+    : p,
+);
 
 const services = [
   {
@@ -475,7 +530,7 @@ function HeroSection() {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                <span className="text-xs text-muted/50">8 products shipped</span>
+                <span className="text-xs text-muted/50">{LIVE_COUNT} products live</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
@@ -861,7 +916,7 @@ function AboutSection() {
           </p>
           <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border/40">
             {[
-              { value: '14', label: 'Products in Portfolio' },
+              { value: String(PROJECT_COUNT), label: 'Products in Portfolio' },
               { value: '3', label: 'Surfaces — Web · Mobile · Enterprise' },
               { value: '72hrs', label: 'For Small Builds' },
             ].map((item) => (
