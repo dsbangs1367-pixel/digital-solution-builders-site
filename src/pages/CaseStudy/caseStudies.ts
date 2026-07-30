@@ -465,4 +465,47 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
   },
+
+  'nexa-sabi': {
+    slug: 'nexa-sabi',
+    title: 'Nexa-Learn Sabi',
+    category: 'Education · Adaptive Learning Platform',
+    tagline: 'Learn offline. Prove it anywhere.',
+    accent: '#e8952a',
+    heroImage: '/projects/nexa-sabi.png',
+    heroImageAlt:
+      'Sabi sign-in screen: a white card centred on a deep navy field, the wordmark "Sabi." set in a serif with an orange full stop, the line "Learn, online or offline." beneath it, and username and password fields above an orange sign-in button. The learner app sits behind the login and is not public.',
+    liveUrl: 'https://sabi.dsbdigital.biz',
+    liveLabel: 'sabi.dsbdigital.biz',
+    metaTitle:
+      'Nexa-Learn Sabi: Adaptive Learning and Verifiable Credentials | Digital Solution Builders',
+    metaDescription:
+      'An offline-first adaptive learning platform built on an append-only event log, with item-response-theory placement, a mastery engine, and W3C Verifiable Credentials signed with did:web so a learner can prove what they finished. A full-stack build by Digital Solution Builders.',
+    intro:
+      'An adaptive learning platform for places where the connection drops and the certificate has to mean something: it scores on the server, records every attempt in an append-only log, and issues a credential a third party can verify without asking us.',
+    stats: [
+      { label: 'Stage', value: 'Staging' },
+      { label: 'Coverage', value: '97.69%' },
+      { label: 'Credentials', value: 'W3C VC 2.0' },
+    ],
+    services: ['Adaptive Learning Engine', 'Verifiable Credentials', 'Offline-first PWA'],
+    sections: [
+      {
+        heading: 'The brief',
+        body: 'Two problems that most learning platforms quietly ignore. The first is the connection: a learner on a rural phone loses signal mid-lesson, and if the platform scores in the browser and syncs later, their progress is a guess and their score is editable. The second is what the certificate is worth. A PDF with a logo proves nothing to an employer who has never heard of the issuer, and a database row proves nothing at all once the platform is gone. We wanted a learner to work through a lesson offline, have the record be authoritative rather than reconstructed, and walk away with something a third party could verify without contacting us.',
+      },
+      {
+        heading: 'What we built',
+        body: 'A learning core where published content is frozen, every interaction lands in an append-only event log, and attempts are scored on the server rather than in the client. Progress is a materialised view over those events, so it can be rebuilt from scratch and reconciled by a command-line tool. On top of that, adaptive placement using item-response theory, which picks the question carrying the most information about a learner rather than working down a fixed list, and a mastery engine a facilitator can override. Item difficulty is re-fitted from real responses through a calibration pass, but nothing applies automatically: a human accepts or rejects each change, with drift flagged. Completion issues a W3C Verifiable Credential and an Open Badge, signed with did:web, revocable through a bitstring status list. The learner client is a PWA with an offline content cache and a write-ahead event queue. Continuing professional development is embedded straight into the clinical record system.',
+      },
+      {
+        heading: 'The stack',
+        body: 'FastAPI with SQLAlchemy and Alembic on PostgreSQL, 567 tests at 97.69% coverage across 12 migrations. Credentials use W3C VC 2.0 and Open Badge 3.0 over Ed25519, with did:web identifiers and a bitstring status list for revocation. The learner client is Vite and React with a Workbox precache, an IndexedDB content store and a write-ahead queue that survives a hard reload. Deployment runs on Docker Compose to a dedicated staging droplet through a pipeline that migrates, health-checks and rolls back on failure. Credential hashes anchor into a tamper-evident Merkle log on a fifteen-minute cron, so an issued credential can be checked against an independently published root.',
+      },
+      {
+        heading: 'Where it is now',
+        body: 'Deployed to staging at sabi.dsbdigital.biz since 6 July 2026. Staging, not production, and the difference matters: the platform has not carried a real cohort. The Socratic tutor is the sharper caveat. It is built, it went through six hardening passes covering consent, output safety, transcript erasure and facilitator escalation, and it has never once been switched on. There is no API key configured in any environment and the endpoints return a 503. It stays off until a data-protection review clears cross-border processing, and the safety screen is a rule-based first version rather than a classifier, so we would rather it stayed off than shipped as good enough. Erasure is redaction by supersession rather than physical destruction, which is worth saying plainly instead of calling it deletion.',
+      },
+    ],
+  },
 };

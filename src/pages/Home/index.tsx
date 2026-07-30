@@ -107,6 +107,27 @@ const baseProjects: Project[] = [
     ],
   },
   {
+    id: 17,
+    slug: 'nexa-sabi',
+    live: false,
+    title: 'Nexa-Learn Sabi',
+    category: 'Education · Adaptive Learning Platform',
+    tagline: 'Learn offline. Prove it anywhere.',
+    description:
+      'An adaptive learning platform built on an append-only event log: a frozen published catalogue, server-scored attempts, and a materialised progress view that can be rebuilt from the events at any time. Placement uses item-response theory to pick the most informative next question rather than marching through a fixed list, and a calibration pass re-fits item difficulty from real responses, though nothing applies automatically without a human accepting it. Completion issues a W3C Verifiable Credential and an Open Badge signed with did:web, so a learner can prove what they finished somewhere the platform does not run. FastAPI on PostgreSQL; an offline-first React PWA with a write-ahead event queue.',
+    services: ['Adaptive Learning Engine', 'Verifiable Credentials', 'Offline-first PWA'],
+    url: 'https://sabi.dsbdigital.biz',
+    image: '/projects/nexa-sabi.png',
+    imageAlt:
+      'Sabi sign-in screen: a white card centred on a deep navy field, the wordmark "Sabi." set in a serif with an orange full stop, the line "Learn, online or offline." beneath it, and username and password fields above an orange sign-in button. The learner app sits behind the login and is not public.',
+    accent: '#e8952a',
+    stats: [
+      { label: 'Stage', value: 'Staging' },
+      { label: 'Coverage', value: '97.69%' },
+      { label: 'Credentials', value: 'W3C VC 2.0' },
+    ],
+  },
+  {
     id: 2,
     slug: 'nexa-logistix',
     live: true,
@@ -377,6 +398,7 @@ const baseProjects: Project[] = [
 const CASE_STUDY_SLUGS = new Set([
   'nexa-fleet',
   'freetown-city-os',
+  'nexa-sabi',
   'nexa-welbodi',
   'nexa-logistix',
   'nexa-synapse',

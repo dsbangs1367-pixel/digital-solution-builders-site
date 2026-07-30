@@ -33,6 +33,7 @@ export const SHARE_SLUGS = new Set([
   'vocal-drift-inspire',
   'nexa-fleet',
   'freetown-city-os',
+  'nexa-sabi',
 ]);
 
 /** Returns null when the path is invalid; otherwise returns a normalised path. */
