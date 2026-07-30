@@ -16,14 +16,22 @@ interface Project {
   id: number;
   slug: string;
   /**
-   * True when the product has a publicly reachable URL and is in real use.
-   * Drives the hero trust-bar count, so it is a public claim a visitor can
-   * check against the cards. Staging, UAT and prototype builds are false even
-   * when their URL resolves, because the product is not yet in real use.
-   * Not derived from the `Stage` stat: those values are free text (Live, UAT,
-   * Production, Prototype, Live MVP) and three entries carry no Stage stat at
-   * all, so a derivation would silently change a public number the next time
-   * someone edited a stat label.
+   * True when the product is publicly reachable AND doing the job it exists to
+   * do. Drives the hero trust-bar count, so it is a public claim a visitor can
+   * check against the cards.
+   *
+   * The test is the product's purpose, not the polish of its data. A fleet
+   * console whose whole point is tracking real vehicles is false while it
+   * carries none (nexa-fleet, UAT). A learning platform is false until it has
+   * carried a cohort (nexa-sabi, staging). A dashboard built to present a
+   * programme to funders is true once it presents that programme, even though
+   * its figures are badged illustrative, because presenting is the job
+   * (freetown-city-os, demo).
+   *
+   * Deliberately not derived from the `Stage` stat: those values are free text
+   * (Live, UAT, Production, Prototype, Demo, Live MVP) and three entries carry
+   * no Stage stat at all, so a derivation would silently change a public number
+   * the next time someone edited a stat label.
    */
   live: boolean;
   title: string;

@@ -530,21 +530,10 @@ for (const slug of NEW_SLUGS) {
   });
 }
 
-// Card and case study are two hand-maintained copies of the same entry. A card
-// pointing at a different image than its case study renders a homepage
-// thumbnail that does not match the page it links to, and nothing else catches
-// it: both files typecheck, both build, and the mismatch is only visible by
-// clicking through.
-for (const slug of Object.keys(caseStudies)) {
-  test(`[${slug}] homepage card image matches the case-study heroImage`, () => {
-    const entry = homeSource.match(
-      new RegExp(`slug: '${slug}',[\\s\\S]{0,3000}?image: '([^']+)'`)
-    );
-    assert.ok(entry, `No projects[] entry with an image found for slug '${slug}' in Home/index.tsx`);
-    assert.strictEqual(entry[1], caseStudies[slug].heroImage,
-      `Card image for ${slug} ("${entry[1]}") differs from its heroImage ("${caseStudies[slug].heroImage}")`);
-  });
-}
+// Card-to-case-study image parity lives in Part 10, where baseProjects has
+// already been parsed into per-entry blocks. Doing it here with a lazy regex
+// over the whole file would match the nearest following `image:` instead of
+// the one belonging to this entry.
 
 // Forward-compatibility tripwire.
 //
@@ -749,6 +738,235 @@ test('SHARE_SLUGS contains no slug without a case study', () => {
   assert.deepStrictEqual(stale, [],
     `SHARE_SLUGS entries with no matching case study: ${stale.join(', ')}`);
 });
+
+// ==========================================================================
+// PART 10 — Portfolio-wide integrity (2026-07-30 five-entry batch)
+//
+// Covers the counter refactor (PROJECT_COUNT/LIVE_COUNT/SITE_PAGE_COUNT) and
+// the five new entries end to end: required Project fields on every
+// baseProjects entry, the dsb-digital-portfolio stat-injection arithmetic,
+// six-way cross-registry completeness for the five new slugs, the house
+// four-section convention on every case study, the 3-stat convention on
+// every card and case study, and accent-hex uniqueness across all cards.
+// ==========================================================================
+
+console.log('\n--- Part 10: Portfolio-wide integrity (counters, fields, injection, registries) ---\n');
+
+// --- 10a: parse baseProjects out of Home/index.tsx into structured objects ---
+//
+// baseProjects, PROJECT_COUNT, LIVE_COUNT and SITE_PAGE_COUNT are not exported,
+// so they cannot be imported and checked directly. Parse the array literal
+// itself instead of trusting the derived constants (or Daniel's summary of
+// them): every top-level object in the array prints as `  {\n` ... `\n  },\n`,
+// one indent level shallower than the nested `stats` entries
+// (`      { label: ..., value: ... }`), so that indent boundary is what
+// separates one project object from the next.
+const baseProjectsBlockMatch = homeSource.match(
+  /const baseProjects: Project\[\] = \[([\s\S]*?)\n\];\n\n\/\/ Projects with a dedicated/
+);
+
+test('baseProjects array literal is present and parseable in Home/index.tsx', () => {
+  assert.ok(baseProjectsBlockMatch, 'Could not find `const baseProjects: Project[] = [...]` in Home/index.tsx');
+});
+
+const REQUIRED_PROJECT_FIELDS = [
+  'id', 'slug', 'live', 'title', 'category', 'tagline', 'description',
+  'services', 'url', 'image', 'imageAlt', 'accent', 'stats',
+];
+
+function parseBaseProjects(blockText) {
+  const entryRe = /  \{\n([\s\S]*?)\n  \},\n/g;
+  const text = `${blockText}\n`;
+  const entries = [];
+  let m;
+  while ((m = entryRe.exec(text)) !== null) {
+    const body = m[1];
+    const slug = body.match(/^ {4}slug: '([^']+)'/m)?.[1];
+    const live = body.match(/^ {4}live: (true|false)/m)?.[1];
+    const accent = body.match(/^ {4}accent: '([^']+)'/m)?.[1];
+    const image = body.match(/^ {4}image: '([^']+)'/m)?.[1];
+    const statsBlock = body.match(/^ {4}stats: \[([\s\S]*?)\n {4}\],/m);
+    const statsCount = statsBlock ? (statsBlock[1].match(/\{ label:/g) ?? []).length : 0;
+    const keys = [...body.matchAll(/^ {4}(\w+):/gm)].map((km) => km[1]);
+    entries.push({ slug, live: live === 'true', accent, image, statsCount, keys });
+  }
+  return entries;
+}
+
+const baseProjectEntries = baseProjectsBlockMatch ? parseBaseProjects(baseProjectsBlockMatch[1]) : [];
+
+// --- 10b: PROJECT_COUNT / LIVE_COUNT / SITE_PAGE_COUNT match what renders ---
+//
+// Expected values as of the 2026-07-30 batch: 19 projects, 12 live, 14 pages
+// (13 case-study slugs in CASE_STUDY_SLUGS + the Home page itself).
+
+const EXPECTED_PROJECT_COUNT = 19;
+const EXPECTED_LIVE_COUNT = 12;
+const EXPECTED_SITE_PAGE_COUNT = 14;
+
+test(`baseProjects has exactly ${EXPECTED_PROJECT_COUNT} entries (drives PROJECT_COUNT)`, () => {
+  assert.strictEqual(baseProjectEntries.length, EXPECTED_PROJECT_COUNT,
+    `Parsed ${baseProjectEntries.length} entries in baseProjects, expected ${EXPECTED_PROJECT_COUNT}. Update this expectation if the addition/removal is intentional.`);
+});
+
+test(`exactly ${EXPECTED_LIVE_COUNT} baseProjects entries have live: true (drives LIVE_COUNT)`, () => {
+  const liveCount = baseProjectEntries.filter((e) => e.live).length;
+  assert.strictEqual(liveCount, EXPECTED_LIVE_COUNT,
+    `Parsed ${liveCount} entries with live: true, expected ${EXPECTED_LIVE_COUNT}.`);
+});
+
+test(`CASE_STUDY_SLUGS.size + 1 equals ${EXPECTED_SITE_PAGE_COUNT} (drives SITE_PAGE_COUNT)`, () => {
+  assert.ok(setMatch, 'CASE_STUDY_SLUGS set not found in Home/index.tsx (see Part 2)');
+  const slugsInSet = setMatch[1].match(/'[^']+'/g) ?? [];
+  const sitePageCount = slugsInSet.length + 1;
+  assert.strictEqual(sitePageCount, EXPECTED_SITE_PAGE_COUNT,
+    `CASE_STUDY_SLUGS has ${slugsInSet.length} entries (+1 for Home) = ${sitePageCount}, expected ${EXPECTED_SITE_PAGE_COUNT}.`);
+});
+
+// --- 10c: every baseProjects entry has exactly the required Project fields ---
+//
+// Both directions: nothing missing (in particular `live`, since a card that
+// never carries it silently reads as `undefined`, which is falsy and would
+// misreport as not-live) and nothing extra that isn't part of the interface.
+
+for (const entry of baseProjectEntries) {
+  test(`[${entry.slug}] baseProjects entry has exactly the required Project fields`, () => {
+    const missing = REQUIRED_PROJECT_FIELDS.filter((f) => !entry.keys.includes(f));
+    const unexpected = entry.keys.filter((k) => !REQUIRED_PROJECT_FIELDS.includes(k));
+    assert.deepStrictEqual(missing, [],
+      `[${entry.slug}] missing required field(s): ${missing.join(', ')}`);
+    assert.deepStrictEqual(unexpected, [],
+      `[${entry.slug}] has field(s) not in the Project interface: ${unexpected.join(', ')}`);
+  });
+
+  test(`[${entry.slug}] baseProjects entry declares live as an explicit boolean`, () => {
+    assert.ok(entry.keys.includes('live'), `[${entry.slug}] is missing the \`live\` field entirely`);
+    assert.ok(typeof entry.live === 'boolean', `[${entry.slug}] \`live\` did not parse to true/false`);
+  });
+}
+
+// --- 10d: dsb-digital-portfolio ends up with exactly 3 stats after injection ---
+//
+// The literal in baseProjects carries 1 stat (Delivery); Pages and Projects
+// are injected ahead of it by the `projects` map() in Home/index.tsx. 1 + 2 = 3.
+
+test('[dsb-digital-portfolio] baseProjects literal carries exactly 1 stat before injection', () => {
+  const portfolioEntry = baseProjectEntries.find((e) => e.slug === 'dsb-digital-portfolio');
+  assert.ok(portfolioEntry, 'dsb-digital-portfolio entry not found in baseProjects');
+  assert.strictEqual(portfolioEntry.statsCount, 1,
+    `Expected exactly 1 literal stat on dsb-digital-portfolio before injection, got ${portfolioEntry.statsCount}`);
+});
+
+test('[dsb-digital-portfolio] Pages and Projects stats are injected ahead of the literal', () => {
+  assert.ok(homeSource.includes("{ label: 'Pages', value: String(SITE_PAGE_COUNT) }"),
+    'Pages stat injection not found ahead of the dsb-digital-portfolio literal stats');
+  assert.ok(homeSource.includes("{ label: 'Projects', value: String(PROJECT_COUNT) }"),
+    'Projects stat injection not found ahead of the dsb-digital-portfolio literal stats');
+});
+
+test('[dsb-digital-portfolio] rendered card ends up with exactly 3 stats (1 literal + 2 injected)', () => {
+  const portfolioEntry = baseProjectEntries.find((e) => e.slug === 'dsb-digital-portfolio');
+  const injectedCount = 2; // Pages + Projects, existence asserted above
+  assert.strictEqual(portfolioEntry.statsCount + injectedCount, 3,
+    `Expected 3 stats after injection (1 literal + 2 injected), got ${portfolioEntry.statsCount + injectedCount}`);
+});
+
+// --- 10e: each of the 5 new slugs is present in all six registries ---
+
+const FIVE_NEW_SLUGS = ['nexa-fleet', 'freetown-city-os', 'nexa-sabi', 'nexa-scribe', 'nexa-kopo'];
+
+for (const slug of FIVE_NEW_SLUGS) {
+  test(`[${slug}] present in all six registries (card, caseStudies, CASE_STUDY_SLUGS, SHARE_SLUGS, sitemap, NEW_SLUGS)`, () => {
+    const registryResults = {
+      'card array (baseProjects)': baseProjectEntries.some((e) => e.slug === slug),
+      'caseStudies.ts': slug in caseStudies,
+      'CASE_STUDY_SLUGS': !!setMatch && setMatch[1].includes(`'${slug}'`),
+      'SHARE_SLUGS': SHARE_SLUGS.has(slug),
+      'sitemap.xml': sitemapContent.includes(`${SITE}/work/${slug}`),
+      'NEW_SLUGS (this test file)': NEW_SLUGS.includes(slug),
+    };
+    const missingRegistries = Object.entries(registryResults)
+      .filter(([, present]) => !present)
+      .map(([name]) => name);
+
+    assert.deepStrictEqual(missingRegistries, [],
+      `${slug} is missing from: ${missingRegistries.join(', ')}`);
+  });
+}
+
+// --- 10f: every caseStudies entry has exactly 4 sections in the house order ---
+
+const EXPECTED_SECTION_HEADINGS = ['The brief', 'What we built', 'The stack', 'Where it is now'];
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] has exactly 4 sections with the house headings in order`, () => {
+    const { sections } = caseStudies[slug];
+    assert.strictEqual(sections.length, 4,
+      `[${slug}] expected exactly 4 sections, got ${sections.length}`);
+    const headings = sections.map((s) => s.heading);
+    assert.deepStrictEqual(headings, EXPECTED_SECTION_HEADINGS,
+      `[${slug}] section headings out of order or mismatched: ${JSON.stringify(headings)}`);
+  });
+}
+
+// --- 10g: every rendered card stats array and every case-study stats array
+//          has exactly 3 entries ---
+
+for (const entry of baseProjectEntries) {
+  test(`[${entry.slug}] rendered card has exactly 3 stats`, () => {
+    const injected = entry.slug === 'dsb-digital-portfolio' ? 2 : 0;
+    const renderedCount = entry.statsCount + injected;
+    assert.strictEqual(renderedCount, 3,
+      `[${entry.slug}] rendered stats count is ${renderedCount} (literal ${entry.statsCount} + injected ${injected}), expected 3`);
+  });
+}
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] case-study stats array has exactly 3 entries`, () => {
+    const { stats } = caseStudies[slug];
+    assert.strictEqual(stats.length, 3,
+      `[${slug}] case-study stats has ${stats.length} entries, expected 3`);
+  });
+}
+
+// --- 10h: every accent hex is unique across all baseProjects cards ---
+//
+// A duplicate accent means two cards render with an identical category label
+// color, stats color and image left-border, i.e. they look identical.
+
+test('Every accent hex is unique across all baseProjects cards', () => {
+  const seen = new Map();
+  const duplicates = [];
+  for (const entry of baseProjectEntries) {
+    const key = entry.accent?.toLowerCase();
+    if (seen.has(key)) {
+      duplicates.push(`${entry.accent} shared by "${seen.get(key)}" and "${entry.slug}"`);
+    } else {
+      seen.set(key, entry.slug);
+    }
+  }
+  assert.deepStrictEqual(duplicates, [],
+    `Duplicate accent hex codes found: ${duplicates.join('; ')}`);
+});
+
+// --- 10i: card image matches the case-study heroImage ---
+//
+// Card and case study are two hand-maintained copies of the same entry. A card
+// pointing at a different image than its case study renders a homepage
+// thumbnail that does not match the page it links to, and nothing else catches
+// it: both files typecheck, both build, and the mismatch is only visible by
+// clicking through. Reads the image off the parsed entry block, so it cannot
+// drift onto a neighbouring entry's field the way a lazy whole-file scan can.
+
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] homepage card image matches the case-study heroImage`, () => {
+    const entry = baseProjectEntries.find((e) => e.slug === slug);
+    assert.ok(entry, `No baseProjects entry found for slug '${slug}' in Home/index.tsx`);
+    assert.ok(entry.image, `baseProjects entry '${slug}' has no image field`);
+    assert.strictEqual(entry.image, caseStudies[slug].heroImage,
+      `Card image for ${slug} ("${entry.image}") differs from its heroImage ("${caseStudies[slug].heroImage}")`);
+  });
+}
 
 // ==========================================================================
 // Summary
