@@ -361,68 +361,64 @@ for (const slug of NEW_SLUGS) {
   });
 }
 
-// Edge case: nexa-continuum title contains "Continuum" (basic sanity that titles
-// were not accidentally swapped between the two new slugs)
-test('[nexa-continuum] <title> contains "Continuum"', () => {
-  const htmlPath = resolve(DIST, 'work', 'nexa-continuum', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/nexa-continuum/index.html not found');
+// Title identity + cross-contamination guard.
+//
+// prerenderCaseStudyOg clones one dist/index.html per slug and rewrites the
+// head in place, so a bug in the loop shows up as the right file carrying
+// another entry's title. Each slug gets a token that appears in its own title
+// and in nobody else's, then we assert presence for its own and absence for
+// every other. Tokens must be distinctive: "Nexa-" is shared by four slugs and
+// would make every assertion pass vacuously.
+const TITLE_TOKENS = {
+  'nexa-continuum': 'Continuum',
+  'salone-gospel-hub': 'Gospel',
+  'prime-care': 'Prime Care',
+  'nexa-fleet': 'Waka',
+  'freetown-city-os': 'City OS',
+  'nexa-sabi': 'Sabi',
+  'nexa-scribe': 'Scribe',
+  'nexa-kopo': 'Kopo',
+};
+
+// Guard the guard: a token that is a substring of another entry's title would
+// make the cross-contamination assertions fire on correct output.
+test('TITLE_TOKENS are mutually exclusive across every case-study title', () => {
+  for (const [slug, token] of Object.entries(TITLE_TOKENS)) {
+    const bleed = Object.keys(caseStudies).filter(
+      other => other !== slug && caseStudies[other].metaTitle.includes(token)
+    );
+    assert.deepStrictEqual(bleed, [],
+      `Token "${token}" (for ${slug}) also appears in the title of: ${bleed.join(', ')}`);
   }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Continuum'),
-    `nexa-continuum <title> does not contain "Continuum": got "${m?.[1]}"`);
 });
 
-test('[salone-gospel-hub] <title> contains "Gospel"', () => {
-  const htmlPath = resolve(DIST, 'work', 'salone-gospel-hub', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/salone-gospel-hub/index.html not found');
-  }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Gospel'),
-    `salone-gospel-hub <title> does not contain "Gospel": got "${m?.[1]}"`);
-});
+for (const slug of Object.keys(TITLE_TOKENS)) {
+  if (!(slug in caseStudies)) continue; // token declared ahead of the entry
 
-// Edge case: titles must not be swapped (cross-contamination guard)
-test('nexa-continuum title does not contain "Gospel" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'nexa-continuum', 'index.html');
-  if (!existsSync(htmlPath)) return; // already caught above
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || !m[1].includes('Gospel'),
-    `nexa-continuum <title> contains "Gospel" — titles may have been swapped`);
-});
+  test(`[${slug}] <title> contains "${TITLE_TOKENS[slug]}"`, () => {
+    const htmlPath = resolve(DIST, 'work', slug, 'index.html');
+    if (!existsSync(htmlPath)) {
+      assert.fail(`dist/work/${slug}/index.html not found`);
+    }
+    const html = readFileSync(htmlPath, 'utf8');
+    const m = html.match(/<title>([\s\S]*?)<\/title>/);
+    assert.ok(m && m[1].includes(TITLE_TOKENS[slug]),
+      `${slug} <title> does not contain "${TITLE_TOKENS[slug]}": got "${m?.[1]}"`);
+  });
 
-test('salone-gospel-hub title does not contain "Continuum" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'salone-gospel-hub', 'index.html');
-  if (!existsSync(htmlPath)) return;
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || !m[1].includes('Continuum'),
-    `salone-gospel-hub <title> contains "Continuum" — titles may have been swapped`);
-});
-
-test('[prime-care] <title> contains "Prime Care"', () => {
-  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
-  if (!existsSync(htmlPath)) {
-    assert.fail('dist/work/prime-care/index.html not found');
-  }
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(m && m[1].includes('Prime Care'),
-    `prime-care <title> does not contain "Prime Care": got "${m?.[1]}"`);
-});
-
-test('prime-care title does not contain "Continuum" or "Gospel" (no title swap)', () => {
-  const htmlPath = resolve(DIST, 'work', 'prime-care', 'index.html');
-  if (!existsSync(htmlPath)) return;
-  const html = readFileSync(htmlPath, 'utf8');
-  const m = html.match(/<title>([\s\S]*?)<\/title>/);
-  assert.ok(!m || (!m[1].includes('Continuum') && !m[1].includes('Gospel')),
-    `prime-care <title> contains a foreign slug name — titles may have been swapped: got "${m?.[1]}"`);
-});
+  test(`[${slug}] <title> carries no other entry's token (no title swap)`, () => {
+    const htmlPath = resolve(DIST, 'work', slug, 'index.html');
+    if (!existsSync(htmlPath)) return; // already caught above
+    const html = readFileSync(htmlPath, 'utf8');
+    const m = html.match(/<title>([\s\S]*?)<\/title>/);
+    if (!m) return;
+    const foreign = Object.entries(TITLE_TOKENS)
+      .filter(([other, token]) => other !== slug && m[1].includes(token))
+      .map(([other]) => other);
+    assert.deepStrictEqual(foreign, [],
+      `${slug} <title> carries tokens belonging to ${foreign.join(', ')}: got "${m[1]}"`);
+  });
+}
 
 // ==========================================================================
 // PART 5 — public/sitemap.xml contains both new /work/<slug> URLs
@@ -518,25 +514,65 @@ test('All NEW_SLUGS heroImages are distinct', () => {
   }
 });
 
-// heroImage filename should contain the slug (or a recognisable variant) so
-// it is easy to associate the image file with the case study
-test('[nexa-continuum] heroImage filename contains "nexa-continuum"', () => {
-  const { heroImage } = caseStudies['nexa-continuum'];
-  assert.ok(heroImage.includes('nexa-continuum'),
-    `nexa-continuum heroImage ("${heroImage}") should contain "nexa-continuum" in its filename`);
-});
+// heroImage filename must contain the slug, so the image file is trivially
+// traceable to its case study. Scoped to NEW_SLUGS on purpose: two of the
+// original entries predate the convention (nexa-logistix uses nexa-lmis.png,
+// rms-death-tracker uses nexa-rms.png) and renaming them would break the
+// already-cached social OG images.
+for (const slug of NEW_SLUGS) {
+  test(`[${slug}] heroImage filename contains "${slug}"`, () => {
+    const { heroImage } = caseStudies[slug];
+    assert.ok(heroImage.includes(slug),
+      `${slug} heroImage ("${heroImage}") should contain "${slug}" in its filename`);
+  });
+}
 
-test('[salone-gospel-hub] heroImage filename contains "salone-gospel-hub"', () => {
-  const { heroImage } = caseStudies['salone-gospel-hub'];
-  assert.ok(heroImage.includes('salone-gospel-hub'),
-    `salone-gospel-hub heroImage ("${heroImage}") should contain "salone-gospel-hub" in its filename`);
-});
+// Card and case study are two hand-maintained copies of the same entry. A card
+// pointing at a different image than its case study renders a homepage
+// thumbnail that does not match the page it links to, and nothing else catches
+// it: both files typecheck, both build, and the mismatch is only visible by
+// clicking through.
+for (const slug of Object.keys(caseStudies)) {
+  test(`[${slug}] homepage card image matches the case-study heroImage`, () => {
+    const entry = homeSource.match(
+      new RegExp(`slug: '${slug}',[\\s\\S]{0,3000}?image: '([^']+)'`)
+    );
+    assert.ok(entry, `No projects[] entry with an image found for slug '${slug}' in Home/index.tsx`);
+    assert.strictEqual(entry[1], caseStudies[slug].heroImage,
+      `Card image for ${slug} ("${entry[1]}") differs from its heroImage ("${caseStudies[slug].heroImage}")`);
+  });
+}
 
-test('[prime-care] heroImage filename contains "prime-care"', () => {
-  const { heroImage } = caseStudies['prime-care'];
-  assert.ok(heroImage.includes('prime-care'),
-    `prime-care heroImage ("${heroImage}") should contain "prime-care" in its filename`);
-});
+// Forward-compatibility tripwire.
+//
+// Entries authored from 2026-07-30 on are written em-dash free so they survive
+// the pending brand rebrand, which enforces a site-wide no-em-dash rule across
+// all of src/. The eight older entries are exempt and get converted as part of
+// that cutover, not here, so this list is deliberately narrower than NEW_SLUGS.
+const EM_DASH = '—';
+const EM_DASH_FREE_SLUGS = [
+  'nexa-fleet',
+  'freetown-city-os',
+  'nexa-sabi',
+  'nexa-scribe',
+  'nexa-kopo',
+];
+const PROSE_FIELDS = ['title', 'tagline', 'intro', 'metaTitle', 'metaDescription', 'heroImageAlt'];
+
+for (const slug of EM_DASH_FREE_SLUGS) {
+  if (!(slug in caseStudies)) continue; // listed ahead of the entry landing
+
+  test(`[${slug}] prose is free of em dashes`, () => {
+    const cs = caseStudies[slug];
+    const offenders = PROSE_FIELDS.filter(f => cs[f].includes(EM_DASH));
+    cs.sections.forEach((s, i) => {
+      if (s.heading.includes(EM_DASH)) offenders.push(`sections[${i}].heading`);
+      if (s.body.includes(EM_DASH)) offenders.push(`sections[${i}].body`);
+    });
+    assert.deepStrictEqual(offenders, [],
+      `${slug} uses em dashes in: ${offenders.join(', ')}. Use a colon, comma or parentheses instead.`);
+  });
+}
 
 // ==========================================================================
 // PART 7 — prime-care-specific edge cases (new additions)
